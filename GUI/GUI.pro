@@ -13,8 +13,15 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    block.cpp \
+    mygraphicsview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    block.h \
+    mygraphicsview.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resources.qrc

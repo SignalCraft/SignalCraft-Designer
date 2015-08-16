@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/opamp.jpg</file>
+    </qresource>
+</RCC>
