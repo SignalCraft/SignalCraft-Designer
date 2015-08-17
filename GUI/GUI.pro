@@ -14,12 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    block.cpp \
-    mygraphicsview.cpp
+    mygraphicsview.cpp \
+    myitemmodel.cpp \
+    blockgraphicsitem.cpp
 
 HEADERS  += mainwindow.h \
-    block.h \
-    mygraphicsview.h
+    mygraphicsview.h \
+    myitemmodel.h \
+    blockgraphicsitem.h
 
 FORMS    += mainwindow.ui
 

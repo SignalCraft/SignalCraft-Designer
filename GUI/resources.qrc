@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/opamp.jpg</file>
+        <file>images/Zoom In.png</file>
+        <file>images/Zoom Out.png</file>
     </qresource>
 </RCC>
