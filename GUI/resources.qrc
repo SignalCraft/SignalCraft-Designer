@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>images/Zoom In.png</file>
         <file>images/Zoom Out.png</file>
+        <file>images/Connect.png</file>
     </qresource>
 </RCC>

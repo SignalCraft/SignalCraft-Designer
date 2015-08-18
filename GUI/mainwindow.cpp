@@ -1,8 +1,11 @@
-#include "mainwindow.h"
+#include "gui/mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QStandardItem>
-#include "myitemmodel.h"
+#include "gui/myitemmodel.h"
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -25,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->listView_io->setModel(blocks);
     ui->listView_io->setAcceptDrops(false);
 
+    ui->graphicsView->setFlowChart(&flow);
     scene = new QGraphicsScene();
     ui->graphicsView->setScene(scene);
     ui->graphicsView->scale(xScale, yScale);
@@ -34,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->listView_io->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::handleCurrentItemChanged);
     connect(ui->actionZoom_In, &QAction::triggered, this, &MainWindow::handleZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
+    connect(ui->actionConnect, &QAction::toggled, this, &MainWindow::handleConnect);
+    connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
 }
 
 MainWindow::~MainWindow() {
@@ -50,4 +56,20 @@ void MainWindow::handleZoomIn() {
 
 void MainWindow::handleZoomOut() {
     ui->graphicsView->scale(1/1.1, 1/1.1);
+}
+
+void MainWindow::handleConnect(bool enabled) {
+    ui->graphicsView->setDragMode(enabled ? QGraphicsView::NoDrag : QGraphicsView::ScrollHandDrag);
+    ui->graphicsView->connectMode = enabled;
+}
+
+void MainWindow::handleSaveAs() {
+    QString filePath = QFileDialog::getSaveFileName(this, "Save As", "", ".flow");
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream out(&file);
+    Json::StyledWriter json;
+    out << json.write(FlowChart::jsonComposeFlowChart(flow)).c_str();
+    file.close();
 }

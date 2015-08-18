@@ -1,4 +1,4 @@
-#include "myitemmodel.h"
+#include "gui/myitemmodel.h"
 
 #include <QMimeData>
 

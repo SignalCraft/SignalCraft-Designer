@@ -1,13 +1,14 @@
-#include "blockgraphicsitem.h"
+#include "gui/blockgraphicsitem.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QRectF>
 #include <QTextOption>
 
-BlockGraphicsItem::BlockGraphicsItem(QString name_)
+BlockGraphicsItem::BlockGraphicsItem(QString name_, int index)
 {
     name = name_;
+    blockIndex = index;
 }
 
 void BlockGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem*, QWidget*) {
