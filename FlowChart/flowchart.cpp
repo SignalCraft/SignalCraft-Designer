@@ -30,7 +30,7 @@ FlowChart FlowChart::jsonParseFlowChart(Json::Value node) {
 }
 
 Json::Value FlowChart::jsonComposeFlowChart(FlowChart f) {
-    Json::Value node;
+    Json::Value node(Json::objectValue);
     node["blocks"] = jsonComposeBlocks(f.blocks);
     return node;
 }
@@ -44,9 +44,9 @@ std::unordered_map<int, Block> FlowChart::jsonParseBlocks(Json::Value node) {
 }
 
 Json::Value FlowChart::jsonComposeBlocks(std::unordered_map<int, Block> map) {
-    Json::Value node;
+    Json::Value node(Json::objectValue);
     for (auto kvpair : map) {
-        node[kvpair.first] = Block::jsonComposeBlock(kvpair.second);
+        node[std::to_string(kvpair.first)] = Block::jsonComposeBlock(kvpair.second);
     }
     return node;
 }

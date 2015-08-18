@@ -29,7 +29,7 @@ Block Block::jsonParseBlock(Json::Value node) {
 }
 
 Json::Value Block::jsonComposeBlock(Block b) {
-    Json::Value node;
+    Json::Value node(Json::objectValue);
     node["blockTypeName"] = b.blockTypeName;
     node["xPos"] = b.xPos;
     node["yPos"] = b.yPos;
@@ -47,7 +47,7 @@ std::unordered_map<std::string, BlockPin> Block::jsonParseInputConnections(Json:
 }
 
 Json::Value Block::jsonComposeInputConnections(std::unordered_map<std::string, BlockPin> map) {
-    Json::Value node;
+    Json::Value node(Json::objectValue);
     for (auto kvpair : map) {
         node[kvpair.first] = jsonComposeBlockPin(kvpair.second);
     }
@@ -62,7 +62,7 @@ BlockPin Block::jsonParseBlockPin(Json::Value node) {
 }
 
 Json::Value Block::jsonComposeBlockPin(BlockPin p) {
-    Json::Value node;
+    Json::Value node(Json::arrayValue);
     node[0] = p.first;
     node[1] = p.second;
     return node;
@@ -77,7 +77,7 @@ std::unordered_map<std::string, std::unordered_set<BlockPin, boost::hash<BlockPi
 }
 
 Json::Value Block::jsonComposeOutputConnections(std::unordered_map<std::string, std::unordered_set<BlockPin, boost::hash<BlockPin> > > map) {
-    Json::Value node;
+    Json::Value node(Json::objectValue);
     for (auto kvpair : map) {
         node[kvpair.first] = jsonComposeBlockPinSet(kvpair.second);
     }
@@ -86,14 +86,14 @@ Json::Value Block::jsonComposeOutputConnections(std::unordered_map<std::string, 
 
 std::unordered_set<BlockPin, boost::hash<BlockPin> > Block::jsonParseBlockPinSet(Json::Value node) {
     std::unordered_set<BlockPin, boost::hash<BlockPin> > set;
-    for (int i=0; i < node.size(); i++) {
+    for (unsigned int i=0; i < node.size(); i++) {
         set.insert(jsonParseBlockPin(node[i]));
     }
     return set;
 }
 
 Json::Value Block::jsonComposeBlockPinSet(std::unordered_set<BlockPin, boost::hash<BlockPin> > set) {
-    Json::Value node;
+    Json::Value node(Json::arrayValue);
     int i = 0;
     for (auto element : set) {
         node[i] = jsonComposeBlockPin(element);
