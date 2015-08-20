@@ -44,7 +44,7 @@
          <x>0</x>
          <y>0</y>
          <width>200</width>
-         <height>383</height>
+         <height>367</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -118,8 +118,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>98</width>
-         <height>28</height>
+         <width>200</width>
+         <height>367</height>
         </rect>
        </property>
        <attribute name="label">
@@ -166,6 +166,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="compileButton">
+      <property name="text">
+       <string>Compile</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="MyGraphicsView" name="graphicsView">
       <property name="verticalScrollBarPolicy">
        <enum>Qt::ScrollBarAsNeeded</enum>
@@ -197,7 +204,7 @@
      <x>0</x>
      <y>0</y>
      <width>641</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuJollyLab">

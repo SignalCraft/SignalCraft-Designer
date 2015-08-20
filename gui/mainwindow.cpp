@@ -1,5 +1,6 @@
 #include "gui/mainwindow.h"
 #include "ui_mainwindow.h"
+#include "compiler/compiler.h"
 
 #include <QStandardItem>
 #include "gui/myitemmodel.h"
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionConnect, &QAction::toggled, this, &MainWindow::handleConnect);
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
     connect(ui->pushButton, &QPushButton::pressed, this, &MainWindow::handleToggleLED);
+    connect(ui->compileButton, &QPushButton::pressed, this, &MainWindow::handleCompile);
 }
 
 MainWindow::~MainWindow() {
@@ -77,4 +79,15 @@ void MainWindow::handleSaveAs() {
 
 void MainWindow::handleToggleLED() {
     device->toggleLED();
+}
+
+void MainWindow::handleCompile(){
+    std::string picCode = generatePicCode(flow);
+    QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", ".c");
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream out(&file);
+    out << picCode.c_str();
+    file.close();
 }

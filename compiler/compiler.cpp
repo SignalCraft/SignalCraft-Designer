@@ -1,20 +1,11 @@
+#include "compiler.h"
+
+#include <string>
 #include <fstream>
 #include <iostream>
 #include <deque>
 
-
-int writeFile(string picCode)
-{
-  std::ofstream filestream("filename.c")
-  if(!filestream)
-  {
-   std::cerr<<"Cannot write to output file."<<::endl;
-   return 1;
-  }
-  filestream<<picCode;
-  filestream.close();
-  return 0;
-}
+using namespace std;
 
 string generatePicCode(FlowChart flow)
 {
@@ -28,36 +19,37 @@ string generatePicCode(FlowChart flow)
     Block block =  element.second;
     if(block.inputConnections.empty())
     {
-      blockIndexes.push_back(i);
+      toBeExpanded.push_back(i);
     }
-    includes<<"#include \""block.blockTypeName<<"\"\n";
+    includes += "#include \"" + block.blockTypeName + "\"\n";
   }
   while(!toBeExpanded.empty())
   {
-    int blockIndex = toBeExpanded.pop_front();
+    int blockIndex = toBeExpanded.front();
+    toBeExpanded.pop_front();
     Block block = flow.blocks[blockIndex];
-    bool found_all = isExpandable(block, toBeExpanded);
+    bool found_all = isExpandable(block, expanded);
     if(found_all)
     {
-      expand(block, toBeExpanded, expanded);  
+      expand(blockIndex, flow, toBeExpanded, expanded);
     }
     else
     {
       toBeExpanded.push_back(blockIndex);
     }
   }
-  mainFile<<"}";
-  includes<<mainFile;
-  return includes 
+  mainFile += "}";
+  includes += mainFile;
+  return includes;
 }
 
-bool isExpandable(Block block, std::deque toBeExpanded)
+bool isExpandable(Block block, std::set<int> expanded)
 {
     bool found_all = true;
     for(auto input : block.inputConnections)
     {
       int blockNum = input.second.first;
-      if(toBeExpanded.find(blockNum) == toBeExpanded.end())
+      if(expanded.find(blockNum) == expanded.end())
       { 
         found_all = false;
         break;
@@ -66,20 +58,20 @@ bool isExpandable(Block block, std::deque toBeExpanded)
     return found_all; 
 }
  
-void expand(int blockIndex, std::deque toBeExpanded, std::set expanded)
+void expand(int blockIndex, FlowChart flow, std::deque<int> toBeExpanded, std::set<int> expanded)
 {
-   Block block = flow.blocks[blockIndex]
-   expanded.push_back(blockIndex);
+   Block block = flow.blocks[blockIndex];
+   expanded.insert(blockIndex);
    for(auto output : block.outputConnections)
    {
-      if(isExpandable(output,toBeExpanded))
-      {
-        expand(block, toBeExpanded, expanded);  
+      for(auto element : output.second){
+         int outIndex = element.first;
+         Block out = flow.blocks[outIndex];
+         if(isExpandable(out,expanded))
+         {
+           expand(outIndex, flow, toBeExpanded, expanded);
+         }
       }
    }
 }
 
-int main()
-{
-
-} 

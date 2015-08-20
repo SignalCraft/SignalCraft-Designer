@@ -34,6 +34,7 @@ protected slots:
     void handleConnect(bool);
     void handleSaveAs();
     void handleToggleLED();
+    void handleCompile();
 };
 
 #endif // MAINWINDOW_H
