@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
     connect(ui->actionConnect, &QAction::toggled, this, &MainWindow::handleConnect);
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
+    connect(ui->pushButton, &QPushButton::pressed, this, &MainWindow::handleToggleLED);
 }
 
 MainWindow::~MainWindow() {
@@ -72,4 +73,8 @@ void MainWindow::handleSaveAs() {
     Json::StyledWriter json;
     out << json.write(FlowChart::jsonComposeFlowChart(flow)).c_str();
     file.close();
+}
+
+void MainWindow::handleToggleLED() {
+    device->toggleLED();
 }

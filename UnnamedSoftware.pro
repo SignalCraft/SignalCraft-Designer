@@ -19,7 +19,8 @@ SOURCES += gui/main.cpp\
     flowchart/block.cpp \
     flowchart/blocktype.cpp \
     flowchart/flowchart.cpp \
-    jsoncpp.cpp
+    jsoncpp.cpp \
+    usb/deviceconnection.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/mygraphicsview.h \
@@ -29,9 +30,26 @@ HEADERS  += gui/mainwindow.h \
     flowchart/blocktype.h \
     flowchart/flowchart.h \
     json/json.h \
-    json/json-forwards.h
+    json/json-forwards.h \
+    usb/deviceconnection.h
 
 FORMS    += gui/mainwindow.ui
 
 RESOURCES += \
     gui/resources.qrc
+
+win32 {
+    INCLUDEPATH += $$(LIBUSBDIR)
+    !contains(QMAKE_TARGET.arch, x86_64) {
+        #Win32
+        LIBS += -L$$(LIBUSBDIR)/Win32/Release/lib/
+    } else {
+        #Win64
+        LIBS += -L$$(LIBUSBDIR)/x64/Release/lib/
+    }
+} else {
+    INCLUDEPATH += /usr/local/include/
+    LIBS += -L/usr/local/lib/
+}
+
+LIBS += -llibusb-1.0
