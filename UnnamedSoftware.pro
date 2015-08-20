@@ -309,11 +309,13 @@ win32 {
         #Win64
         LIBS += -L$$(LIBUSBDIR)/x64/Release/lib/
     }
+    LIBS += -llibusb-1.0
 }
 linux-g++ {
     INCLUDEPATH += /usr/include/libusb-1.0/
     LIBS += -L/usr/lib/
     QMAKE_CXXFLAGS += -std=c++11
+    LIBS += -lusb-1.0
 }
 
-LIBS += -lusb-1.0
+
