@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <utility>
-#include <String>
+#include <string>
 #include <unordered_map>
 #include "flowchart/block.h"
 #include "flowchart/blocktype.h"

@@ -1,7 +1,7 @@
 #ifndef DEVICECONNECTION_H
 #define DEVICECONNECTION_H
 
-#include <libusb/libusb.h>
+#include <libusb.h>
 
 class DeviceConnection
 {

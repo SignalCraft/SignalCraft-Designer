@@ -1,6 +1,6 @@
 #include "usb/deviceconnection.h"
 
-#include <libusb/libusb.h>
+#include <libusb.h>
 
 DeviceConnection::DeviceConnection() {
     // initialize libusb
@@ -23,11 +23,12 @@ DeviceConnection::DeviceConnection() {
         }
     }
     // connect to device
-    if (found) {
-        lastError = libusb_open(found, &handle);
-        if (!lastError)
-            connected = true;
-    }
+    if (!found)
+        return;
+    lastError = libusb_open(found, &handle);
+    if (lastError)
+        return;
+    connected = true;
     libusb_free_device_list(list, 1); // No error
     // claim interface
     //lastError = libusb_set_auto_detach_kernel_driver(handle, 1); // Error is inconsequential
@@ -55,6 +56,8 @@ bool DeviceConnection::canUseDevice(libusb_device *device) {
 }
 
 int DeviceConnection::toggleLED() {
+    if (!claimedInterface)
+        return -1;
     unsigned char data = 0x80;
     int actualLength;
     lastError = libusb_bulk_transfer(handle, (1 | LIBUSB_ENDPOINT_OUT), &data, 4, &actualLength, 0);

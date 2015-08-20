@@ -39,7 +39,7 @@ RESOURCES += \
     gui/resources.qrc
 
 win32 {
-    INCLUDEPATH += $$(LIBUSBDIR)
+    INCLUDEPATH += $$(LIBUSBDIR)/libusb/
     !contains(QMAKE_TARGET.arch, x86_64) {
         #Win32
         LIBS += -L$$(LIBUSBDIR)/Win32/Release/lib/
@@ -47,9 +47,11 @@ win32 {
         #Win64
         LIBS += -L$$(LIBUSBDIR)/x64/Release/lib/
     }
-} else {
-    INCLUDEPATH += /usr/local/include/
-    LIBS += -L/usr/local/lib/
+}
+linux-g++ {
+    INCLUDEPATH += /usr/include/libusb-1.0/
+    LIBS += -L/usr/lib/
+    QMAKE_CXXFLAGS += -std=c++11
 }
 
-LIBS += -llibusb-1.0
+LIBS += -lusb-1.0
