@@ -26,15 +26,15 @@ protected:
     qreal xScale = 0.2;
     qreal yScale = 0.2;
     FlowChart flow;
-    DeviceConnection *device = new DeviceConnection();
+    DeviceConnection device;
 protected slots:
     void handleCurrentItemChanged(const QModelIndex& current, const QModelIndex&);
     void handleZoomIn();
     void handleZoomOut();
     void handleConnect(bool);
     void handleSaveAs();
-    void handleToggleLED();
     void handleCompile();
+    void handleProgram();
 };
 
 #endif // MAINWINDOW_H

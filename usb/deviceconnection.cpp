@@ -40,10 +40,8 @@ DeviceConnection::DeviceConnection() {
 }
 
 DeviceConnection::~DeviceConnection() {
-    /*
     libusb_close(handle);
     libusb_exit(context);
-    */
 }
 
 bool DeviceConnection::canUseDevice(libusb_device *device) {
@@ -60,9 +58,39 @@ int DeviceConnection::toggleLED() {
         return -1;
     unsigned char data = 0x80;
     int actualLength;
-    lastError = libusb_bulk_transfer(handle, (1 | LIBUSB_ENDPOINT_OUT), &data, 4, &actualLength, 0);
+    lastError = libusb_bulk_transfer(handle, (1 | LIBUSB_ENDPOINT_OUT), &data, 1, &actualLength, 0);
     if (lastError) {
         return lastError;
     }
     return 0;
+}
+
+int DeviceConnection::sendProgram() {
+    if (!claimedInterface)
+        return -1;
+    unsigned char *data = new unsigned char[100000]();
+    data[0] = 4;
+    ((uint32_t*)data)[1] = 99992;
+    data[8] = 1;
+    data[9] = 2;
+    data[10] = 3;
+    data[11] = 4;
+    data[12] = 5;
+    data[99] = 10;
+    data[999] = 9;
+    data[9999] = 1;
+    data[99999] = 1;
+    int actualLength;
+    lastError = libusb_bulk_transfer(handle, (1 | LIBUSB_ENDPOINT_OUT), data, 100000, &actualLength, 0);
+    if (lastError) {
+        return lastError;
+    }
+    lastError = libusb_bulk_transfer(handle, (1 | LIBUSB_ENDPOINT_IN), data, 64, &actualLength, 1000);
+    if (lastError) {
+        return lastError;
+    }
+    int sum = *(uint16_t *)(data+1);
+    delete[] data;
+    return sum;
+
 }

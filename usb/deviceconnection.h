@@ -9,6 +9,7 @@ public:
     DeviceConnection();
     ~DeviceConnection();
     int toggleLED();
+    int sendProgram();
 protected:
     libusb_context *context = NULL;
     bool initialized = false;

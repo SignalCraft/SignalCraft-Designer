@@ -41,8 +41,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
     connect(ui->actionConnect, &QAction::toggled, this, &MainWindow::handleConnect);
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
-    connect(ui->pushButton, &QPushButton::pressed, this, &MainWindow::handleToggleLED);
-    connect(ui->compileButton, &QPushButton::pressed, this, &MainWindow::handleCompile);
+    connect(ui->pushButton_compile, &QPushButton::pressed, this, &MainWindow::handleCompile);
+    connect(ui->pushButton_program, &QPushButton::pressed, this, &MainWindow::handleProgram);
 }
 
 MainWindow::~MainWindow() {
@@ -77,10 +77,6 @@ void MainWindow::handleSaveAs() {
     file.close();
 }
 
-void MainWindow::handleToggleLED() {
-    device->toggleLED();
-}
-
 void MainWindow::handleCompile(){
     std::string picCode = generatePicCode(flow);
     QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", ".c");
@@ -90,4 +86,9 @@ void MainWindow::handleCompile(){
     QTextStream out(&file);
     out << picCode.c_str();
     file.close();
+}
+
+void MainWindow::handleProgram() {
+    int result = device.sendProgram();
+    ui->label_actionStatus->setText(QString("Result =") + QString::number(result));
 }
