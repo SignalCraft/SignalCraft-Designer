@@ -10,7 +10,7 @@
 
 std::string generatePicCode(FlowChart flow);
 bool isExpandable(Block block, std::set<int> toBeExpanded);
-void expand(int blockIndex, FlowChart flow, std::deque<int> toBeExpanded, std::set<int> expanded);
+std::string expand(int blockIndex, FlowChart flow, std::deque<int> toBeExpanded, std::set<int> expanded, std::string mainFile);
 
 #endif // COMPILER_H
 

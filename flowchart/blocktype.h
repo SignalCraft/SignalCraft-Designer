@@ -10,7 +10,7 @@ public:
     BlockType();
     std::string name;
     std::vector<std::string> inputs;
-    std::vector<std::string> outputs;
+    std::vector<std::string> outputs; 
 };
 
 #endif // BLOCKTYPE_H
