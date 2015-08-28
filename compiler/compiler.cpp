@@ -63,16 +63,16 @@ bool isExpandable(Block block, std::set<int> expanded)
       cout << "going through the blocks";
       int blockNum = input.second.first;
       if(expanded.find(blockNum) == expanded.end())
-      { 
+      {
          cout << "found block";
          found_all = false;
          break;
       }   
     }
-    return found_all; 
+    return found_all;
 }
  
-string expand(int blockIndex, FlowChart flow, std::deque<int> *toBeExpanded, std::set<int> *expanded, std::string mainFile)
+std::tuple<std::string, std::deque<int>, std::set<int>> expand(int blockIndex, FlowChart flow, std::deque<int> toBeExpanded, std::set<int> expanded, std::string mainFile)
 {
    mainFile += "// in expand\n";
    Block block = flow.blocks[blockIndex];
@@ -95,6 +95,10 @@ string expand(int blockIndex, FlowChart flow, std::deque<int> *toBeExpanded, std
          int outIndex = element.first;
          Block out = flow.blocks[outIndex];
          mainFile += "//"+ out.blockTypeName+ " block "+ std::to_string(outIndex) +"\n";
+         mainFile += "//inputs for block: ";
+         for(auto in : out.inputConnections){
+             mainFile += std::to_string(in.second.first) +", ";
+         }
          mainFile += "//in expanded ";
          for(auto pin : expanded){
              mainFile += std::to_string(pin) +", ";
@@ -104,11 +108,13 @@ string expand(int blockIndex, FlowChart flow, std::deque<int> *toBeExpanded, std
          mainFile += "//what now? :" +std::to_string(isEx) + "\n";
          if(isExpandable(out,expanded))
          {
-            mainFile += "//expanded next!";
+            mainFile += "//will expanded next!" + std::to_string(outIndex) + "\n";
+            toBeExpanded.push_back(outIndex);
             expand(outIndex, flow, toBeExpanded, expanded, mainFile);
          }
       }
    }
-   return std::make_tuple(mainFile, toBeExpanded, expanded);
+   auto results = std::make_tuple(mainFile, toBeExpanded, expanded);
+   return results;
 }
 
