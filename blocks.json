@@ -1,0 +1,35 @@
+{
+	"BlockTypes" : [
+		{
+			"name" : "addition",
+			"inputs" : {
+				"input1" : 1,
+				"input2" : 1
+			},
+			"outputs" : {
+				"sum" : 1
+			}
+		},
+		{
+			"name" : "pid",
+			"inputs" : {
+				"feedback" : 1,
+				"setpoint" : 1
+			},
+			"outputs" : {
+				"output" : 1
+			}
+		},
+		{
+			"name" : "saturation",
+			"inputs" : {
+				"input" : 1
+			},
+			"outputs" : {
+				"output" : 1,
+				"highSat" : 2,
+				"lowSat" : 2
+			}
+		}
+	]
+}

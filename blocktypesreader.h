@@ -4,8 +4,9 @@
 #include <QVector>
 #include <flowchart/blocktype.h>
 #include <QIODevice>
-#include <QXmlStreamReader>
+#include <QJsonObject>
 #include <QString>
+#include "flowchart/datatype.h"
 
 class BlockTypesReader {
 public:
@@ -14,11 +15,9 @@ public:
     void read(QIODevice *device);
 protected:
     QVector<BlockType> m_blockTypes;
-    QXmlStreamReader xml;
-    void readBlockTypes();
-    BlockType readBlockType();
-    QVector<QString> readVectorString();
-    QString readString();
+    QVector<BlockType> readBlockTypes(QJsonValue node);
+    BlockType readBlockType(QJsonValue node);
+    QMap<QString, DataType> readPinList(QJsonValue node);
 };
 
 #endif // BLOCKTYPESREADER_H

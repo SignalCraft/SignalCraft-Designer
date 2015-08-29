@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     QString appDir = a.applicationDirPath();
 
-    QString xmlPath = appDir + "/blocks.xml";
+    QString xmlPath = appDir + "/blocks.json";
     QFile xmlFile(xmlPath);
     if (!xmlFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         // error message
