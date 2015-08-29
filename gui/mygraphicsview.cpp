@@ -61,7 +61,7 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
                 BlockGraphicsItem* a = dynamic_cast<BlockGraphicsItem*>(aList[0]);
                 BlockGraphicsItem* b = dynamic_cast<BlockGraphicsItem*>(bList[0]);
                 if (a && b) {
-                    flow->connect(a->blockIndex, "a", b->blockIndex, "b");
+                    flow->connect(a->blockIndex, "a" + std::to_string(b->blockIndex), b->blockIndex, "b" + std::to_string(a->blockIndex));
                 }
             }
         }
