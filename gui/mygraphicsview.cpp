@@ -11,6 +11,7 @@
 #include <QPixmap>
 #include <QRectF>
 #include <QPointF>
+#include <QVector>
 #include "gui/blockgraphicsitem.h"
 #include "flowchart/flowchart.h"
 
@@ -18,6 +19,10 @@ MyGraphicsView::MyGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 
 void MyGraphicsView::setFlowChart(FlowChart *f) {
     flow = f;
+}
+
+void MyGraphicsView::setBlockTypes(QMap<QString, BlockType> *blockTypes) {
+    m_blockTypes = blockTypes;
 }
 
 void MyGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
@@ -60,8 +65,11 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
             if (!aList.empty() && !bList.empty()) {
                 BlockGraphicsItem* a = dynamic_cast<BlockGraphicsItem*>(aList[0]);
                 BlockGraphicsItem* b = dynamic_cast<BlockGraphicsItem*>(bList[0]);
+                BlockType aBlockType = (*m_blockTypes)[QString((flow->blocks[a->blockIndex]).blockTypeName.c_str())];
+                BlockType bBlockType = (*m_blockTypes)[QString((flow->blocks[a->blockIndex]).blockTypeName.c_str())];
                 if (a && b) {
-                    flow->connect(a->blockIndex, "a" + std::to_string(b->blockIndex), b->blockIndex, "b" + std::to_string(a->blockIndex));
+                    flow->connect(a->blockIndex, aBlockType.outputs.begin().key().toStdString(),
+                                  b->blockIndex, bBlockType.inputs.begin().key().toStdString());
                 }
             }
         }

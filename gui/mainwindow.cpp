@@ -41,6 +41,8 @@ MainWindow::MainWindow(ApplicationData _appData) : MainWindow() {
         blocks->setItem(i, item);
         i++;
     }
+
+    ui->graphicsView->setBlockTypes(&(appData.blockTypes));
 }
 
 MainWindow::~MainWindow() {

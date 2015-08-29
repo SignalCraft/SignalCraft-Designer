@@ -1,7 +1,7 @@
 #ifndef BLOCKTYPESREADER_H
 #define BLOCKTYPESREADER_H
 
-#include <QVector>
+#include <QMap>
 #include <flowchart/blocktype.h>
 #include <QIODevice>
 #include <QJsonObject>
@@ -11,11 +11,11 @@
 class BlockTypesReader {
 public:
     BlockTypesReader();
-    QVector<BlockType> blockTypes();
+    QMap<QString, BlockType> blockTypes();
     void read(QIODevice *device);
 protected:
-    QVector<BlockType> m_blockTypes;
-    QVector<BlockType> readBlockTypes(QJsonValue node);
+    QMap<QString, BlockType> m_blockTypes;
+    QMap<QString, BlockType> readBlockTypes(QJsonValue node);
     BlockType readBlockType(QJsonValue node);
     QMap<QString, DataType> readPinList(QJsonValue node);
 };

@@ -2,6 +2,9 @@
 #define MYGRAPHICSVIEW_H
 
 #include <QGraphicsView>
+#include <QMap>
+#include <QString>
+#include "flowchart/blocktype.h"
 class FlowChart;
 
 class MyGraphicsView : public QGraphicsView
@@ -10,6 +13,7 @@ class MyGraphicsView : public QGraphicsView
 public:
     MyGraphicsView(QWidget *parent);
     void setFlowChart(FlowChart *f);
+    void setBlockTypes(QMap<QString, BlockType> *blockTypes);
 public slots:
     void setCurrentBlock(QString name);
 protected:
@@ -26,6 +30,7 @@ private:
     QString currentBlockName;
     FlowChart *flow;
     QPoint mouseDownPos;
+    QMap<QString, BlockType> *m_blockTypes;
 public:
     bool connectMode = false;
 private:

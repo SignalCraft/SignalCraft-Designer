@@ -11,7 +11,7 @@
 
 BlockTypesReader::BlockTypesReader() {}
 
-QVector<BlockType> BlockTypesReader::blockTypes() {
+QMap<QString, BlockType> BlockTypesReader::blockTypes() {
     return m_blockTypes;
 }
 
@@ -22,12 +22,13 @@ void BlockTypesReader::read(QIODevice *device) {
     m_blockTypes = readBlockTypes(node["BlockTypes"]);
 }
 
-QVector<BlockType> BlockTypesReader::readBlockTypes(QJsonValue node) {
+QMap<QString, BlockType> BlockTypesReader::readBlockTypes(QJsonValue node) {
     QJsonArray nodeArray = node.toArray();
-    QVector<BlockType> blockTypes(nodeArray.size());
+    QMap<QString, BlockType> blockTypes;
     for (int i = 0; i < nodeArray.size(); i++) {
         QJsonValue element = nodeArray[i];
-        blockTypes[i] = readBlockType(element);
+        BlockType bt = readBlockType(element);
+        blockTypes[bt.name] = bt;
     }
     return blockTypes;
 }
