@@ -7,25 +7,13 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+#include "gui/applicationdata.h"
+#include "flowchart/blocktype.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    QStandardItem *item1 = new QStandardItem("Input");
-    QStandardItem *item2 = new QStandardItem("Output");
-    QStandardItem *item3 = new QStandardItem("Logging");
-    QStandardItem *item4 = new QStandardItem("Addition");
-    QStandardItem *item5 = new QStandardItem("Subtraction");
-    QStandardItem *item6 = new QStandardItem("Multiplication");
-    QStandardItem *item7 = new QStandardItem("Division");
     blocks = new MyItemModel();
-    blocks->setItem(0, item1);
-    blocks->setItem(1, item2);
-    blocks->setItem(2, item3);
-    blocks->setItem(3, item4);
-    blocks->setItem(4, item5);
-    blocks->setItem(5, item6);
-    blocks->setItem(6, item7);
     ui->listView_io->setModel(blocks);
     ui->listView_io->setAcceptDrops(false);
 
@@ -43,6 +31,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
     connect(ui->pushButton_compile, &QPushButton::pressed, this, &MainWindow::handleCompile);
     connect(ui->pushButton_program, &QPushButton::pressed, this, &MainWindow::handleProgram);
+}
+
+MainWindow::MainWindow(ApplicationData _appData) : MainWindow() {
+    appData = _appData;
+    int i = 0;
+    for (BlockType bt : appData.blockTypes) {
+        QStandardItem *item = new QStandardItem(bt.name);
+        blocks->setItem(i, item);
+        i++;
+    }
 }
 
 MainWindow::~MainWindow() {

@@ -5,6 +5,7 @@
 
 #include "flowchart/flowchart.h"
 #include "usb/deviceconnection.h"
+#include "gui/applicationdata.h"
 class QGraphicsScene;
 class QModelIndex;
 class MyItemModel;
@@ -18,6 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = 0);
+    MainWindow(ApplicationData _appData);
     ~MainWindow();
 protected:
     Ui::MainWindow *ui;
@@ -27,6 +29,7 @@ protected:
     qreal yScale = 0.2;
     FlowChart flow;
     DeviceConnection device;
+    ApplicationData appData;
 protected slots:
     void handleCurrentItemChanged(const QModelIndex& current, const QModelIndex&);
     void handleZoomIn();

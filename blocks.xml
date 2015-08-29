@@ -1,0 +1,33 @@
+<BlockTypes>
+	<BlockType>
+		<name>Addition</name>
+		<inputs>
+			<item>input1</item>
+			<item>input2</item>
+		</inputs>
+		<outputs>
+			<item>sum</item>
+		</outputs>
+	</BlockType>
+	<BlockType>
+		<name>PID</name>
+		<inputs>
+			<item>feedback</item>
+			<item>setpoint</item>
+		</inputs>
+		<outputs>
+			<item>output</item>
+		</outputs>
+	</BlockType>
+	<BlockType>
+		<name>Saturation</name>
+		<inputs>
+			<item>input</item>
+		</inputs>
+		<outputs>
+			<item>output</item>
+			<item>highSat</item>
+			<item>lowSat</item>
+		</outputs>
+	</BlockType>
+</BlockTypes>

@@ -10,7 +10,7 @@ DeviceConnection::DeviceConnection() {
     initialized = true;
     // discover device
     libusb_device **list;
-    lastError = libusb_get_device_list(context, &list);
+    lastError = (int)libusb_get_device_list(context, &list);
     if (lastError < 0)
         return;
     ssize_t cnt = lastError;
