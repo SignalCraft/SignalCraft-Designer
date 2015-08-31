@@ -35,6 +35,8 @@ void MyGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
     event->acceptProposedAction();
 }
 
+void MyGraphicsView::dragLeaveEvent(QDragLeaveEvent*) { }
+
 void MyGraphicsView::dropEvent(QDropEvent *event) {
     addBlock(m_currentBlockType, event->pos());
 }
