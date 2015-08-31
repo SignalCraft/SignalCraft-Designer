@@ -14,6 +14,8 @@
 #include <QVector>
 #include "gui/blockgraphicsitem.h"
 #include "flowchart/flowchart.h"
+#include "flowchart/blocktype.h"
+#include "gui/pingraphicsitem.h"
 
 MyGraphicsView::MyGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 
@@ -34,17 +36,18 @@ void MyGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
 }
 
 void MyGraphicsView::dropEvent(QDropEvent *event) {
-    addBlock(currentBlockName, event->pos());
+    addBlock(m_currentBlockType, event->pos());
 }
 
-void MyGraphicsView::setCurrentBlock(QString name) {
-    currentBlockName = name;
+void MyGraphicsView::setCurrentBlockType(BlockType blockType) {
+    m_currentBlockType = blockType;
 }
 
 void MyGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
-        addBlock(currentBlockName, event->pos());
+        addBlock(m_currentBlockType, event->pos());
     }
+    QGraphicsView::mouseDoubleClickEvent(event);
 }
 
 void MyGraphicsView::mousePressEvent(QMouseEvent *event) {
@@ -62,15 +65,23 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
         if (distance >= 1) {
             QList<QGraphicsItem*> aList = items(mouseDownPos);
             QList<QGraphicsItem*> bList = items(event->pos());
-            if (!aList.empty() && !bList.empty()) {
-                BlockGraphicsItem* a = dynamic_cast<BlockGraphicsItem*>(aList[0]);
-                BlockGraphicsItem* b = dynamic_cast<BlockGraphicsItem*>(bList[0]);
-                BlockType aBlockType = (*m_blockTypes)[QString((flow->blocks[a->blockIndex]).blockTypeName.c_str())];
-                BlockType bBlockType = (*m_blockTypes)[QString((flow->blocks[a->blockIndex]).blockTypeName.c_str())];
-                if (a && b) {
-                    flow->connect(a->blockIndex, aBlockType.outputs.begin().key().toStdString(),
-                                  b->blockIndex, bBlockType.inputs.begin().key().toStdString());
+            PinGraphicsItem* a = NULL;
+            PinGraphicsItem* b = NULL;
+            for (QGraphicsItem* aRaw : aList) {
+                a = dynamic_cast<PinGraphicsItem*>(aRaw);
+                if (a) {
+                    break;
                 }
+            }
+            for (QGraphicsItem* bRaw : bList) {
+                b = dynamic_cast<PinGraphicsItem*>(bRaw);
+                if (b) {
+                    break;
+                }
+            }
+            if (a && b) {
+                flow->connect(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName().toStdString(),
+                              static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName().toStdString());
             }
         }
     }
@@ -78,29 +89,34 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
     QGraphicsView::mouseReleaseEvent(event);
 }
 
-void MyGraphicsView::drawBackground(QPainter *painter, const QRectF &) {
+void MyGraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
     painter->setPen(QPen(QColor(0,0,0), 30));
     for (QGraphicsItem* item : items()) {
         BlockGraphicsItem* blockItem = dynamic_cast<BlockGraphicsItem*>(item);
         if (blockItem) {
             Block root = flow->blocks[blockItem->blockIndex];
             QPointF rootPt = QPointF(root.xPos, root.yPos);
-            auto children = root.outputConnections;
-            for (auto const childs : children) {
-                for (auto const child : childs.second) {
-                    Block childBlock = flow->blocks[child.first];
-                    QPointF childPt = QPointF(childBlock.xPos, childBlock.yPos);
+            auto outConnections = root.outputConnections;
+            for (auto const outConnection : outConnections) {
+                //std::string myPinName = outConnection.first;
+                auto otherBlockPins = outConnection.second;
+                for (auto const otherBlockPin : otherBlockPins) {
+                    int otherBlockIndex = otherBlockPin.first;
+                    //std::string otherPinName = otherBlockPin.second;
+                    Block otherBlock = flow->blocks[otherBlockIndex];
+                    QPointF childPt = QPointF(otherBlock.xPos, otherBlock.yPos);
                     painter->drawLine(rootPt, childPt);
                 }
             }
         }
     }
+    QGraphicsView::drawBackground(painter, rect);
 }
 
-void MyGraphicsView::addBlock(QString name, QPoint viewPos) {
+void MyGraphicsView::addBlock(BlockType blockType, QPoint viewPos) {
     QPointF scenePos = mapToScene(viewPos);
-    int blockIndex = flow->addBlock(name.toStdString(), scenePos.x(), scenePos.y());
-    QGraphicsItem *itm = new BlockGraphicsItem(name, blockIndex);
+    int blockIndex = flow->addBlock(blockType.name.toStdString(), scenePos.x(), scenePos.y());
+    QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);
 }

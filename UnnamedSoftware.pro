@@ -22,7 +22,8 @@ SOURCES += gui/main.cpp\
     usb/deviceconnection.cpp \
     compiler/compiler.cpp \
     blocktypesreader.cpp \
-    gui/applicationdata.cpp
+    gui/applicationdata.cpp \
+    gui/pingraphicsitem.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/mygraphicsview.h \
@@ -35,7 +36,8 @@ HEADERS  += gui/mainwindow.h \
     compiler/compiler.h \
     blocktypesreader.h \
     gui/applicationdata.h \
-    flowchart/datatype.h
+    flowchart/datatype.h \
+    gui/pingraphicsitem.h
 
 FORMS    += gui/mainwindow.ui
 

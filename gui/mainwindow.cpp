@@ -50,7 +50,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::handleCurrentItemChanged(const QModelIndex& current, const QModelIndex&) {
-    ui->graphicsView->setCurrentBlock(blocks->itemFromIndex(current)->text());
+    ui->graphicsView->setCurrentBlockType(appData.blockTypes[blocks->itemFromIndex(current)->text()]);
 }
 
 void MainWindow::handleZoomIn() {

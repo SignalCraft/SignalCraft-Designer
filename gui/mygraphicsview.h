@@ -15,7 +15,7 @@ public:
     void setFlowChart(FlowChart *f);
     void setBlockTypes(QMap<QString, BlockType> *blockTypes);
 public slots:
-    void setCurrentBlock(QString name);
+    void setCurrentBlockType(BlockType blockType);
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 protected slots:
@@ -26,8 +26,8 @@ protected slots:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 private:
-    void addBlock(QString name, QPoint viewPos);
-    QString currentBlockName;
+    void addBlock(BlockType blockType, QPoint viewPos);
+    BlockType m_currentBlockType;
     FlowChart *flow;
     QPoint mouseDownPos;
     QMap<QString, BlockType> *m_blockTypes;
