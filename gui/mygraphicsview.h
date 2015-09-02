@@ -5,7 +5,10 @@
 #include <QMap>
 #include <QString>
 #include "flowchart/blocktype.h"
+#include "gui/blockgraphicsitem.h"
 class FlowChart;
+
+enum MouseMode {NONE, CONNECT, DRAG_BLOCK, DRAG_CANVAS};
 
 class MyGraphicsView : public QGraphicsView
 {
@@ -18,6 +21,8 @@ public slots:
     void setCurrentBlockType(BlockType blockType);
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect) override;
+    void addBlock(BlockType blockType, QPoint viewPos);
+    void moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos);
 protected slots:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
@@ -25,17 +30,15 @@ protected slots:
     void dropEvent(QDropEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-private:
-    void addBlock(BlockType blockType, QPoint viewPos);
+protected:
     BlockType m_currentBlockType;
     FlowChart *flow;
     QPoint mouseDownPos;
     QMap<QString, BlockType> *m_blockTypes;
-public:
-    bool connectMode = false;
-private:
-    bool connecting = false;
+    MouseMode mouseMode = NONE;
+    BlockGraphicsItem *blockBeingDragged;
 };
 
 #endif // MYGRAPHICSVIEW_H

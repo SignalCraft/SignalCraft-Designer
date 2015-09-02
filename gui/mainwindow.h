@@ -34,7 +34,6 @@ protected slots:
     void handleCurrentItemChanged(const QModelIndex& current, const QModelIndex&);
     void handleZoomIn();
     void handleZoomOut();
-    void handleConnect(bool);
     void handleSaveAs();
     void handleCompile();
     void handleProgram();

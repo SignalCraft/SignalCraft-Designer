@@ -23,6 +23,11 @@ void FlowChart::connect(int sourceBlockID, std::string sourcePinName, int sinkBl
     sink->connectInput(sinkPinName, sourcePin);
 }
 
+void FlowChart::moveBlock(int blockIndex, double xPos, double yPos) {
+    blocks[blockIndex].xPos = xPos;
+    blocks[blockIndex].yPos = yPos;
+}
+
 FlowChart FlowChart::jsonParseFlowChart(Json::Value node) {
     FlowChart f;
     f.blocks = jsonParseBlocks(node["blocks"]);

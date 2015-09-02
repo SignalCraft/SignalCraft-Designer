@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->listView_io->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::handleCurrentItemChanged);
     connect(ui->actionZoom_In, &QAction::triggered, this, &MainWindow::handleZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
-    connect(ui->actionConnect, &QAction::toggled, this, &MainWindow::handleConnect);
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
     connect(ui->pushButton_compile, &QPushButton::pressed, this, &MainWindow::handleCompile);
     connect(ui->pushButton_program, &QPushButton::pressed, this, &MainWindow::handleProgram);
@@ -59,11 +58,6 @@ void MainWindow::handleZoomIn() {
 
 void MainWindow::handleZoomOut() {
     ui->graphicsView->scale(1/1.1, 1/1.1);
-}
-
-void MainWindow::handleConnect(bool enabled) {
-    ui->graphicsView->setDragMode(enabled ? QGraphicsView::NoDrag : QGraphicsView::ScrollHandDrag);
-    ui->graphicsView->connectMode = enabled;
 }
 
 void MainWindow::handleSaveAs() {

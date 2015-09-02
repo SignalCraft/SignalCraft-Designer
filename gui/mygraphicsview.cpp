@@ -53,42 +53,74 @@ void MyGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
 }
 
 void MyGraphicsView::mousePressEvent(QMouseEvent *event) {
-    if (connectMode && (event->button() == Qt::LeftButton)) {
+    if (mouseMode == NONE && event->button() == Qt::LeftButton) {
         mouseDownPos = event->pos();
-        connecting = true;
+        QList<QGraphicsItem*> clickedItems = items(event->pos());
+        if (clickedItems.isEmpty()) {
+            mouseMode = DRAG_CANVAS;
+        } else {
+            auto pin = dynamic_cast<PinGraphicsItem*>(clickedItems[0]);
+            if (pin) {
+                mouseMode = CONNECT;
+            } else {
+                auto block = dynamic_cast<BlockGraphicsItem*>(clickedItems[0]);
+                if (block) {
+                    mouseMode = DRAG_BLOCK;
+                    blockBeingDragged = block;
+                }
+            }
+        }
     }
     QGraphicsView::mousePressEvent(event);
 }
 
-void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
-    if (connectMode && connecting && (event->button() == Qt::LeftButton)) {
-        int distance = (event->pos() - mouseDownPos).manhattanLength();
-        connecting = false;
-        if (distance >= 1) {
-            QList<QGraphicsItem*> aList = items(mouseDownPos);
-            QList<QGraphicsItem*> bList = items(event->pos());
-            PinGraphicsItem* a = NULL;
-            PinGraphicsItem* b = NULL;
-            for (QGraphicsItem* aRaw : aList) {
-                a = dynamic_cast<PinGraphicsItem*>(aRaw);
-                if (a) {
-                    break;
-                }
-            }
-            for (QGraphicsItem* bRaw : bList) {
-                b = dynamic_cast<PinGraphicsItem*>(bRaw);
-                if (b) {
-                    break;
-                }
-            }
-            if (a && b) {
-                flow->connect(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName().toStdString(),
-                              static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName().toStdString());
-            }
+void MyGraphicsView::mouseMoveEvent(QMouseEvent *event) {
+    if (event->buttons() & Qt::LeftButton) {
+        if (mouseMode == CONNECT) {
+            // nothing yet
+        } else if (mouseMode == DRAG_BLOCK) {
+            moveBlock(blockBeingDragged, event->pos());
+        } else if (mouseMode == DRAG_CANVAS) {
+            QGraphicsView::mouseMoveEvent(event);
         }
     }
-    scene()->invalidate(sceneRect());
-    QGraphicsView::mouseReleaseEvent(event);
+}
+
+void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        if (mouseMode == CONNECT) {
+            int distance = (event->pos() - mouseDownPos).manhattanLength();
+            if (distance >= 1) {
+                QList<QGraphicsItem*> aList = items(mouseDownPos);
+                QList<QGraphicsItem*> bList = items(event->pos());
+                PinGraphicsItem* a = NULL;
+                PinGraphicsItem* b = NULL;
+                for (QGraphicsItem* aRaw : aList) {
+                    a = dynamic_cast<PinGraphicsItem*>(aRaw);
+                    if (a) {
+                        break;
+                    }
+                }
+                for (QGraphicsItem* bRaw : bList) {
+                    b = dynamic_cast<PinGraphicsItem*>(bRaw);
+                    if (b) {
+                        break;
+                    }
+                }
+                if (a && b) {
+                    flow->connect(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName().toStdString(),
+                                  static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName().toStdString());
+                }
+            }
+        } else if (mouseMode == DRAG_BLOCK) {
+            // nothing yet
+        } else if (mouseMode == DRAG_CANVAS) {
+            // nothing yet
+        }
+        mouseMode = NONE;
+        scene()->invalidate(sceneRect());
+        QGraphicsView::mouseReleaseEvent(event);
+    }
 }
 
 void MyGraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
@@ -121,5 +153,12 @@ void MyGraphicsView::addBlock(BlockType blockType, QPoint viewPos) {
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);
+}
+
+void MyGraphicsView::moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos) {
+    int blockIndex = blockGraphics->blockIndex;
+    QPointF scenePos = mapToScene(viewPos);
+    flow->moveBlock(blockIndex, scenePos.x(), scenePos.y());
+    blockGraphics->setPos(scenePos);
 }
 

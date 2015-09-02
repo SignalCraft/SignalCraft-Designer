@@ -276,7 +276,6 @@
    </attribute>
    <addaction name="actionZoom_In"/>
    <addaction name="actionZoom_Out"/>
-   <addaction name="actionConnect"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionZoom_In">
@@ -295,18 +294,6 @@
    </property>
    <property name="text">
     <string>Zoom Out</string>
-   </property>
-  </action>
-  <action name="actionConnect">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/images/Connect.png</normaloff>:/images/Connect.png</iconset>
-   </property>
-   <property name="text">
-    <string>Connect</string>
    </property>
   </action>
   <action name="actionSave_As">
