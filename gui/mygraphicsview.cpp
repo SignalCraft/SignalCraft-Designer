@@ -150,7 +150,7 @@ void MyGraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
 
 void MyGraphicsView::addBlock(BlockType blockType, QPoint viewPos) {
     QPointF scenePos = mapToScene(viewPos);
-    int blockIndex = flow->addBlock(blockType.name.toStdString(), scenePos.x(), scenePos.y());
+    int blockIndex = flow->addBlock(blockType, scenePos.x(), scenePos.y());
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);

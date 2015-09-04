@@ -9,6 +9,8 @@
 #include <QTextStream>
 #include "gui/applicationdata.h"
 #include "flowchart/blocktype.h"
+#include "json/json.h"
+#include "flowchart/flowchartserializer.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -67,7 +69,8 @@ void MainWindow::handleSaveAs() {
         return;
     QTextStream out(&file);
     Json::StyledWriter json;
-    out << json.write(FlowChart::jsonComposeFlowChart(flow)).c_str();
+    FlowChartSerializer serializer(appData.blockTypes);
+    out << json.write(serializer.jsonComposeFlowChart(flow)).c_str();
     file.close();
 }
 

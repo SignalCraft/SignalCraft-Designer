@@ -24,9 +24,9 @@ string generatePicCode(FlowChart flow)
     {
       toBeExpanded.push_back(i);
     }
-    std::size_t already = includes.find(block.blockTypeName+".h");
+    std::size_t already = includes.find(block.blockType.name.toStdString()+".h");
     if(already == std::string::npos){
-        includes += "#include \"" + block.blockTypeName + ".h\"\n";
+        includes += "#include \"" + block.blockType.name.toStdString() + ".h\"\n";
     }
   }
   includes += "\n";
@@ -74,7 +74,7 @@ std::tuple<std::string, std::deque<int>, std::set<int>> expand(int blockIndex, F
    for(auto output : block.outputConnections){
         mainFile += "int wire_" + output.first + "=0;\n";
    }
-   string type = block.blockTypeName;
+   string type = block.blockType.name.toStdString();
    std::transform(type.begin(), type.end(), type.begin(), ::tolower);
    mainFile += type + "(";
    expanded.insert(blockIndex);
