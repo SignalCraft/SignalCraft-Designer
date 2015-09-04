@@ -6,6 +6,7 @@
 #include <QString>
 #include "flowchart/blocktype.h"
 #include "gui/blockgraphicsitem.h"
+#include <QPoint>
 class FlowChart;
 
 enum MouseMode {NONE, CONNECT, DRAG_BLOCK, DRAG_CANVAS};
@@ -39,6 +40,7 @@ protected:
     QMap<QString, BlockType> *m_blockTypes;
     MouseMode mouseMode = NONE;
     BlockGraphicsItem *blockBeingDragged;
+    QPoint blockDragMouseOffset;
 };
 
 #endif // MYGRAPHICSVIEW_H

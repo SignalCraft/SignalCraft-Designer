@@ -67,6 +67,7 @@ void MyGraphicsView::mousePressEvent(QMouseEvent *event) {
                 if (block) {
                     mouseMode = DRAG_BLOCK;
                     blockBeingDragged = block;
+                    blockDragMouseOffset = mapFromScene(block->pos()) - event->pos();
                 }
             }
         }
@@ -79,7 +80,7 @@ void MyGraphicsView::mouseMoveEvent(QMouseEvent *event) {
         if (mouseMode == CONNECT) {
             // nothing yet
         } else if (mouseMode == DRAG_BLOCK) {
-            moveBlock(blockBeingDragged, event->pos());
+            moveBlock(blockBeingDragged, event->pos() + blockDragMouseOffset);
         } else if (mouseMode == DRAG_CANVAS) {
             QGraphicsView::mouseMoveEvent(event);
         }
