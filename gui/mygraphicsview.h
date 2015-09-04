@@ -6,6 +6,7 @@
 #include <QString>
 #include "flowchart/blocktype.h"
 #include "gui/blockgraphicsitem.h"
+#include "gui/pingraphicsitem.h"
 #include <QPoint>
 class FlowChart;
 
@@ -39,6 +40,7 @@ protected:
     QPoint mouseDownPos;
     QMap<QString, BlockType> *m_blockTypes;
     MouseMode mouseMode = NONE;
+    PinGraphicsItem *pinBeingConnected;
     BlockGraphicsItem *blockBeingDragged;
     QPoint blockDragMouseOffset;
     void addBlockInternal(BlockType blockType, QPointF scenePos); // should be refactored into custom graphicsscene class

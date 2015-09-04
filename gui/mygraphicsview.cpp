@@ -63,6 +63,7 @@ void MyGraphicsView::mousePressEvent(QMouseEvent *event) {
             auto pin = dynamic_cast<PinGraphicsItem*>(clickedItems[0]);
             if (pin) {
                 mouseMode = CONNECT;
+                pinBeingConnected = pin;
             } else {
                 auto block = dynamic_cast<BlockGraphicsItem*>(clickedItems[0]);
                 if (block) {
@@ -93,16 +94,9 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
         if (mouseMode == CONNECT) {
             int distance = (event->pos() - mouseDownPos).manhattanLength();
             if (distance >= 1) {
-                QList<QGraphicsItem*> aList = items(mouseDownPos);
                 QList<QGraphicsItem*> bList = items(event->pos());
-                PinGraphicsItem* a = NULL;
+                PinGraphicsItem* a = pinBeingConnected;
                 PinGraphicsItem* b = NULL;
-                for (QGraphicsItem* aRaw : aList) {
-                    a = dynamic_cast<PinGraphicsItem*>(aRaw);
-                    if (a) {
-                        break;
-                    }
-                }
                 for (QGraphicsItem* bRaw : bList) {
                     b = dynamic_cast<PinGraphicsItem*>(bRaw);
                     if (b) {
