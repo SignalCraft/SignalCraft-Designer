@@ -13,10 +13,9 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
 {
     m_blockType = blockType;
     blockIndex = index;
-
-    int numLines = 1 + std::max(blockType.inputs.size(), blockType.outputs.size());
-    int height = 100 * numLines;
-    m_boundingRect = QRectF(-200, -height/2, 400, height);
+    qreal width = blockType.displayWidth();
+    qreal height = blockType.displayHeight();
+    m_boundingRect = QRectF(0, 0, width, height);
 
     int i = 0;
     for (auto input = blockType.inputs.constBegin(); input != blockType.inputs.constEnd(); input++) {
@@ -24,7 +23,7 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
         DataType t = input.value();
         PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t);
         pgi->setParentItem(this);
-        pgi->setPos(-200, (-height/2)+100*(1+i));
+        pgi->setPos(blockType.inputPinIndexToPos(i));
         i++;
     }
 
@@ -34,7 +33,7 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
         DataType t = output.value();
         PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t);
         pgi->setParentItem(this);
-        pgi->setPos(0, (-height/2)+100*(1+i));
+        pgi->setPos(blockType.outputPinIndexToPos(i));
         i++;
     }
 }

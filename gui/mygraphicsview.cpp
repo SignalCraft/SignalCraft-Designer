@@ -16,6 +16,7 @@
 #include "flowchart/flowchart.h"
 #include "flowchart/blocktype.h"
 #include "gui/pingraphicsitem.h"
+#include "gui/wiregraphicsitem.h"
 
 MyGraphicsView::MyGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 
@@ -38,7 +39,7 @@ void MyGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
 void MyGraphicsView::dragLeaveEvent(QDragLeaveEvent*) { }
 
 void MyGraphicsView::dropEvent(QDropEvent *event) {
-    addBlock(m_currentBlockType, event->pos());
+    addBlockByCenter(m_currentBlockType, event->pos());
 }
 
 void MyGraphicsView::setCurrentBlockType(BlockType blockType) {
@@ -47,7 +48,7 @@ void MyGraphicsView::setCurrentBlockType(BlockType blockType) {
 
 void MyGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
-        addBlock(m_currentBlockType, event->pos());
+        addBlockByCenter(m_currentBlockType, event->pos());
     }
     QGraphicsView::mouseDoubleClickEvent(event);
 }
@@ -111,6 +112,7 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
                 if (a && b) {
                     flow->connect(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName().toStdString(),
                                   static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName().toStdString());
+                    scene()->invalidate();
                 }
             }
         } else if (mouseMode == DRAG_BLOCK) {
@@ -119,41 +121,31 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
             // nothing yet
         }
         mouseMode = NONE;
-        scene()->invalidate(sceneRect());
         QGraphicsView::mouseReleaseEvent(event);
     }
 }
 
-void MyGraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
-    painter->setPen(QPen(QColor(0,0,0), 30));
-    for (QGraphicsItem* item : items()) {
-        BlockGraphicsItem* blockItem = dynamic_cast<BlockGraphicsItem*>(item);
-        if (blockItem) {
-            Block root = flow->blocks[blockItem->blockIndex];
-            QPointF rootPt = QPointF(root.xPos, root.yPos);
-            auto outConnections = root.outputConnections;
-            for (auto const outConnection : outConnections) {
-                //std::string myPinName = outConnection.first;
-                auto otherBlockPins = outConnection.second;
-                for (auto const otherBlockPin : otherBlockPins) {
-                    int otherBlockIndex = otherBlockPin.first;
-                    //std::string otherPinName = otherBlockPin.second;
-                    Block otherBlock = flow->blocks[otherBlockIndex];
-                    QPointF childPt = QPointF(otherBlock.xPos, otherBlock.yPos);
-                    painter->drawLine(rootPt, childPt);
-                }
-            }
-        }
-    }
-    QGraphicsView::drawBackground(painter, rect);
-}
-
 void MyGraphicsView::addBlock(BlockType blockType, QPoint viewPos) {
     QPointF scenePos = mapToScene(viewPos);
+    addBlockInternal(blockType, scenePos);
+}
+
+void MyGraphicsView::addBlockByCenter(BlockType blockType, QPoint viewPos) {
+    QPointF scenePos = mapToScene(viewPos) - QPointF(blockType.displayWidth()/2, blockType.displayHeight()/2);
+    addBlockInternal(blockType, scenePos);
+}
+
+void MyGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
     int blockIndex = flow->addBlock(blockType, scenePos.x(), scenePos.y());
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);
+    for (QString outputBlockPinName : blockType.outputs.keys()) {
+        WireGraphicsItem *wgi = new WireGraphicsItem(flow, std::make_pair(blockIndex, outputBlockPinName.toStdString()));
+        wgi->setPos(QPointF(0,0));
+        this->scene()->addItem(wgi);
+    }
+
 }
 
 void MyGraphicsView::moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos) {

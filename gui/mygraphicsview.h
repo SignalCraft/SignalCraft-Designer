@@ -21,8 +21,8 @@ public:
 public slots:
     void setCurrentBlockType(BlockType blockType);
 protected:
-    void drawBackground(QPainter *painter, const QRectF &rect) override;
     void addBlock(BlockType blockType, QPoint viewPos);
+    void addBlockByCenter(BlockType blockType, QPoint viewPos);
     void moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos);
 protected slots:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -41,6 +41,7 @@ protected:
     MouseMode mouseMode = NONE;
     BlockGraphicsItem *blockBeingDragged;
     QPoint blockDragMouseOffset;
+    void addBlockInternal(BlockType blockType, QPointF scenePos); // should be refactored into custom graphicsscene class
 };
 
 #endif // MYGRAPHICSVIEW_H
