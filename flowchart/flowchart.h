@@ -18,6 +18,7 @@ public:
     int addBlock(std::string blockType, double xPos, double yPos);
     void connect(int sourceBlockID, std::string sourcePinName, int sinkBlockID, std::string sinkPinName);
     void moveBlock(int blockIndex, double xPos, double yPos);
+    std::pair<double, double> blockPos(int blockIndex);
     std::unordered_map<int, Block> blocks;
     static FlowChart jsonParseFlowChart(Json::Value node);
     static Json::Value jsonComposeFlowChart(FlowChart b);

@@ -28,6 +28,10 @@ void FlowChart::moveBlock(int blockIndex, double xPos, double yPos) {
     blocks[blockIndex].yPos = yPos;
 }
 
+std::pair<double, double> FlowChart::blockPos(int blockIndex) {
+    return std::make_pair(blocks[blockIndex].xPos, blocks[blockIndex].yPos);
+}
+
 FlowChart FlowChart::jsonParseFlowChart(Json::Value node) {
     FlowChart f;
     f.blocks = jsonParseBlocks(node["blocks"]);
