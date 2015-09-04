@@ -24,7 +24,8 @@ SOURCES += gui/main.cpp\
     blocktypesreader.cpp \
     gui/applicationdata.cpp \
     gui/pingraphicsitem.cpp \
-    flowchart/flowchartserializer.cpp
+    flowchart/flowchartserializer.cpp \
+    gui/wiregraphicsitem.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/mygraphicsview.h \
@@ -39,7 +40,8 @@ HEADERS  += gui/mainwindow.h \
     gui/applicationdata.h \
     flowchart/datatype.h \
     gui/pingraphicsitem.h \
-    flowchart/flowchartserializer.h
+    flowchart/flowchartserializer.h \
+    gui/wiregraphicsitem.h
 
 FORMS    += gui/mainwindow.ui
 
