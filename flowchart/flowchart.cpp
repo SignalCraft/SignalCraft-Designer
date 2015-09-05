@@ -15,13 +15,36 @@ int FlowChart::addBlock(BlockType blockType, double xPos, double yPos) {
 
 void FlowChart::connect(int sourceBlockID, std::string sourcePinName, int sinkBlockID, std::string sinkPinName) {
     Block* source = &blocks[sourceBlockID];
+    BlockType sourceBlockType = source->blockType;
     BlockPin sourcePin = std::make_pair(sourceBlockID, sourcePinName);
     Block* sink = &blocks[sinkBlockID];
+    BlockType sinkBlockType = sink->blockType;
     BlockPin sinkPin = std::make_pair(sinkBlockID, sinkPinName);
-    // connect source block to sink pin
-    source->connectOutput(sourcePinName, sinkPin);
-    // connect sink block to source pin
-    sink->connectInput(sinkPinName, sourcePin);
+    if (sourceBlockType.isPinOutput(QString::fromStdString(sourcePinName))) {
+        if (sinkBlockType.isPinOutput(QString::fromStdString(sinkPinName))) {
+            // both outputs, error condition
+        } else {
+            // output to input
+            if (sink->inputIsConnected(sinkPinName)) {
+                // error condition
+            } else {
+                source->connectOutput(sourcePinName, sinkPin);
+                sink->connectInput(sinkPinName, sourcePin);
+            }
+        }
+    } else {
+        if (sinkBlockType.isPinOutput(QString::fromStdString(sinkPinName))) {
+            // input to output
+            if (source->inputIsConnected(sourcePinName)) {
+                // error condition
+            } else {
+                sink->connectOutput(sinkPinName, sourcePin);
+                source->connectInput(sourcePinName, sinkPin);
+            }
+        } else {
+            // both inputs, must search
+        }
+    }
 }
 
 void FlowChart::moveBlock(int blockIndex, double xPos, double yPos) {

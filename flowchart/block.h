@@ -17,6 +17,7 @@ public:
     Block(BlockType _blockType, double _xPos, double _yPos);
     void connectOutput(std::string outputPinName, BlockPin inputPin);
     void connectInput(std::string inputPinName, BlockPin outputPin);
+    bool inputIsConnected(std::string inputPinName);
     double xPos;
     double yPos;
     BlockType blockType;

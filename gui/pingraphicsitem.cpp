@@ -8,9 +8,10 @@
 #include <QWidget>
 #include <QTextOption>
 
-PinGraphicsItem::PinGraphicsItem(QGraphicsItem *parent, QString pinName, DataType pinType) : QGraphicsItem(parent) {
+PinGraphicsItem::PinGraphicsItem(QGraphicsItem *parent, QString pinName, DataType pinDataType, bool isOutput) : QGraphicsItem(parent) {
     m_pinName = pinName;
-    m_pinType = pinType;
+    m_pinDataType = pinDataType;
+    m_isOutput = isOutput;
 }
 
 void PinGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem*, QWidget*) {
@@ -30,7 +31,11 @@ QString PinGraphicsItem::pinName() {
     return m_pinName;
 }
 
-DataType PinGraphicsItem::pinType() {
-    return m_pinType;
+DataType PinGraphicsItem::pinDataType() {
+    return m_pinDataType;
+}
+
+bool PinGraphicsItem::isOutput() {
+    return m_isOutput;
 }
 

@@ -21,7 +21,7 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
     for (auto input = blockType.inputs.constBegin(); input != blockType.inputs.constEnd(); input++) {
         QString pinName = input.key();
         DataType t = input.value();
-        PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t);
+        PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t, false);
         pgi->setParentItem(this);
         pgi->setPos(blockType.inputPinIndexToPos(i));
         i++;
@@ -31,7 +31,7 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
     for (auto output = blockType.outputs.constBegin(); output != blockType.outputs.constEnd(); output++) {
         QString pinName = output.key();
         DataType t = output.value();
-        PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t);
+        PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t, true);
         pgi->setParentItem(this);
         pgi->setPos(blockType.outputPinIndexToPos(i));
         i++;

@@ -17,3 +17,7 @@ void Block::connectOutput(std::string outputPinName, BlockPin inputPin) {
 void Block::connectInput(std::string inputPinName, BlockPin outputPin) {
     inputConnections[inputPinName] = outputPin;
 }
+
+bool Block::inputIsConnected(std::string inputPinName) {
+    return (bool)inputConnections.count(inputPinName);
+}

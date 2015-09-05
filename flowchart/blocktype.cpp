@@ -55,3 +55,7 @@ QPointF BlockType::inputPinIndexToCenterPos(int pinIndex) {
 QPointF BlockType::outputPinIndexToCenterPos(int pinIndex) {
     return outputPinIndexToPos(pinIndex) + QPointF(100, 50);
 }
+
+bool BlockType::isPinOutput(QString pinName) {
+    return outputs.contains(pinName);
+}

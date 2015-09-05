@@ -23,6 +23,7 @@ public:
     QPointF outputPinIndexToPos(int pinIndex);
     QPointF inputPinIndexToCenterPos(int pinIndex);
     QPointF outputPinIndexToCenterPos(int pinIndex);
+    bool isPinOutput(QString pinName);
 };
 
 #endif // BLOCKTYPE_H
