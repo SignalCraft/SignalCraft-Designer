@@ -1,6 +1,62 @@
 {
 	"BlockTypes" : [
 		{
+			"name" : "analog input",
+			"inputs" : {},
+			"outputs" : {
+				"" : 1
+			}
+		},
+		{
+			"name" : "analog output",
+			"inputs" : {
+				"" : 1
+			},
+			"outputs" : {}
+		},
+		{
+			"name" : "digital input",
+			"inputs" : {},
+			"outputs" : {
+				"" : 2
+			}
+		},
+		{
+			"name" : "digital output",
+			"inputs" : {
+				"" : 2
+			},
+			"outputs" : {}
+		},
+		{
+			"name" : "analog logging",
+			"inputs" : {
+				"" : 1
+			},
+			"outputs" : {}
+		},
+		{
+			"name" : "digital logging",
+			"inputs" : {
+				"" : 2
+			},
+			"outputs" : {}
+		},
+		{
+			"name" : "constant analog value",
+			"inputs" : {},
+			"outputs" : {
+				"" : 1
+			}
+		},
+		{
+			"name" : "constant digital value",
+			"inputs" : {},
+			"outputs" : {
+				"" : 2
+			}
+		},
+		{
 			"name" : "addition",
 			"inputs" : {
 				"input1" : 1,
