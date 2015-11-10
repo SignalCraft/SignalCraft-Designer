@@ -8,9 +8,11 @@
 #include <deque>
 #include <set>
 
-std::string generatePicCode(FlowChart flow);
-bool isExpandable(Block block, std::unordered_set<int> toBeExpanded);
-std::tuple<std::string, std::deque<int>, std::unordered_set<int>> expand(int blockIndex, FlowChart flow, std::deque<int> toBeExpanded, std::unordered_set<int> expanded, std::string mainFile);
+std::string generatePicCode(const FlowChart flow);
+bool isExpandable(const Block block, const std::unordered_set<int> toBeExpanded);
+std::unordered_set<std::string> extractUniqueBlockNames(const FlowChart flow);
+std::deque<int> extractInputBlocks(const FlowChart flow);
+std::unordered_set<std::string> extractWireNames(const FlowChart flow);
 
 #endif // COMPILER_H
 
