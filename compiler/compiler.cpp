@@ -1,12 +1,9 @@
 #include "compiler.h"
 
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <deque>
-#include <tuple>
-#include <functional>
-#include <algorithm>
+#include <QString>
+#include <QList>
+#include <QSet>
+#include <QVector>
 
 using namespace std;
 
@@ -19,12 +16,12 @@ using namespace std;
  * wire_<blocknumber>_<pinname>
  */
 
-string generatePicCode(FlowChart flow) {
-    unordered_set<string> blockNames = extractUniqueBlockNames(flow);
-    string mainFile = "int main() {\n\n";
-    unordered_set<int> expanded;
-    deque<int> toBeExpanded = extractInputBlocks(flow);
-    unordered_set<string> wires = extractWireNames(flow);
+QString generatePicCode(FlowChart flow) {
+    QSet<QString> blockNames = extractUniqueBlockNames(flow);
+    QString mainFile = "int main() {\n\n";
+    QSet<int> expanded;
+    QList<int> toBeExpanded = extractInputBlocks(flow);
+    QSet<QString> wires = extractWireNames(flow);
     // directed graph traversal: write the sequence of functions
     while(!toBeExpanded.empty()) {
         int blockIndex = toBeExpanded.front();
@@ -38,18 +35,17 @@ string generatePicCode(FlowChart flow) {
                 // mark this node as expanded
                 expanded.insert(blockIndex);
                 // add all of this node's outputs to the front of the queue
-                for(auto output : block.outputConnections) {
-                    for(auto element : output.second){
+                for(auto output : block.outputConnections.values()) {
+                    for(auto element : output){
                       int outIndex = element.first;
-                      if (expanded.count(outIndex) <= 0) {
+                      if (!expanded.contains(outIndex)) {
                         toBeExpanded.push_front(outIndex);
                       }
                     }
                 }
                 // write this node's function call
-                vector<BlockPin> wireBlockPins;
-                for (QString inputPinNameQ : block.blockType.inputs.keys()) {
-                    string inputPinName = inputPinNameQ.toStdString();
+                QVector<BlockPin> wireBlockPins;
+                for (QString inputPinName : block.blockType.inputs.keys()) {
                     if (!block.inputIsConnected(inputPinName)) {
                         // error: bad structure
                         return "";
@@ -58,17 +54,16 @@ string generatePicCode(FlowChart flow) {
                         wireBlockPins.push_back(wireSource);
                     }
                 }
-                for (QString outputPinNameQ : block.blockType.outputs.keys()) {
-                    string outputPinName = outputPinNameQ.toStdString();
+                for (QString outputPinName : block.blockType.outputs.keys()) {
                     BlockPin outputBlockPin(blockIndex, outputPinName);
                     wireBlockPins.push_back(outputBlockPin);
                 }
-                string funcCall = block.blockType.name.toStdString();
+                QString funcCall = block.blockType.name;
                 funcCall += "(";
                 for (int i = 0; i < wireBlockPins.size(); i++) {
                     BlockPin wireSource = wireBlockPins[i];
                     funcCall += "&wire_";
-                    funcCall += to_string(wireSource.first);
+                    funcCall += QString::number(wireSource.first);
                     funcCall += "_";
                     funcCall += wireSource.second;
                     if (i < wireBlockPins.size() - 1) {
@@ -85,16 +80,16 @@ string generatePicCode(FlowChart flow) {
     }
     mainFile += "\n}";
 
-    string includesFile = "";
-    for (string blockName : blockNames) {
+    QString includesFile = "";
+    for (QString blockName : blockNames) {
         includesFile += "#include \"";
         includesFile += blockName;
         includesFile += "\"\n";
     }
     includesFile += "\n";
 
-    string declarationsFile = "";
-    for (string wireName : wires) {
+    QString declarationsFile = "";
+    for (QString wireName : wires) {
         declarationsFile += "int ";
         declarationsFile += wireName;
         declarationsFile += ";\n";
@@ -104,21 +99,19 @@ string generatePicCode(FlowChart flow) {
     return includesFile + declarationsFile + mainFile;
 }
 
-unordered_set<string> extractUniqueBlockNames(FlowChart flow) {
-    unordered_set<string> blockNames;
-    for(auto element : flow.blocks) {
-        Block block =  element.second;
+QSet<QString> extractUniqueBlockNames(FlowChart flow) {
+    QSet<QString> blockNames;
+    for(Block block : flow.blocks.values()) {
         // make sure this block's name is in the blockNames set
-        blockNames.insert(block.blockType.name.toStdString());
+        blockNames.insert(block.blockType.name);
     }
     return blockNames;
 }
 
-deque<int> extractInputBlocks(FlowChart flow) {
-    deque<int> inputBlocks;
-    for(auto element : flow.blocks) {
-        int i = element.first;
-        Block block =  element.second;
+QList<int> extractInputBlocks(FlowChart flow) {
+    QList<int> inputBlocks;
+    for(int i : flow.blocks.keys()) {
+        Block block =  flow.blocks[i];
         // If this is an input block, make sure it's expanded first
         if(block.inputConnections.empty()) {
             inputBlocks.push_back(i);
@@ -127,17 +120,15 @@ deque<int> extractInputBlocks(FlowChart flow) {
     return inputBlocks;
 }
 
-unordered_set<string> extractWireNames(FlowChart flow) {
-    unordered_set<string> wireNames;
-    for(auto element : flow.blocks) {
-        int i = element.first;
-        Block block =  element.second;
+QSet<QString> extractWireNames(FlowChart flow) {
+    QSet<QString> wireNames;
+    for(int i : flow.blocks.keys()) {
+        Block block =  flow.blocks[i];
         // for each output connection
-        for (auto element : block.outputConnections) {
+        for (QString pinName : block.outputConnections.keys()) {
             // construct wire name
-            string pinName = element.first;
-            string wireName = "wire_";
-            wireName += to_string(i);
+            QString wireName = "wire_";
+            wireName += QString::number(i);
             wireName += "_";
             wireName += pinName;
             wireNames.insert(wireName);
@@ -146,10 +137,10 @@ unordered_set<string> extractWireNames(FlowChart flow) {
     return wireNames;
 }
 
-bool isExpandable(Block block, std::unordered_set<int> expanded) {
+bool isExpandable(Block block, QSet<int> expanded) {
     bool found_all = true;
-    for(auto input : block.inputConnections) {
-        int blockNum = input.second.first;
+    for(BlockPin bp : block.inputConnections.values()) {
+        int blockNum = bp.first;
         if(expanded.find(blockNum) == expanded.end()) {
             found_all = false;
             break;

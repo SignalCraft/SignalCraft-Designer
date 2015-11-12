@@ -5,6 +5,7 @@
 #include <QString>
 #include "flowchart/datatype.h"
 #include <QPointF>
+#include <QtGlobal>
 
 class BlockType
 {

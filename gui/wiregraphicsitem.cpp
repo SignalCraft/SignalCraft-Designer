@@ -12,18 +12,18 @@
 
 QPointF WireGraphicsItem::blockInputPinPos(const BlockPin bp) const {
     Block block = m_flow->blocks[bp.first];
-    QPointF blockPos = QPointF(block.xPos, block.yPos);
+    QPointF blockPos = block.pos;
     BlockType blockType = block.blockType;
-    QPointF relativePinPos = blockType.inputPinCenterPos(QString::fromStdString(bp.second));
+    QPointF relativePinPos = blockType.inputPinCenterPos(bp.second);
     QPointF pinPos = blockPos + relativePinPos;
     return pinPos;
 }
 
 QPointF WireGraphicsItem::blockOutputPinPos(const BlockPin bp) const {
     Block block = m_flow->blocks[bp.first];
-    QPointF blockPos = QPointF(block.xPos, block.yPos);
+    QPointF blockPos = block.pos;
     BlockType blockType = block.blockType;
-    QPointF relativePinPos = blockType.outputPinCenterPos(QString::fromStdString(bp.second));
+    QPointF relativePinPos = blockType.outputPinCenterPos(bp.second);
     QPointF pinPos = blockPos + relativePinPos;
     return pinPos;
 }

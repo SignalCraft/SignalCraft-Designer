@@ -104,8 +104,8 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
                     }
                 }
                 if (a && b) {
-                    flow->connect(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName().toStdString(),
-                                  static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName().toStdString());
+                    flow->connect(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName(),
+                                  static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName());
                     scene()->invalidate();
                 }
             }
@@ -130,12 +130,12 @@ void MyGraphicsView::addBlockByCenter(BlockType blockType, QPoint viewPos) {
 }
 
 void MyGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
-    int blockIndex = flow->addBlock(blockType, scenePos.x(), scenePos.y());
+    int blockIndex = flow->addBlock(blockType, scenePos);
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);
     for (QString outputBlockPinName : blockType.outputs.keys()) {
-        WireGraphicsItem *wgi = new WireGraphicsItem(flow, std::make_pair(blockIndex, outputBlockPinName.toStdString()));
+        WireGraphicsItem *wgi = new WireGraphicsItem(flow, std::make_pair(blockIndex, outputBlockPinName));
         wgi->setPos(QPointF(0,0));
         this->scene()->addItem(wgi);
     }
@@ -145,7 +145,7 @@ void MyGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
 void MyGraphicsView::moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos) {
     int blockIndex = blockGraphics->blockIndex;
     QPointF scenePos = mapToScene(viewPos);
-    flow->moveBlock(blockIndex, scenePos.x(), scenePos.y());
+    flow->moveBlock(blockIndex, scenePos);
     blockGraphics->setPos(scenePos);
 }
 

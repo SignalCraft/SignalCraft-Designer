@@ -1,23 +1,28 @@
 #include "flowchart/block.h"
 
-#include "json/json.h"
+#include <QString>
+#include <QPointF>
+#include "flowchart/blocktype.h"
+
+uint qHash(const BlockPin b) {
+    return (b.first * 31) + qHash(b.second);
+}
 
 Block::Block() {}
 
-Block::Block(BlockType _blockType, double _xPos, double _yPos) {
+Block::Block(BlockType _blockType, QPointF _pos) {
     blockType = _blockType;
-    xPos = _xPos;
-    yPos = _yPos;
+    pos = _pos;
 }
 
-void Block::connectOutput(std::string outputPinName, BlockPin inputPin) {
+void Block::connectOutput(QString outputPinName, BlockPin inputPin) {
     outputConnections[outputPinName].insert(inputPin);
 }
 
-void Block::connectInput(std::string inputPinName, BlockPin outputPin) {
+void Block::connectInput(QString inputPinName, BlockPin outputPin) {
     inputConnections[inputPinName] = outputPin;
 }
 
-bool Block::inputIsConnected(std::string inputPinName) {
+bool Block::inputIsConnected(QString inputPinName) {
     return (bool)inputConnections.count(inputPinName);
 }

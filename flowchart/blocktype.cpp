@@ -1,5 +1,9 @@
 #include "flowchart/blocktype.h"
 
+#include <QtGlobal>
+#include <QPointF>
+#include <QString>
+
 BlockType::BlockType() { }
 
 qreal BlockType::displayWidth() {

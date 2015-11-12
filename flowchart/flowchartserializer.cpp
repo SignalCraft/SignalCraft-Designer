@@ -1,5 +1,15 @@
 #include "flowchartserializer.h"
 
+#include <QMap>
+#include <QHash>
+#include <QSet>
+#include <QString>
+#include <QPointF>
+#include "json/json.h"
+#include "flowchart/blocktype.h"
+#include "flowchart/flowchart.h"
+#include "flowchart/block.h"
+
 FlowChartSerializer::FlowChartSerializer(QMap<QString, BlockType> blockTypes) {
     m_blockTypes = blockTypes;
 }
@@ -16,18 +26,19 @@ Json::Value FlowChartSerializer::jsonComposeFlowChart(FlowChart f) {
     return node;
 }
 
-std::unordered_map<int, Block> FlowChartSerializer::jsonParseBlocks(Json::Value node) {
-    std::unordered_map<int, Block> map;
+QHash<int, Block> FlowChartSerializer::jsonParseBlocks(Json::Value node) {
+    QHash<int, Block> map;
     for( Json::ValueIterator itr = node.begin() ; itr != node.end() ; itr++ ) {
         map[itr.key().asInt()] = FlowChartSerializer::jsonParseBlock(*itr);
     }
     return map;
 }
 
-Json::Value FlowChartSerializer::jsonComposeBlocks(std::unordered_map<int, Block> map) {
+Json::Value FlowChartSerializer::jsonComposeBlocks(QHash<int, Block> map) {
     Json::Value node(Json::objectValue);
-    for (auto kvpair : map) {
-        node[std::to_string(kvpair.first)] = FlowChartSerializer::jsonComposeBlock(kvpair.second);
+    for (int key : map.keys()) {
+        Block value = map[key];
+        node[key] = FlowChartSerializer::jsonComposeBlock(value);
     }
     return node;
 }
@@ -35,8 +46,9 @@ Json::Value FlowChartSerializer::jsonComposeBlocks(std::unordered_map<int, Block
 Block FlowChartSerializer::jsonParseBlock(Json::Value node) {
     Block b;
     b.blockType = m_blockTypes[QString::fromStdString(node["blockTypeName"].asString())];
-    b.xPos = node["xPos"].asDouble();
-    b.yPos = node["yPos"].asDouble();
+    qreal xPos = node["xPos"].asDouble();
+    qreal yPos = node["yPos"].asDouble();
+    b.pos = QPointF(xPos, yPos);
     b.inputConnections = jsonParseInputConnections(node["inputConnections"]);
     b.outputConnections = jsonParseOutputConnections(node["outputConnections"]);
     return b;
@@ -45,25 +57,26 @@ Block FlowChartSerializer::jsonParseBlock(Json::Value node) {
 Json::Value FlowChartSerializer::jsonComposeBlock(Block b) {
     Json::Value node(Json::objectValue);
     node["blockTypeName"] = b.blockType.name.toStdString();
-    node["xPos"] = b.xPos;
-    node["yPos"] = b.yPos;
+    node["xPos"] = b.pos.x();
+    node["yPos"] = b.pos.y();
     node["inputConnections"] = jsonComposeInputConnections(b.inputConnections);
     node["outputConnections"] = jsonComposeOutputConnections(b.outputConnections);
     return node;
 }
 
-std::unordered_map<std::string, BlockPin> FlowChartSerializer::jsonParseInputConnections(Json::Value node) {
-    std::unordered_map<std::string, BlockPin> map;
+QHash<QString, BlockPin> FlowChartSerializer::jsonParseInputConnections(Json::Value node) {
+    QHash<QString, BlockPin> map;
     for( Json::ValueIterator itr = node.begin() ; itr != node.end() ; itr++ ) {
-        map[itr.key().asString()] = jsonParseBlockPin(*itr);
+        map[QString::fromStdString(itr.key().asString())] = jsonParseBlockPin(*itr);
     }
     return map;
 }
 
-Json::Value FlowChartSerializer::jsonComposeInputConnections(std::unordered_map<std::string, BlockPin> map) {
+Json::Value FlowChartSerializer::jsonComposeInputConnections(QHash<QString, BlockPin> map) {
     Json::Value node(Json::objectValue);
-    for (auto kvpair : map) {
-        node[kvpair.first] = jsonComposeBlockPin(kvpair.second);
+    for (QString key : map.keys()) {
+        BlockPin value = map[key];
+        node[key.toStdString()] = jsonComposeBlockPin(value);
     }
     return node;
 }
@@ -71,45 +84,46 @@ Json::Value FlowChartSerializer::jsonComposeInputConnections(std::unordered_map<
 BlockPin FlowChartSerializer::jsonParseBlockPin(Json::Value node) {
     BlockPin p;
     p.first = node[0].asInt();
-    p.second = node[1].asString();
+    p.second = QString::fromStdString(node[1].asString());
     return p;
 }
 
 Json::Value FlowChartSerializer::jsonComposeBlockPin(BlockPin p) {
     Json::Value node(Json::arrayValue);
     node[0] = p.first;
-    node[1] = p.second;
+    node[1] = p.second.toStdString();
     return node;
 }
 
-std::unordered_map<std::string, std::unordered_set<BlockPin, boost::hash<BlockPin> > > FlowChartSerializer::jsonParseOutputConnections(Json::Value node) {
-    std::unordered_map<std::string, std::unordered_set<BlockPin, boost::hash<BlockPin> > > map;
+QHash<QString, QSet<BlockPin > > FlowChartSerializer::jsonParseOutputConnections(Json::Value node) {
+    QHash<QString, QSet<BlockPin > > map;
     for( Json::ValueIterator itr = node.begin() ; itr != node.end() ; itr++ ) {
-        map[itr.key().asString()] = jsonParseBlockPinSet(*itr);
+        map[QString::fromStdString(itr.key().asString())] = jsonParseBlockPinSet(*itr);
     }
     return map;
 }
 
-Json::Value FlowChartSerializer::jsonComposeOutputConnections(std::unordered_map<std::string, std::unordered_set<BlockPin, boost::hash<BlockPin> > > map) {
+Json::Value FlowChartSerializer::jsonComposeOutputConnections(QHash<QString, QSet<BlockPin> > map) {
     Json::Value node(Json::objectValue);
-    for (auto kvpair : map) {
-        node[kvpair.first] = jsonComposeBlockPinSet(kvpair.second);
+    for (QString key : map.keys()) {
+        auto value = map[key];
+        node[key.toStdString()] = jsonComposeBlockPinSet(value);
     }
     return node;
 }
 
-std::unordered_set<BlockPin, boost::hash<BlockPin> > FlowChartSerializer::jsonParseBlockPinSet(Json::Value node) {
-    std::unordered_set<BlockPin, boost::hash<BlockPin> > set;
+QSet<BlockPin> FlowChartSerializer::jsonParseBlockPinSet(Json::Value node) {
+    QSet<BlockPin > set;
     for (unsigned int i=0; i < node.size(); i++) {
         set.insert(jsonParseBlockPin(node[i]));
     }
     return set;
 }
 
-Json::Value FlowChartSerializer::jsonComposeBlockPinSet(std::unordered_set<BlockPin, boost::hash<BlockPin> > set) {
+Json::Value FlowChartSerializer::jsonComposeBlockPinSet(QSet<BlockPin> set) {
     Json::Value node(Json::arrayValue);
     int i = 0;
-    for (auto element : set) {
+    for (BlockPin element : set) {
         node[i] = jsonComposeBlockPin(element);
         i++;
     }

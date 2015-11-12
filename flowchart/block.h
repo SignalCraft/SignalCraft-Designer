@@ -2,27 +2,28 @@
 #define BLOCK_H
 
 #include <flowchart/blocktype.h>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
+#include <QString>
+#include <QHash>
+#include <QSet>
+#include <QPointF>
 #include <utility>
-#include "boost/functional/hash/hash.hpp"
 
-typedef std::pair<int, std::string> BlockPin;
+typedef std::pair<int, QString> BlockPin;
+
+uint qHash(const BlockPin b);
 
 class Block
 {
 public:
     Block();
-    Block(BlockType _blockType, double _xPos, double _yPos);
-    void connectOutput(std::string outputPinName, BlockPin inputPin);
-    void connectInput(std::string inputPinName, BlockPin outputPin);
-    bool inputIsConnected(std::string inputPinName);
-    double xPos;
-    double yPos;
+    Block(BlockType _blockType, QPointF _pos);
+    void connectOutput(QString outputPinName, BlockPin inputPin);
+    void connectInput(QString inputPinName, BlockPin outputPin);
+    bool inputIsConnected(QString inputPinName);
+    QPointF pos;
     BlockType blockType;
-    std::unordered_map<std::string, BlockPin> inputConnections;
-    std::unordered_map<std::string, std::unordered_set<BlockPin, boost::hash<BlockPin>> > outputConnections;
+    QHash<QString, BlockPin> inputConnections;
+    QHash< QString, QSet< BlockPin > > outputConnections;
 };
 
 #endif // BLOCK_H

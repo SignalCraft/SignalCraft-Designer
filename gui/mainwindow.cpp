@@ -75,13 +75,13 @@ void MainWindow::handleSaveAs() {
 }
 
 void MainWindow::handleCompile(){
-    std::string picCode = generatePicCode(flow);
+    QString picCode = generatePicCode(flow);
     QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", ".c");
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
     QTextStream out(&file);
-    out << picCode.c_str();
+    out << picCode;
     file.close();
 }
 
