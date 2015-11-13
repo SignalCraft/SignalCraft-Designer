@@ -32,19 +32,46 @@ uint qHash(const BlockPin b) {
 
 Block::Block() {}
 
-Block::Block(BlockType _blockType, QPointF _pos) {
-    blockType = _blockType;
-    pos = _pos;
+Block::Block(BlockType blockType, QPointF pos) {
+    m_blockType = blockType;
+    m_pos = pos;
+}
+
+Block::Block(BlockType blockType, QPointF pos, QHash<QString, BlockPin> inputConnections, QHash< QString, QSet< BlockPin > > outputConnections) {
+    m_blockType = blockType;
+    m_pos = pos;
+    m_inputConnections = inputConnections;
+    m_outputConnections = outputConnections;
 }
 
 void Block::connectOutput(QString outputPinName, BlockPin inputPin) {
-    outputConnections[outputPinName].insert(inputPin);
+    m_outputConnections[outputPinName].insert(inputPin);
 }
 
 void Block::connectInput(QString inputPinName, BlockPin outputPin) {
-    inputConnections[inputPinName] = outputPin;
+    m_inputConnections[inputPinName] = outputPin;
 }
 
-bool Block::inputIsConnected(QString inputPinName) {
-    return (bool)inputConnections.count(inputPinName);
+void Block::setPos(QPointF pos) {
+    m_pos = pos;
+}
+
+bool Block::inputIsConnected(QString inputPinName) const {
+    return (bool)m_inputConnections.count(inputPinName);
+}
+
+QPointF Block::pos() const {
+    return m_pos;
+}
+
+BlockType Block::blockType() const {
+    return m_blockType;
+}
+
+QHash<QString, BlockPin> Block::inputConnections() const {
+    return m_inputConnections;
+}
+
+QHash< QString, QSet< BlockPin > > Block::outputConnections() const {
+    return m_outputConnections;
 }

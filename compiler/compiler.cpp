@@ -35,7 +35,7 @@ QString generatePicCode(FlowChart flow) {
                 // mark this node as expanded
                 expanded.insert(blockIndex);
                 // add all of this node's outputs to the front of the queue
-                for(auto output : block.outputConnections.values()) {
+                for(auto output : block.outputConnections().values()) {
                     for(BlockPin element : output){
                       int outIndex = element.blockNum();
                       if (!expanded.contains(outIndex)) {
@@ -45,20 +45,20 @@ QString generatePicCode(FlowChart flow) {
                 }
                 // write this node's function call
                 QVector<BlockPin> wireBlockPins;
-                for (QString inputPinName : block.blockType.inputs.keys()) {
+                for (QString inputPinName : block.blockType().inputs.keys()) {
                     if (!block.inputIsConnected(inputPinName)) {
                         // error: bad structure
                         return "";
                     } else {
-                        BlockPin wireSource = block.inputConnections[inputPinName];
+                        BlockPin wireSource = block.inputConnections()[inputPinName];
                         wireBlockPins.push_back(wireSource);
                     }
                 }
-                for (QString outputPinName : block.blockType.outputs.keys()) {
+                for (QString outputPinName : block.blockType().outputs.keys()) {
                     BlockPin outputBlockPin(blockIndex, outputPinName);
                     wireBlockPins.push_back(outputBlockPin);
                 }
-                QString funcCall = block.blockType.name;
+                QString funcCall = block.blockType().name;
                 funcCall += "(";
                 for (int i = 0; i < wireBlockPins.size(); i++) {
                     BlockPin wireSource = wireBlockPins[i];
@@ -103,7 +103,7 @@ QSet<QString> extractUniqueBlockNames(FlowChart flow) {
     QSet<QString> blockNames;
     for(Block block : flow.blocks.values()) {
         // make sure this block's name is in the blockNames set
-        blockNames.insert(block.blockType.name);
+        blockNames.insert(block.blockType().name);
     }
     return blockNames;
 }
@@ -113,7 +113,7 @@ QList<int> extractInputBlocks(FlowChart flow) {
     for(int i : flow.blocks.keys()) {
         Block block =  flow.blocks[i];
         // If this is an input block, make sure it's expanded first
-        if(block.inputConnections.empty()) {
+        if(block.inputConnections().empty()) {
             inputBlocks.push_back(i);
         }
     }
@@ -125,7 +125,7 @@ QSet<QString> extractWireNames(FlowChart flow) {
     for(int i : flow.blocks.keys()) {
         Block block =  flow.blocks[i];
         // for each output connection
-        for (QString pinName : block.outputConnections.keys()) {
+        for (QString pinName : block.outputConnections().keys()) {
             // construct wire name
             QString wireName = "wire_";
             wireName += QString::number(i);
@@ -139,7 +139,7 @@ QSet<QString> extractWireNames(FlowChart flow) {
 
 bool isExpandable(Block block, QSet<int> expanded) {
     bool found_all = true;
-    for(BlockPin bp : block.inputConnections.values()) {
+    for(BlockPin bp : block.inputConnections().values()) {
         int blockNum = bp.blockNum();
         if(expanded.find(blockNum) == expanded.end()) {
             found_all = false;

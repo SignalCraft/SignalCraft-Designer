@@ -15,10 +15,10 @@ int FlowChart::addBlock(BlockType blockType, QPointF pos) {
 
 void FlowChart::connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName) {
     Block* source = &blocks[sourceBlockID];
-    BlockType sourceBlockType = source->blockType;
+    BlockType sourceBlockType = source->blockType();
     BlockPin sourcePin(sourceBlockID, sourcePinName);
     Block* sink = &blocks[sinkBlockID];
-    BlockType sinkBlockType = sink->blockType;
+    BlockType sinkBlockType = sink->blockType();
     BlockPin sinkPin(sinkBlockID, sinkPinName);
     if (sourceBlockType.isPinOutput(sourcePinName)) {
         if (sinkBlockType.isPinOutput(sinkPinName)) {
@@ -48,9 +48,9 @@ void FlowChart::connect(int sourceBlockID, QString sourcePinName, int sinkBlockI
 }
 
 void FlowChart::moveBlock(int blockIndex, QPointF pos) {
-    blocks[blockIndex].pos = pos;
+    blocks[blockIndex].setPos(pos);
 }
 
 QPointF FlowChart::blockPos(int blockIndex) {
-    return blocks[blockIndex].pos;
+    return blocks[blockIndex].pos();
 }

@@ -44,23 +44,23 @@ Json::Value FlowChartSerializer::jsonComposeBlocks(QHash<int, Block> map) {
 }
 
 Block FlowChartSerializer::jsonParseBlock(Json::Value node) {
-    Block b;
-    b.blockType = m_blockTypes[QString::fromStdString(node["blockTypeName"].asString())];
+    BlockType blockType = m_blockTypes[QString::fromStdString(node["blockTypeName"].asString())];
     qreal xPos = node["xPos"].asDouble();
     qreal yPos = node["yPos"].asDouble();
-    b.pos = QPointF(xPos, yPos);
-    b.inputConnections = jsonParseInputConnections(node["inputConnections"]);
-    b.outputConnections = jsonParseOutputConnections(node["outputConnections"]);
+    QPointF pos = QPointF(xPos, yPos);
+    QHash<QString, BlockPin> inputConnections = jsonParseInputConnections(node["inputConnections"]);
+    QHash< QString, QSet<BlockPin> > outputConnections = jsonParseOutputConnections(node["outputConnections"]);
+    Block b(blockType, pos, inputConnections, outputConnections);
     return b;
 }
 
 Json::Value FlowChartSerializer::jsonComposeBlock(Block b) {
     Json::Value node(Json::objectValue);
-    node["blockTypeName"] = b.blockType.name.toStdString();
-    node["xPos"] = b.pos.x();
-    node["yPos"] = b.pos.y();
-    node["inputConnections"] = jsonComposeInputConnections(b.inputConnections);
-    node["outputConnections"] = jsonComposeOutputConnections(b.outputConnections);
+    node["blockTypeName"] = b.blockType().name.toStdString();
+    node["xPos"] = b.pos().x();
+    node["yPos"] = b.pos().y();
+    node["inputConnections"] = jsonComposeInputConnections(b.inputConnections());
+    node["outputConnections"] = jsonComposeOutputConnections(b.outputConnections());
     return node;
 }
 
