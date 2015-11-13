@@ -7,24 +7,29 @@
 #include <QPointF>
 #include <QtGlobal>
 
-class BlockType
-{
+class BlockType {
 public:
     BlockType();
-    QString name;
-    QMap<QString, DataType> inputs;
-    QMap<QString, DataType> outputs;
-    QPointF inputPinPos(QString pinName);
-    QPointF outputPinPos(QString pinName);
-    QPointF inputPinCenterPos(QString pinName);
-    QPointF outputPinCenterPos(QString pinName);
-    qreal displayWidth();
-    qreal displayHeight();
-    QPointF inputPinIndexToPos(int pinIndex);
-    QPointF outputPinIndexToPos(int pinIndex);
-    QPointF inputPinIndexToCenterPos(int pinIndex);
-    QPointF outputPinIndexToCenterPos(int pinIndex);
-    bool isPinOutput(QString pinName);
+    BlockType(QString name, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs);
+    QPointF inputPinPos(QString pinName) const;
+    QPointF outputPinPos(QString pinName) const;
+    QPointF inputPinCenterPos(QString pinName) const;
+    QPointF outputPinCenterPos(QString pinName) const;
+    qreal displayWidth() const;
+    qreal displayHeight() const;
+    bool isPinOutput(QString pinName) const;
+    QString name() const;
+    QMap<QString, DataType> inputs() const;
+    QMap<QString, DataType> outputs() const;
+public:
+    static QPointF inputPinIndexToPos(int pinIndex);
+    static QPointF outputPinIndexToPos(int pinIndex);
+    static QPointF inputPinIndexToCenterPos(int pinIndex);
+    static QPointF outputPinIndexToCenterPos(int pinIndex);
+private:
+    QString m_name;
+    QMap<QString, DataType> m_inputs;
+    QMap<QString, DataType> m_outputs;
 };
 
 #endif // BLOCKTYPE_H

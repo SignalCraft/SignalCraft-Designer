@@ -6,17 +6,15 @@
 
 BlockType::BlockType() { }
 
-qreal BlockType::displayWidth() {
-    return 400;
+BlockType::BlockType(QString name, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs) {
+    m_name = name;
+    m_inputs = inputs;
+    m_outputs = outputs;
 }
 
-qreal BlockType::displayHeight() {
-    return 100*(1+std::max(inputs.size(), outputs.size()));
-}
-
-QPointF BlockType::inputPinPos(QString pinName) {
+QPointF BlockType::inputPinPos(QString pinName) const {
     int pinIndex = 0;
-    for (auto inputPin : inputs.keys()) {
+    for (auto inputPin : inputs().keys()) {
         if (inputPin == pinName) {
             break;
         }
@@ -25,9 +23,9 @@ QPointF BlockType::inputPinPos(QString pinName) {
     return inputPinIndexToPos(pinIndex);
 }
 
-QPointF BlockType::outputPinPos(QString pinName) {
+QPointF BlockType::outputPinPos(QString pinName) const {
     int pinIndex = 0;
-    for (auto outputPin : outputs.keys()) {
+    for (auto outputPin : outputs().keys()) {
         if (outputPin == pinName) {
             break;
         }
@@ -36,12 +34,37 @@ QPointF BlockType::outputPinPos(QString pinName) {
     return outputPinIndexToPos(pinIndex);
 }
 
-QPointF BlockType::inputPinCenterPos(QString pinName) {
+QPointF BlockType::inputPinCenterPos(QString pinName) const {
     return inputPinPos(pinName) + QPointF(100, 50);
 }
 
-QPointF BlockType::outputPinCenterPos(QString pinName) {
+QPointF BlockType::outputPinCenterPos(QString pinName) const {
     return outputPinPos(pinName) + QPointF(100, 50);
+}
+
+qreal BlockType::displayWidth() const {
+    return 400;
+}
+
+qreal BlockType::displayHeight() const {
+    return 100*(1+std::max(inputs().size(), outputs().size()));
+}
+
+bool BlockType::isPinOutput(QString pinName) const {
+    return outputs().contains(pinName);
+}
+
+
+QString BlockType::name() const {
+    return m_name;
+}
+
+QMap<QString, DataType> BlockType::inputs() const {
+    return m_inputs;
+}
+
+QMap<QString, DataType> BlockType::outputs() const {
+    return m_outputs;
 }
 
 QPointF BlockType::inputPinIndexToPos(int pinIndex) {
@@ -58,8 +81,4 @@ QPointF BlockType::inputPinIndexToCenterPos(int pinIndex) {
 
 QPointF BlockType::outputPinIndexToCenterPos(int pinIndex) {
     return outputPinIndexToPos(pinIndex) + QPointF(100, 50);
-}
-
-bool BlockType::isPinOutput(QString pinName) {
-    return outputs.contains(pinName);
 }

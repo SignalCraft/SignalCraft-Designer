@@ -18,9 +18,8 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
     m_boundingRect = QRectF(0, 0, width, height);
 
     int i = 0;
-    for (auto input = blockType.inputs.constBegin(); input != blockType.inputs.constEnd(); input++) {
-        QString pinName = input.key();
-        DataType t = input.value();
+    for (QString pinName : blockType.inputs().keys()) {
+        DataType t = blockType.inputs()[pinName];
         PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t, false);
         pgi->setParentItem(this);
         pgi->setPos(blockType.inputPinIndexToPos(i));
@@ -28,9 +27,8 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
     }
 
     i=0;
-    for (auto output = blockType.outputs.constBegin(); output != blockType.outputs.constEnd(); output++) {
-        QString pinName = output.key();
-        DataType t = output.value();
+    for (QString pinName : blockType.outputs().keys()) {
+        DataType t = blockType.outputs()[pinName];
         PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t, true);
         pgi->setParentItem(this);
         pgi->setPos(blockType.outputPinIndexToPos(i));
@@ -44,7 +42,7 @@ void BlockGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem
     painter->drawRoundedRect(boundingRect(), 20, 20);
     painter->setFont(QFont("Helveteca", 40));
     QRectF textRect(boundingRect().topLeft(), QSize(400, 100));
-    painter->drawText(textRect, blockType().name, QTextOption(Qt::AlignHCenter | Qt::AlignVCenter));
+    painter->drawText(textRect, blockType().name(), QTextOption(Qt::AlignHCenter | Qt::AlignVCenter));
 }
 
 QRectF BlockGraphicsItem::boundingRect() const {

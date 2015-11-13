@@ -45,7 +45,7 @@ QString generatePicCode(FlowChart flow) {
                 }
                 // write this node's function call
                 QVector<BlockPin> wireBlockPins;
-                for (QString inputPinName : block.blockType().inputs.keys()) {
+                for (QString inputPinName : block.blockType().inputs().keys()) {
                     if (!block.inputIsConnected(inputPinName)) {
                         // error: bad structure
                         return "";
@@ -54,11 +54,11 @@ QString generatePicCode(FlowChart flow) {
                         wireBlockPins.push_back(wireSource);
                     }
                 }
-                for (QString outputPinName : block.blockType().outputs.keys()) {
+                for (QString outputPinName : block.blockType().outputs().keys()) {
                     BlockPin outputBlockPin(blockIndex, outputPinName);
                     wireBlockPins.push_back(outputBlockPin);
                 }
-                QString funcCall = block.blockType().name;
+                QString funcCall = block.blockType().name();
                 funcCall += "(";
                 for (int i = 0; i < wireBlockPins.size(); i++) {
                     BlockPin wireSource = wireBlockPins[i];
@@ -103,7 +103,7 @@ QSet<QString> extractUniqueBlockNames(FlowChart flow) {
     QSet<QString> blockNames;
     for(Block block : flow.blocks.values()) {
         // make sure this block's name is in the blockNames set
-        blockNames.insert(block.blockType().name);
+        blockNames.insert(block.blockType().name());
     }
     return blockNames;
 }

@@ -134,7 +134,7 @@ void MyGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);
-    for (QString outputBlockPinName : blockType.outputs.keys()) {
+    for (QString outputBlockPinName : blockType.outputs().keys()) {
         WireGraphicsItem *wgi = new WireGraphicsItem(flow, BlockPin(blockIndex, outputBlockPinName));
         wgi->setPos(QPointF(0,0));
         this->scene()->addItem(wgi);

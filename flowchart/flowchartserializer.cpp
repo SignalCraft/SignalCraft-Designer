@@ -56,7 +56,7 @@ Block FlowChartSerializer::jsonParseBlock(Json::Value node) {
 
 Json::Value FlowChartSerializer::jsonComposeBlock(Block b) {
     Json::Value node(Json::objectValue);
-    node["blockTypeName"] = b.blockType().name.toStdString();
+    node["blockTypeName"] = b.blockType().name().toStdString();
     node["xPos"] = b.pos().x();
     node["yPos"] = b.pos().y();
     node["inputConnections"] = jsonComposeInputConnections(b.inputConnections());

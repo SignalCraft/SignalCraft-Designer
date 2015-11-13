@@ -28,17 +28,17 @@ QMap<QString, BlockType> BlockTypesReader::readBlockTypes(QJsonValue node) {
     for (int i = 0; i < nodeArray.size(); i++) {
         QJsonValue element = nodeArray[i];
         BlockType bt = readBlockType(element);
-        blockTypes[bt.name] = bt;
+        blockTypes[bt.name()] = bt;
     }
     return blockTypes;
 }
 
 BlockType BlockTypesReader::readBlockType(QJsonValue node) {
     QJsonObject nodeObject = node.toObject();
-    BlockType blockType;
-    blockType.name = nodeObject["name"].toString();
-    blockType.inputs = readPinList(nodeObject["inputs"]);
-    blockType.outputs = readPinList(nodeObject["outputs"]);
+    QString name = nodeObject["name"].toString();
+    QMap<QString, DataType> inputs = readPinList(nodeObject["inputs"]);
+    QMap<QString, DataType> outputs = readPinList(nodeObject["outputs"]);
+    BlockType blockType(name, inputs, outputs);
     return blockType;
 }
 

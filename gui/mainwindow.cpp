@@ -38,7 +38,7 @@ MainWindow::MainWindow(ApplicationData _appData) : MainWindow() {
     appData = _appData;
     int i = 0;
     for (BlockType bt : appData.blockTypes) {
-        QStandardItem *item = new QStandardItem(bt.name);
+        QStandardItem *item = new QStandardItem(bt.name());
         blocks->setItem(i, item);
         i++;
     }
