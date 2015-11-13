@@ -4,8 +4,30 @@
 #include <QPointF>
 #include "flowchart/blocktype.h"
 
+BlockPin::BlockPin() {
+    m_blockNum = -1;
+    m_pinName = "";
+}
+
+BlockPin::BlockPin(int blockNum, QString pinName) {
+    m_blockNum = blockNum;
+    m_pinName = pinName;
+}
+
+bool BlockPin::operator==(const BlockPin &other) const {
+    return (blockNum() == other.blockNum()) && (pinName() == other.pinName());
+}
+
+int BlockPin::blockNum() const {
+    return m_blockNum;
+}
+
+QString BlockPin::pinName() const {
+    return m_pinName;
+}
+
 uint qHash(const BlockPin b) {
-    return (b.first * 31) + qHash(b.second);
+    return (b.blockNum() * 31) + qHash(b.pinName());
 }
 
 Block::Block() {}

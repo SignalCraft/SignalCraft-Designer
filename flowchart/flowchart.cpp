@@ -16,10 +16,10 @@ int FlowChart::addBlock(BlockType blockType, QPointF pos) {
 void FlowChart::connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName) {
     Block* source = &blocks[sourceBlockID];
     BlockType sourceBlockType = source->blockType;
-    BlockPin sourcePin = std::make_pair(sourceBlockID, sourcePinName);
+    BlockPin sourcePin(sourceBlockID, sourcePinName);
     Block* sink = &blocks[sinkBlockID];
     BlockType sinkBlockType = sink->blockType;
-    BlockPin sinkPin = std::make_pair(sinkBlockID, sinkPinName);
+    BlockPin sinkPin(sinkBlockID, sinkPinName);
     if (sourceBlockType.isPinOutput(sourcePinName)) {
         if (sinkBlockType.isPinOutput(sinkPinName)) {
             // both outputs, error condition

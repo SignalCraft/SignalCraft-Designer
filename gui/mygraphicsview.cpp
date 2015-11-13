@@ -135,7 +135,7 @@ void MyGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
     itm->setPos(scenePos);
     this->scene()->addItem(itm);
     for (QString outputBlockPinName : blockType.outputs.keys()) {
-        WireGraphicsItem *wgi = new WireGraphicsItem(flow, std::make_pair(blockIndex, outputBlockPinName));
+        WireGraphicsItem *wgi = new WireGraphicsItem(flow, BlockPin(blockIndex, outputBlockPinName));
         wgi->setPos(QPointF(0,0));
         this->scene()->addItem(wgi);
     }

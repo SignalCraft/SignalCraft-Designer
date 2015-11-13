@@ -82,16 +82,14 @@ Json::Value FlowChartSerializer::jsonComposeInputConnections(QHash<QString, Bloc
 }
 
 BlockPin FlowChartSerializer::jsonParseBlockPin(Json::Value node) {
-    BlockPin p;
-    p.first = node[0].asInt();
-    p.second = QString::fromStdString(node[1].asString());
+    BlockPin p(node[0].asInt(), QString::fromStdString(node[1].asString()));
     return p;
 }
 
 Json::Value FlowChartSerializer::jsonComposeBlockPin(BlockPin p) {
     Json::Value node(Json::arrayValue);
-    node[0] = p.first;
-    node[1] = p.second.toStdString();
+    node[0] = p.blockNum();
+    node[1] = p.pinName().toStdString();
     return node;
 }
 

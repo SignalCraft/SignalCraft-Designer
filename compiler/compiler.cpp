@@ -36,8 +36,8 @@ QString generatePicCode(FlowChart flow) {
                 expanded.insert(blockIndex);
                 // add all of this node's outputs to the front of the queue
                 for(auto output : block.outputConnections.values()) {
-                    for(auto element : output){
-                      int outIndex = element.first;
+                    for(BlockPin element : output){
+                      int outIndex = element.blockNum();
                       if (!expanded.contains(outIndex)) {
                         toBeExpanded.push_front(outIndex);
                       }
@@ -63,9 +63,9 @@ QString generatePicCode(FlowChart flow) {
                 for (int i = 0; i < wireBlockPins.size(); i++) {
                     BlockPin wireSource = wireBlockPins[i];
                     funcCall += "&wire_";
-                    funcCall += QString::number(wireSource.first);
+                    funcCall += QString::number(wireSource.blockNum());
                     funcCall += "_";
-                    funcCall += wireSource.second;
+                    funcCall += wireSource.pinName();
                     if (i < wireBlockPins.size() - 1) {
                         funcCall += ",";
                     }
@@ -140,7 +140,7 @@ QSet<QString> extractWireNames(FlowChart flow) {
 bool isExpandable(Block block, QSet<int> expanded) {
     bool found_all = true;
     for(BlockPin bp : block.inputConnections.values()) {
-        int blockNum = bp.first;
+        int blockNum = bp.blockNum();
         if(expanded.find(blockNum) == expanded.end()) {
             found_all = false;
             break;

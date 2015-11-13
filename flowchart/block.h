@@ -8,7 +8,17 @@
 #include <QPointF>
 #include <utility>
 
-typedef std::pair<int, QString> BlockPin;
+class BlockPin {
+public:
+    BlockPin();
+    BlockPin(int blockNum, QString pinName);
+    bool operator==(const BlockPin &other) const;
+    int blockNum() const;
+    QString pinName() const;
+private:
+    int m_blockNum;
+    QString m_pinName;
+};
 
 uint qHash(const BlockPin b);
 
