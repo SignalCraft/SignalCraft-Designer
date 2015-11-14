@@ -1,4 +1,4 @@
-#include "flowchartserializer.h"
+#include "flowchart/flowchartserializer.h"
 
 #include <QMap>
 #include <QHash>
