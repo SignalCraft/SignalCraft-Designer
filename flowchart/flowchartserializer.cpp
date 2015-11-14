@@ -15,14 +15,13 @@ FlowChartSerializer::FlowChartSerializer(QMap<QString, BlockType> blockTypes) {
 }
 
 FlowChart FlowChartSerializer::jsonParseFlowChart(Json::Value node) {
-    FlowChart f;
-    f.blocks = jsonParseBlocks(node["blocks"]);
+    FlowChart f(jsonParseBlocks(node["blocks"]));
     return f;
 }
 
 Json::Value FlowChartSerializer::jsonComposeFlowChart(FlowChart f) {
     Json::Value node(Json::objectValue);
-    node["blocks"] = jsonComposeBlocks(f.blocks);
+    node["blocks"] = jsonComposeBlocks(f.blocks());
     return node;
 }
 

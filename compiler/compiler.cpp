@@ -28,7 +28,7 @@ QString generatePicCode(FlowChart flow) {
         toBeExpanded.pop_front();
         // if this block has not been expanded yet
         if (expanded.find(blockIndex) == expanded.end()) {
-            Block block = flow.blocks[blockIndex];
+            Block block = flow.block(blockIndex);
             // check if all this block's inputs have been expanded
             bool found_all = isExpandable(block, expanded);
             if(found_all) {
@@ -101,7 +101,7 @@ QString generatePicCode(FlowChart flow) {
 
 QSet<QString> extractUniqueBlockNames(FlowChart flow) {
     QSet<QString> blockNames;
-    for(Block block : flow.blocks.values()) {
+    for(Block block : flow.blocks().values()) {
         // make sure this block's name is in the blockNames set
         blockNames.insert(block.blockType().name());
     }
@@ -110,11 +110,11 @@ QSet<QString> extractUniqueBlockNames(FlowChart flow) {
 
 QList<int> extractInputBlocks(FlowChart flow) {
     QList<int> inputBlocks;
-    for(int i : flow.blocks.keys()) {
-        Block block =  flow.blocks[i];
+    for(int blockIndex : flow.blocks().keys()) {
+        Block block = flow.block(blockIndex);
         // If this is an input block, make sure it's expanded first
         if(block.inputConnections().empty()) {
-            inputBlocks.push_back(i);
+            inputBlocks.push_back(blockIndex);
         }
     }
     return inputBlocks;
@@ -122,13 +122,13 @@ QList<int> extractInputBlocks(FlowChart flow) {
 
 QSet<QString> extractWireNames(FlowChart flow) {
     QSet<QString> wireNames;
-    for(int i : flow.blocks.keys()) {
-        Block block =  flow.blocks[i];
+    for(int blockIndex : flow.blocks().keys()) {
+        Block block = flow.block(blockIndex);
         // for each output connection
         for (QString pinName : block.outputConnections().keys()) {
             // construct wire name
             QString wireName = "wire_";
-            wireName += QString::number(i);
+            wireName += QString::number(blockIndex);
             wireName += "_";
             wireName += pinName;
             wireNames.insert(wireName);

@@ -7,17 +7,19 @@
 #include "flowchart/block.h"
 #include "flowchart/blocktype.h"
 
-class FlowChart
-{
+class FlowChart {
 public:
     FlowChart();
+    FlowChart(QHash<int, Block> blocks);
     int addBlock(BlockType blockType, QPointF pos);
     void connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName);
     void moveBlock(int blockIndex, QPointF pos);
-    QPointF blockPos(int blockIndex);
-    QHash<int, Block> blocks;
-protected:
-    int currentIndex = 0;
+    QPointF blockPos(int blockIndex) const;
+    QHash<int, Block> blocks() const;
+    Block block(int blockIndex) const;
+private:
+    QHash<int, Block> m_blocks;
+    int m_currentIndex = 0;
 };
 
 #endif // FLOWCHART_H
