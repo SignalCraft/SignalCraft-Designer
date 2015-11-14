@@ -36,9 +36,10 @@ QMap<QString, BlockType> BlockTypesReader::readBlockTypes(QJsonValue node) {
 BlockType BlockTypesReader::readBlockType(QJsonValue node) {
     QJsonObject nodeObject = node.toObject();
     QString name = nodeObject["name"].toString();
+    QString displayName = nodeObject["displayName"].toString();
     QMap<QString, DataType> inputs = readPinList(nodeObject["inputs"]);
     QMap<QString, DataType> outputs = readPinList(nodeObject["outputs"]);
-    BlockType blockType(name, inputs, outputs);
+    BlockType blockType(name, displayName, inputs, outputs);
     return blockType;
 }
 

@@ -6,8 +6,9 @@
 
 BlockType::BlockType() { }
 
-BlockType::BlockType(QString name, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs) {
+BlockType::BlockType(QString name, QString displayName, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs) {
     m_name = name;
+    m_displayName = displayName;
     m_inputs = inputs;
     m_outputs = outputs;
 }
@@ -57,6 +58,10 @@ bool BlockType::isPinOutput(QString pinName) const {
 
 QString BlockType::name() const {
     return m_name;
+}
+
+QString BlockType::displayName() const {
+    return m_displayName;
 }
 
 QMap<QString, DataType> BlockType::inputs() const {
