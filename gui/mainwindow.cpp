@@ -3,7 +3,7 @@
 #include "compiler/compiler.h"
 
 #include <QStandardItem>
-#include "gui/myitemmodel.h"
+#include "gui/blocktypelistmodel.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::MainWindow(ApplicationData _appData) : MainWindow() {
     appData = _appData;
 
-    blocks = new MyItemModel(appData.blockTypes.values());
+    blocks = new BlockTypeListModel(appData.blockTypes.values());
 
     ui->listView_io->setModel(blocks);
 

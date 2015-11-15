@@ -11,10 +11,10 @@
 
 class QMimeData;
 
-class MyItemModel : public QAbstractListModel {
+class BlockTypeListModel : public QAbstractListModel {
 public:
-    MyItemModel(QObject *parent = 0);
-    MyItemModel(QList<BlockType> blockTypes, QObject *parent = 0);
+    BlockTypeListModel(QObject *parent = 0);
+    BlockTypeListModel(QList<BlockType> blockTypes, QObject *parent = 0);
     BlockType blockTypeAt(const QModelIndex &index) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;

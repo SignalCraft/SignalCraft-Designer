@@ -8,7 +8,7 @@
 #include "gui/applicationdata.h"
 class QGraphicsScene;
 class QModelIndex;
-class MyItemModel;
+class BlockTypeListModel;
 
 namespace Ui {
     class MainWindow;
@@ -24,7 +24,7 @@ public:
 protected:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    MyItemModel *blocks;
+    BlockTypeListModel *blocks;
     qreal xScale = 0.2;
     qreal yScale = 0.2;
     FlowChart flow;

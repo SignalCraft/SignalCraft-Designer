@@ -1,4 +1,4 @@
-#include "gui/myitemmodel.h"
+#include "gui/blocktypelistmodel.h"
 
 #include <QAbstractListModel>
 #include <QObject>
@@ -9,21 +9,21 @@
 #include "flowchart/blocktype.h"
 #include <QMimeData>
 
-MyItemModel::MyItemModel(QObject *parent) : QAbstractListModel(parent) { }
+BlockTypeListModel::BlockTypeListModel(QObject *parent) : QAbstractListModel(parent) { }
 
-MyItemModel::MyItemModel(QList<BlockType> blockTypes, QObject *parent) : MyItemModel(parent) {
+BlockTypeListModel::BlockTypeListModel(QList<BlockType> blockTypes, QObject *parent) : BlockTypeListModel(parent) {
     m_blockTypes = blockTypes;
 }
 
-BlockType MyItemModel::blockTypeAt(const QModelIndex &index) const {
+BlockType BlockTypeListModel::blockTypeAt(const QModelIndex &index) const {
     return m_blockTypes[index.row()];
 }
 
-int MyItemModel::rowCount(const QModelIndex &parent) const {
+int BlockTypeListModel::rowCount(const QModelIndex &parent) const {
     return m_blockTypes.size();
 }
 
-QVariant MyItemModel::data(const QModelIndex &index, int role) const {
+QVariant BlockTypeListModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid()) {
         return QVariant();
     }
@@ -37,7 +37,7 @@ QVariant MyItemModel::data(const QModelIndex &index, int role) const {
     }
 }
 
-Qt::ItemFlags MyItemModel::flags(const QModelIndex &index) const {
+Qt::ItemFlags BlockTypeListModel::flags(const QModelIndex &index) const {
     Qt::ItemFlags defaultFlags = QAbstractListModel::flags(index);
 
     if (index.isValid())
@@ -46,7 +46,7 @@ Qt::ItemFlags MyItemModel::flags(const QModelIndex &index) const {
         return Qt::ItemIsDropEnabled | defaultFlags;
 }
 
-QMimeData *MyItemModel::mimeData(const QModelIndexList &indexes) const {
+QMimeData *BlockTypeListModel::mimeData(const QModelIndexList &indexes) const {
     QMimeData *m = QAbstractListModel::mimeData(indexes);
     if (indexes.isEmpty()) {
         return m;
