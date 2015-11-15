@@ -12,11 +12,11 @@ class FlowChart;
 
 enum MouseMode {NONE, CONNECT, DRAG_BLOCK, DRAG_CANVAS};
 
-class MyGraphicsView : public QGraphicsView
+class FlowChartGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    MyGraphicsView(QWidget *parent);
+    FlowChartGraphicsView(QWidget *parent);
     void setFlowChart(FlowChart *f);
     void setBlockTypes(QMap<QString, BlockType> *blockTypes);
 public slots:

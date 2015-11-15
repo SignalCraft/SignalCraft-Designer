@@ -12,7 +12,6 @@ TEMPLATE = app
 
 SOURCES += gui/main.cpp\
     gui/mainwindow.cpp \
-    gui/mygraphicsview.cpp \
     gui/blockgraphicsitem.cpp \
     flowchart/block.cpp \
     flowchart/blocktype.cpp \
@@ -25,10 +24,10 @@ SOURCES += gui/main.cpp\
     gui/pingraphicsitem.cpp \
     flowchart/flowchartserializer.cpp \
     gui/wiregraphicsitem.cpp \
-    gui/blocktypelistmodel.cpp
+    gui/blocktypelistmodel.cpp \
+    gui/flowchartgraphicsview.cpp
 
 HEADERS  += gui/mainwindow.h \
-    gui/mygraphicsview.h \
     gui/blockgraphicsitem.h \
     flowchart/block.h \
     flowchart/blocktype.h \
@@ -41,7 +40,8 @@ HEADERS  += gui/mainwindow.h \
     gui/pingraphicsitem.h \
     flowchart/flowchartserializer.h \
     gui/wiregraphicsitem.h \
-    gui/blocktypelistmodel.h
+    gui/blocktypelistmodel.h \
+    gui/flowchartgraphicsview.h
 
 FORMS    += gui/mainwindow.ui
 

@@ -155,7 +155,7 @@
        </widget>
       </item>
       <item>
-       <widget class="MyGraphicsView" name="graphicsView">
+       <widget class="FlowChartGraphicsView" name="graphicsView">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -305,7 +305,7 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>MyGraphicsView</class>
+   <class>FlowChartGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>mygraphicsview.h</header>
   </customwidget>

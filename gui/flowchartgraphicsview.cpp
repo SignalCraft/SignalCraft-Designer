@@ -1,4 +1,4 @@
-#include "gui/mygraphicsview.h"
+#include "gui/flowchartgraphicsview.h"
 
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
@@ -19,42 +19,42 @@
 #include "gui/pingraphicsitem.h"
 #include "gui/wiregraphicsitem.h"
 
-MyGraphicsView::MyGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
+FlowChartGraphicsView::FlowChartGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 
-void MyGraphicsView::setFlowChart(FlowChart *f) {
+void FlowChartGraphicsView::setFlowChart(FlowChart *f) {
     flow = f;
 }
 
-void MyGraphicsView::setBlockTypes(QMap<QString, BlockType> *blockTypes) {
+void FlowChartGraphicsView::setBlockTypes(QMap<QString, BlockType> *blockTypes) {
     m_blockTypes = blockTypes;
 }
 
-void MyGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
+void FlowChartGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
     event->acceptProposedAction();
 }
 
-void MyGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
+void FlowChartGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
     event->acceptProposedAction();
 }
 
-void MyGraphicsView::dragLeaveEvent(QDragLeaveEvent*) { }
+void FlowChartGraphicsView::dragLeaveEvent(QDragLeaveEvent*) { }
 
-void MyGraphicsView::dropEvent(QDropEvent *event) {
+void FlowChartGraphicsView::dropEvent(QDropEvent *event) {
     addBlockByCenter((*m_blockTypes)[event->mimeData()->text()], event->pos());
 }
 
-void MyGraphicsView::setCurrentBlockType(BlockType blockType) {
+void FlowChartGraphicsView::setCurrentBlockType(BlockType blockType) {
     m_currentBlockType = blockType;
 }
 
-void MyGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
+void FlowChartGraphicsView::mouseDoubleClickEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         addBlockByCenter(m_currentBlockType, event->pos());
     }
     QGraphicsView::mouseDoubleClickEvent(event);
 }
 
-void MyGraphicsView::mousePressEvent(QMouseEvent *event) {
+void FlowChartGraphicsView::mousePressEvent(QMouseEvent *event) {
     if (mouseMode == NONE && event->button() == Qt::LeftButton) {
         mouseDownPos = event->pos();
         QList<QGraphicsItem*> clickedItems = items(event->pos());
@@ -78,7 +78,7 @@ void MyGraphicsView::mousePressEvent(QMouseEvent *event) {
     QGraphicsView::mousePressEvent(event);
 }
 
-void MyGraphicsView::mouseMoveEvent(QMouseEvent *event) {
+void FlowChartGraphicsView::mouseMoveEvent(QMouseEvent *event) {
     if (event->buttons() & Qt::LeftButton) {
         if (mouseMode == CONNECT) {
             // nothing yet
@@ -90,7 +90,7 @@ void MyGraphicsView::mouseMoveEvent(QMouseEvent *event) {
     }
 }
 
-void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
+void FlowChartGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         if (mouseMode == CONNECT) {
             int distance = (event->pos() - mouseDownPos).manhattanLength();
@@ -120,17 +120,17 @@ void MyGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
-void MyGraphicsView::addBlock(BlockType blockType, QPoint viewPos) {
+void FlowChartGraphicsView::addBlock(BlockType blockType, QPoint viewPos) {
     QPointF scenePos = mapToScene(viewPos);
     addBlockInternal(blockType, scenePos);
 }
 
-void MyGraphicsView::addBlockByCenter(BlockType blockType, QPoint viewPos) {
+void FlowChartGraphicsView::addBlockByCenter(BlockType blockType, QPoint viewPos) {
     QPointF scenePos = mapToScene(viewPos) - QPointF(blockType.displayWidth()/2, blockType.displayHeight()/2);
     addBlockInternal(blockType, scenePos);
 }
 
-void MyGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
+void FlowChartGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
     int blockIndex = flow->addBlock(blockType, scenePos);
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
@@ -143,7 +143,7 @@ void MyGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
 
 }
 
-void MyGraphicsView::moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos) {
+void FlowChartGraphicsView::moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos) {
     int blockIndex = blockGraphics->blockIndex;
     QPointF scenePos = mapToScene(viewPos);
     flow->moveBlock(blockIndex, scenePos);
