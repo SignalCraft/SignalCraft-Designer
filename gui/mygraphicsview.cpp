@@ -12,6 +12,7 @@
 #include <QRectF>
 #include <QPointF>
 #include <QVector>
+#include <QMimeData>
 #include "gui/blockgraphicsitem.h"
 #include "flowchart/flowchart.h"
 #include "flowchart/blocktype.h"
@@ -39,7 +40,7 @@ void MyGraphicsView::dragMoveEvent(QDragMoveEvent *event) {
 void MyGraphicsView::dragLeaveEvent(QDragLeaveEvent*) { }
 
 void MyGraphicsView::dropEvent(QDropEvent *event) {
-    addBlockByCenter(m_currentBlockType, event->pos());
+    addBlockByCenter((*m_blockTypes)[event->mimeData()->text()], event->pos());
 }
 
 void MyGraphicsView::setCurrentBlockType(BlockType blockType) {

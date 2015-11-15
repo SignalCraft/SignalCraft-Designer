@@ -15,8 +15,6 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    blocks = new MyItemModel();
-    ui->listView_io->setModel(blocks);
     ui->listView_io->setAcceptDrops(false);
 
     ui->graphicsView->setFlowChart(&flow);
@@ -26,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->graphicsView->setSceneRect(-10000, -10000, 20000, 20000);
     ui->graphicsView->centerOn(0,0);
 
-    connect(ui->listView_io->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::handleCurrentItemChanged);
     connect(ui->actionZoom_In, &QAction::triggered, this, &MainWindow::handleZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
@@ -36,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::MainWindow(ApplicationData _appData) : MainWindow() {
     appData = _appData;
-    int i = 0;
-    for (BlockType bt : appData.blockTypes) {
-        QStandardItem *item = new QStandardItem(bt.name());
-        blocks->setItem(i, item);
-        i++;
-    }
+
+    blocks = new MyItemModel(appData.blockTypes.values());
+
+    ui->listView_io->setModel(blocks);
+
+    connect(ui->listView_io->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::handleCurrentItemChanged);
 
     ui->graphicsView->setBlockTypes(&(appData.blockTypes));
 }
@@ -51,7 +48,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::handleCurrentItemChanged(const QModelIndex& current, const QModelIndex&) {
-    ui->graphicsView->setCurrentBlockType(appData.blockTypes[blocks->itemFromIndex(current)->text()]);
+    ui->graphicsView->setCurrentBlockType(blocks->blockTypeAt(current));
 }
 
 void MainWindow::handleZoomIn() {
