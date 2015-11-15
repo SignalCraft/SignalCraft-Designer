@@ -1,0 +1,1 @@
+void analog_output (int *in0) { }

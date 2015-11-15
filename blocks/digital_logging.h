@@ -1,0 +1,1 @@
+void digital_logging(int *out0) { }

@@ -76,17 +76,6 @@
 			}
 		},
 		{
-			"name" : "pid",
-			"displayName" : "PID",
-			"inputs" : {
-				"feedback" : 1,
-				"setpoint" : 1
-			},
-			"outputs" : {
-				"output" : 1
-			}
-		},
-		{
 			"name" : "saturation",
 			"displayName" : "Saturation",
 			"inputs" : {
