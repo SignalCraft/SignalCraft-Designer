@@ -86,19 +86,13 @@
            </size>
           </property>
           <property name="dragEnabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="dragDropMode">
-           <enum>QAbstractItemView::DragDrop</enum>
-          </property>
-          <property name="gridSize">
-           <size>
-            <width>80</width>
-            <height>80</height>
-           </size>
+           <enum>QAbstractItemView::DragOnly</enum>
           </property>
           <property name="viewMode">
-           <enum>QListView::IconMode</enum>
+           <enum>QListView::ListMode</enum>
           </property>
          </widget>
         </widget>
