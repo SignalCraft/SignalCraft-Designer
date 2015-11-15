@@ -42,7 +42,7 @@ void BlockGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem
     painter->drawRoundedRect(boundingRect(), 20, 20);
     painter->setFont(QFont("Helveteca", 40));
     QRectF textRect(boundingRect().topLeft(), QSize(400, 100));
-    painter->drawText(textRect, blockType().name(), QTextOption(Qt::AlignHCenter | Qt::AlignVCenter));
+    painter->drawText(textRect, blockType().displayName(), QTextOption(Qt::AlignHCenter | Qt::AlignVCenter));
 }
 
 QRectF BlockGraphicsItem::boundingRect() const {

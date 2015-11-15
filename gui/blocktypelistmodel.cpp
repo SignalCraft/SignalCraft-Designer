@@ -31,7 +31,7 @@ QVariant BlockTypeListModel::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
     if (role == Qt::DisplayRole) {
-        return QVariant(blockTypeAt(index).name());
+        return QVariant(blockTypeAt(index).displayName());
     } else {
         return QVariant();
     }
