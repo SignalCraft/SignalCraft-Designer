@@ -80,7 +80,7 @@ QString generatePicCode(FlowChart flow) {
     }
     mainFile += "\nreturn 0;\n\n}";
 
-    QString includesFile = "";
+    QString includesFile = "#include <avr/io.h>\n";
     for (QString blockName : blockNames) {
         includesFile += "#include \"blocks/";
         includesFile += blockName;
