@@ -78,7 +78,7 @@ QString generatePicCode(FlowChart flow) {
             }
         }
     }
-    mainFile += "\n}";
+    mainFile += "\nreturn 0;\n\n}";
 
     QString includesFile = "";
     for (QString blockName : blockNames) {
