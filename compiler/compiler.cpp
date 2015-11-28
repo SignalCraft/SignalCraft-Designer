@@ -82,9 +82,9 @@ QString generatePicCode(FlowChart flow) {
 
     QString includesFile = "";
     for (QString blockName : blockNames) {
-        includesFile += "#include \"";
+        includesFile += "#include \"blocks/";
         includesFile += blockName;
-        includesFile += "\"\n";
+        includesFile += ".h\"\n";
     }
     includesFile += "\n";
 
