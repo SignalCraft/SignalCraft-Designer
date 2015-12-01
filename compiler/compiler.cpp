@@ -22,6 +22,7 @@ QString generatePicCode(FlowChart flow) {
     QSet<int> expanded;
     QList<int> toBeExpanded = extractInputBlocks(flow);
     QSet<QString> wires = extractWireNames(flow);
+    QList<QString> structInstances;
     // directed graph traversal: write the sequence of functions
     while(!toBeExpanded.empty()) {
         int blockIndex = toBeExpanded.front();
@@ -60,6 +61,11 @@ QString generatePicCode(FlowChart flow) {
                 }
                 QString funcCall = block.blockType().name();
                 funcCall += "(";
+                funcCall += "block_options_";
+                funcCall += QString::number(blockIndex);
+                if (0 < wireBlockPins.size()) {
+                    funcCall += ",";
+                }
                 for (int i = 0; i < wireBlockPins.size(); i++) {
                     BlockPin wireSource = wireBlockPins[i];
                     funcCall += "&wire_";
@@ -73,6 +79,24 @@ QString generatePicCode(FlowChart flow) {
                 funcCall += ");";
                 mainFile += funcCall;
                 mainFile += "\n";
+                // write this node's struct instance
+                QString structInstance = "struct ";
+                structInstance += block.blockType().name();
+                structInstance += "_options ";
+                structInstance += "block_options_";
+                structInstance += QString::number(blockIndex);
+                structInstance += ";\n";
+                for (QString optionName : block.blockType().options().keys()) {
+                    QString optionValue = block.optionValues()[optionName];
+                    structInstance += "block_options_";
+                    structInstance += QString::number(blockIndex);
+                    structInstance += ".";
+                    structInstance += optionName;
+                    structInstance += " = ";
+                    structInstance += optionValue; // TODO: factor in data type
+                    structInstance += ";\n";
+                }
+                structInstances.append(structInstance);
             } else {
                toBeExpanded.push_back(blockIndex);
             }
@@ -88,6 +112,12 @@ QString generatePicCode(FlowChart flow) {
     }
     includesFile += "\n";
 
+    QString structInstancesFile;
+    for (QString structInstance : structInstances) {
+        structInstancesFile += structInstance;
+    }
+    structInstancesFile += "\n";
+
     QString declarationsFile = "";
     for (QString wireName : wires) {
         declarationsFile += "int ";
@@ -96,7 +126,7 @@ QString generatePicCode(FlowChart flow) {
     }
     declarationsFile += "\n";
 
-    return includesFile + declarationsFile + mainFile;
+    return includesFile + structInstancesFile + declarationsFile + mainFile;
 }
 
 QSet<QString> extractUniqueBlockNames(FlowChart flow) {

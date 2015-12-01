@@ -13,11 +13,14 @@
 #include <QPointF>
 #include <QVector>
 #include <QMimeData>
+#include <QContextMenuEvent>
+#include <QMenu>
 #include "gui/blockgraphicsitem.h"
 #include "flowchart/flowchart.h"
 #include "flowchart/blocktype.h"
 #include "gui/pingraphicsitem.h"
 #include "gui/wiregraphicsitem.h"
+#include "gui/blockoptionsdialog.h"
 
 FlowChartGraphicsView::FlowChartGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 
@@ -117,6 +120,29 @@ void FlowChartGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
         }
         mouseMode = NONE;
         QGraphicsView::mouseReleaseEvent(event);
+    }
+}
+
+void FlowChartGraphicsView::contextMenuEvent(QContextMenuEvent * event) {
+    QList<QGraphicsItem*> qgiList = items(event->pos());
+    BlockGraphicsItem* bgi = NULL;
+    for (QGraphicsItem* qgi : qgiList) {
+        bgi = dynamic_cast<BlockGraphicsItem*>(qgi);
+        if (bgi) {
+            break;
+        }
+    }
+    if (bgi) {
+        BlockType bt = bgi->blockType();
+        QPoint globalPos = mapToGlobal(event->pos());
+        QMenu myMenu;
+        myMenu.addAction(bt.displayName() + " options");
+        QAction* selectedItem = myMenu.exec(globalPos);
+        if (selectedItem) {
+            BlockOptionsDialog bod(bt, flow->block(bgi->blockIndex).optionValues(), this);
+            bod.exec();
+            flow->setBlockOptionValues(bgi->blockIndex, bod.optionValues());
+        }
     }
 }
 

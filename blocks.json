@@ -6,6 +6,20 @@
 			"inputs" : {},
 			"outputs" : {
 				"" : 1
+			},
+			"options" : {
+				"data" : {
+					"variableType" : "int*",
+					"displayName" : "Input channel",
+					"defaultValue" : "0x0000",
+					"optionType" : "combobox",
+					"choices" : {
+						"1" : "0x0000",
+						"2" : "0x0001",
+						"3" : "0x0002",
+						"4" : "0x0003"
+					}
+				}
 			}
 		},
 		{
@@ -14,7 +28,21 @@
 			"inputs" : {
 				"" : 1
 			},
-			"outputs" : {}
+			"outputs" : {},
+			"options" : {
+				"data" : {
+					"variableType" : "int*",
+					"displayName" : "Output channel",
+					"defaultValue" : "0x0000",
+					"optionType" : "combobox",
+					"choices" : {
+						"1" : "0x0000",
+						"2" : "0x0001",
+						"3" : "0x0002",
+						"4" : "0x0003"
+					}
+				}
+			}
 		},
 		{
 			"name" : "digital_input",
@@ -22,6 +50,20 @@
 			"inputs" : {},
 			"outputs" : {
 				"" : 2
+			},
+			"options" : {
+				"data" : {
+					"variableType" : "int*",
+					"displayName" : "Input channel",
+					"defaultValue" : "0x0000",
+					"optionType" : "combobox",
+					"choices" : {
+						"1" : "0x0000",
+						"2" : "0x0001",
+						"3" : "0x0002",
+						"4" : "0x0003"
+					}
+				}
 			}
 		},
 		{
@@ -30,7 +72,21 @@
 			"inputs" : {
 				"" : 2
 			},
-			"outputs" : {}
+			"outputs" : {},
+			"options" : {
+				"data" : {
+					"variableType" : "int*",
+					"displayName" : "Output channel",
+					"defaultValue" : "0x0000",
+					"optionType" : "combobox",
+					"choices" : {
+						"1" : "0x0000",
+						"2" : "0x0001",
+						"3" : "0x0002",
+						"4" : "0x0003"
+					}
+				}
+			}
 		},
 		{
 			"name" : "analog_logging",
@@ -38,7 +94,16 @@
 			"inputs" : {
 				"" : 1
 			},
-			"outputs" : {}
+			"outputs" : {},
+			"options" : {
+				"channel" : {
+					"variableType" : "int",
+					"displayName" : "Log channel",
+					"defaultValue" : "0",
+					"optionType" : "integer",
+					"minimum" : 0
+				}
+			}
 		},
 		{
 			"name" : "digital_logging",
@@ -46,7 +111,16 @@
 			"inputs" : {
 				"" : 2
 			},
-			"outputs" : {}
+			"outputs" : {},
+			"options" : {
+				"channel" : {
+					"variableType" : "int",
+					"displayName" : "Log channel",
+					"defaultValue" : "0",
+					"optionType" : "integer",
+					"minimum" : 0
+				}
+			}
 		},
 		{
 			"name" : "analog_constant",
@@ -54,6 +128,14 @@
 			"inputs" : {},
 			"outputs" : {
 				"" : 1
+			},
+			"options" : {
+				"value" : {
+					"variableType" : "int",
+					"displayName" : "Value",
+					"defaultValue" : "0",
+					"optionType" : "integer"
+				}
 			}
 		},
 		{
@@ -62,6 +144,14 @@
 			"inputs" : {},
 			"outputs" : {
 				"" : 2
+			},
+			"options" : {
+				"value" : {
+					"variableType" : "int",
+					"displayName" : "Value",
+					"defaultValue" : "0",
+					"optionType" : "integer"
+				}
 			}
 		},
 		{
@@ -73,7 +163,8 @@
 			},
 			"outputs" : {
 				"sum" : 1
-			}
+			},
+			"options" : {}
 		},
 		{
 			"name" : "saturation",
@@ -82,9 +173,21 @@
 				"input" : 1
 			},
 			"outputs" : {
-				"output" : 1,
-				"highSat" : 2,
-				"lowSat" : 2
+				"output" : 1
+			},
+			"options" : {
+				"low_limit" : {
+					"variableType" : "int",
+					"displayName" : "Low limit",
+					"defaultValue" : "-10",
+					"optionType" : "integer"
+				},
+				"high_limit" : {
+					"variableType" : "int",
+					"displayName" : "High limit",
+					"defaultValue" : "10",
+					"optionType" : "integer"
+				}
 			}
 		}
 	]

@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QMap>
 #include <QString>
+#include <QContextMenuEvent>
 #include "flowchart/blocktype.h"
 #include "gui/blockgraphicsitem.h"
 #include "gui/pingraphicsitem.h"
@@ -44,6 +45,7 @@ protected:
     BlockGraphicsItem *blockBeingDragged;
     QPoint blockDragMouseOffset;
     void addBlockInternal(BlockType blockType, QPointF scenePos); // should be refactored into custom graphicsscene class
+    void contextMenuEvent(QContextMenuEvent * event) override;
 };
 
 #endif // MYGRAPHICSVIEW_H

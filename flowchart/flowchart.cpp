@@ -55,6 +55,10 @@ void FlowChart::moveBlock(int blockIndex, QPointF pos) {
     m_blocks[blockIndex].setPos(pos);
 }
 
+void FlowChart::setBlockOptionValues(int blockIndex, QHash<QString, QString> optionValues) {
+    m_blocks[blockIndex].setOptionValues(optionValues);
+}
+
 QPointF FlowChart::blockPos(int blockIndex) const {
     return block(blockIndex).pos();
 }

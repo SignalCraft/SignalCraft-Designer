@@ -3,14 +3,16 @@
 #include <QtGlobal>
 #include <QPointF>
 #include <QString>
+#include <QSharedPointer>
 
 BlockType::BlockType() { }
 
-BlockType::BlockType(QString name, QString displayName, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs) {
+BlockType::BlockType(QString name, QString displayName, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options) {
     m_name = name;
     m_displayName = displayName;
     m_inputs = inputs;
     m_outputs = outputs;
+    m_options = options;
 }
 
 QPointF BlockType::inputPinPos(QString pinName) const {
@@ -70,6 +72,19 @@ QMap<QString, DataType> BlockType::inputs() const {
 
 QMap<QString, DataType> BlockType::outputs() const {
     return m_outputs;
+}
+
+QMap<QString, QSharedPointer<const BlockOption> > BlockType::options() const {
+    return m_options;
+}
+
+QHash<QString, QString> BlockType::defaultOptionValues() const {
+    QHash<QString, QString> defaults;
+    for (QString optionName : options().keys()) {
+        QSharedPointer<const BlockOption> option = options()[optionName];
+        defaults[optionName] = option->defaultValue();
+    }
+    return defaults;
 }
 
 QPointF BlockType::inputPinIndexToPos(int pinIndex) {

@@ -30,16 +30,19 @@ public:
     void connectOutput(QString outputPinName, BlockPin inputPin);
     void connectInput(QString inputPinName, BlockPin outputPin);
     void setPos(QPointF pos);
+    void setOptionValues(QHash<QString, QString> optionValues);
     bool inputIsConnected(QString inputPinName) const;
     QPointF pos() const;
     BlockType blockType() const;
     QHash<QString, BlockPin> inputConnections() const;
     QHash< QString, QSet< BlockPin > > outputConnections() const;
+    QHash<QString, QString> optionValues() const;
 private:
     QPointF m_pos;
     BlockType m_blockType;
     QHash<QString, BlockPin> m_inputConnections;
     QHash< QString, QSet< BlockPin > > m_outputConnections;
+    QHash<QString, QString> m_optionValues;
 };
 
 #endif // BLOCK_H

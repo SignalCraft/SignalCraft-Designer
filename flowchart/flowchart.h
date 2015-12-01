@@ -14,6 +14,7 @@ public:
     int addBlock(BlockType blockType, QPointF pos);
     void connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName);
     void moveBlock(int blockIndex, QPointF pos);
+    void setBlockOptionValues(int blockIndex, QHash<QString, QString> optionValues);
     QPointF blockPos(int blockIndex) const;
     QHash<int, Block> blocks() const;
     Block block(int blockIndex) const;

@@ -25,7 +25,14 @@ SOURCES += gui/main.cpp\
     flowchart/flowchartserializer.cpp \
     gui/wiregraphicsitem.cpp \
     gui/blocktypelistmodel.cpp \
-    gui/flowchartgraphicsview.cpp
+    gui/flowchartgraphicsview.cpp \
+    gui/blockoptionsdialog.cpp \
+    gui/blockoptioncontrol.cpp \
+    gui/blockoptioncontrolinteger.cpp \
+    flowchart/blockoption.cpp \
+    flowchart/blockoptioninteger.cpp \
+    flowchart/blockoptioncombobox.cpp \
+    gui/blockoptioncontrolcombobox.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/blockgraphicsitem.h \
@@ -41,9 +48,17 @@ HEADERS  += gui/mainwindow.h \
     flowchart/flowchartserializer.h \
     gui/wiregraphicsitem.h \
     gui/blocktypelistmodel.h \
-    gui/flowchartgraphicsview.h
+    gui/flowchartgraphicsview.h \
+    gui/blockoptionsdialog.h \
+    gui/blockoptioncontrol.h \
+    gui/blockoptioncontrolinteger.h \
+    flowchart/blockoption.h \
+    flowchart/blockoptioninteger.h \
+    flowchart/blockoptioncombobox.h \
+    gui/blockoptioncontrolcombobox.h
 
-FORMS    += gui/mainwindow.ui
+FORMS    += gui/mainwindow.ui \
+    gui/blockoptionsdialog.ui
 
 RESOURCES += \
     gui/resources.qrc

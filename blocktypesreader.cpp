@@ -8,6 +8,11 @@
 #include <QJsonArray>
 #include <QString>
 #include "flowchart/datatype.h"
+#include "flowchart/blockoption.h"
+#include "flowchart/blockoptioninteger.h"
+#include "flowchart/blockoptioncombobox.h"
+#include <QSharedPointer>
+#include <QMap>
 
 BlockTypesReader::BlockTypesReader() {}
 
@@ -39,7 +44,12 @@ BlockType BlockTypesReader::readBlockType(QJsonValue node) {
     QString displayName = nodeObject["displayName"].toString();
     QMap<QString, DataType> inputs = readPinList(nodeObject["inputs"]);
     QMap<QString, DataType> outputs = readPinList(nodeObject["outputs"]);
-    BlockType blockType(name, displayName, inputs, outputs);
+    QMap<QString, QSharedPointer<const BlockOption> > options;
+    QJsonObject optionsNodeObject = nodeObject["options"].toObject();
+    for (QJsonObject::const_iterator i = optionsNodeObject.begin(); i != optionsNodeObject.end(); i++) {
+        options[i.key()] = readBlockOption(i.value());
+    }
+    BlockType blockType(name, displayName, inputs, outputs, options);
     return blockType;
 }
 
@@ -51,4 +61,40 @@ QMap<QString, DataType> BlockTypesReader::readPinList(QJsonValue node) {
         pinList[i.key()] = static_cast<DataType>(i.value().toInt());
     }
     return pinList;
+}
+
+QSharedPointer<const BlockOption> BlockTypesReader::readBlockOption(QJsonValue node) {
+    QJsonObject nodeObject = node.toObject();
+    QString displayName = nodeObject["displayName"].toString();
+    QString defaultValue = nodeObject["defaultValue"].toString();
+    QString optionType = nodeObject["optionType"].toString();
+    if (optionType == "integer") {
+        int minimum = 0;
+        int maximum = 99;
+        QJsonValue minimumMaybe = nodeObject["minimum"];
+        if (!(minimumMaybe.isNull() || minimumMaybe.isUndefined())) {
+            minimum = minimumMaybe.toInt();
+        }
+        QJsonValue maximumMaybe = nodeObject["maximum"];
+        if (!(maximumMaybe.isNull() || minimumMaybe.isUndefined())) {
+            maximum = maximumMaybe.toInt();
+        }
+        return QSharedPointer<const BlockOption>(new BlockOptionInteger(displayName, defaultValue, minimum, maximum));
+    } else if (optionType == "combobox") {
+        QJsonObject choicesNodeObject = nodeObject["choices"].toObject();
+        QMap<QString, QString> choices;
+        for (QJsonObject::const_iterator i = choicesNodeObject.begin(); i != choicesNodeObject.end(); i++) {
+            choices[i.key()] = i.value().toString();
+        }
+        return QSharedPointer<const BlockOption>(new BlockOptionComboBox(displayName, defaultValue, choices));
+    } else if (optionType == "float") {
+        // TODO: throw
+        throw "abc";
+    } else if (optionType == "stringInput") {
+        // TODO: throw
+        throw "abc";
+    } else {
+        // TODO: throw
+        throw "abc";
+    }
 }

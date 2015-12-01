@@ -35,11 +35,10 @@ Block::Block() {}
 Block::Block(BlockType blockType, QPointF pos) {
     m_blockType = blockType;
     m_pos = pos;
+    m_optionValues = blockType.defaultOptionValues();
 }
 
-Block::Block(BlockType blockType, QPointF pos, QHash<QString, BlockPin> inputConnections, QHash< QString, QSet< BlockPin > > outputConnections) {
-    m_blockType = blockType;
-    m_pos = pos;
+Block::Block(BlockType blockType, QPointF pos, QHash<QString, BlockPin> inputConnections, QHash< QString, QSet< BlockPin > > outputConnections) : Block(blockType, pos) {
     m_inputConnections = inputConnections;
     m_outputConnections = outputConnections;
 }
@@ -54,6 +53,10 @@ void Block::connectInput(QString inputPinName, BlockPin outputPin) {
 
 void Block::setPos(QPointF pos) {
     m_pos = pos;
+}
+
+void Block::setOptionValues(QHash<QString, QString> optionValues) {
+    m_optionValues = optionValues;
 }
 
 bool Block::inputIsConnected(QString inputPinName) const {
@@ -74,4 +77,8 @@ QHash<QString, BlockPin> Block::inputConnections() const {
 
 QHash< QString, QSet< BlockPin > > Block::outputConnections() const {
     return m_outputConnections;
+}
+
+QHash<QString, QString> Block::optionValues() const {
+    return m_optionValues;
 }
