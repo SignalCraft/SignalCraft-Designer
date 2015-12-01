@@ -18,6 +18,7 @@ BlockOptionsDialog::BlockOptionsDialog(BlockType bt, QHash<QString, QString> opt
     }
     ui->optionControlLayout->addStretch(0);
     setWindowTitle(bt.displayName() + " Options");
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 BlockOptionsDialog::~BlockOptionsDialog() {
