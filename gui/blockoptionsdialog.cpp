@@ -17,6 +17,7 @@ BlockOptionsDialog::BlockOptionsDialog(BlockType bt, QHash<QString, QString> opt
         m_optionControls[blockOptionName] = control;
     }
     ui->optionControlLayout->addStretch(0);
+    setWindowTitle(bt.displayName() + " Options");
 }
 
 BlockOptionsDialog::~BlockOptionsDialog() {
