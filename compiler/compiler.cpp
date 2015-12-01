@@ -61,7 +61,7 @@ QString generatePicCode(FlowChart flow) {
                 }
                 QString funcCall = block.blockType().name();
                 funcCall += "(";
-                funcCall += "block_options_";
+                funcCall += "&block_options_";
                 funcCall += QString::number(blockIndex);
                 if (0 < wireBlockPins.size()) {
                     funcCall += ",";
