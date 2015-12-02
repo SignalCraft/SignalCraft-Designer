@@ -31,6 +31,13 @@ public:
     BlockType(QString name, QString displayName, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options);
 
     /**
+     * Determine whether or not this BlockType is valid.
+     * A BlockType is valid if its name is nonempty.
+     * @return true if this is a valid BlockType, false otherwise
+     */
+    bool isValid() const;
+
+    /**
      * Calculate the relative position of the top-left corner of the named input pin.
      * @param pinName the name of the input pin
      * @return the relative position

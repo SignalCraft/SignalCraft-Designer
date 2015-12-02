@@ -26,6 +26,13 @@ public:
     BlockPin(int blockNum, QString pinName);
 
     /**
+     * Determine whether or not this BlockPin is valid.
+     * A BlockPin is valid if its index is nonnegative.
+     * @return true if this is a valid BlockPin, false otherwise
+     */
+    bool isValid() const;
+
+    /**
      * Two BlockPins are equal if they have the same block index and pin name.
      * @param other the other BlockPin
      * @return true if the two BlockPins are the same, false otherwise
@@ -74,6 +81,13 @@ public:
      * @param outputConnections a mapping from output pin names to the set of BlockPins driven by that output pin
      */
     Block(BlockType blockType, QPointF pos, QHash<QString, BlockPin> inputConnections, QHash< QString, QSet< BlockPin > > outputConnections);
+
+    /**
+     * Determine whether or not this Block is valid.
+     * A Block is valid if its blockType is valid.
+     * @return true if this is a valid Block, false otherwise
+     */
+    bool isValid() const;
 
     /**
      * Connect the given output pin to the given BlockPin.

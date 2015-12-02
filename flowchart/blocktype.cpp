@@ -5,7 +5,9 @@
 #include <QString>
 #include <QSharedPointer>
 
-BlockType::BlockType() { }
+BlockType::BlockType() {
+    m_name = "";
+}
 
 BlockType::BlockType(QString name, QString displayName, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options) {
     m_name = name;
@@ -13,6 +15,10 @@ BlockType::BlockType(QString name, QString displayName, QMap<QString, DataType> 
     m_inputs = inputs;
     m_outputs = outputs;
     m_options = options;
+}
+
+bool BlockType::isValid() const {
+    return !m_name.isEmpty();
 }
 
 QPointF BlockType::inputPinPos(QString pinName) const {

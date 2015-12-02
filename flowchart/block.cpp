@@ -14,6 +14,10 @@ BlockPin::BlockPin(int blockNum, QString pinName) {
     m_pinName = pinName;
 }
 
+bool BlockPin::isValid() const {
+    return m_blockNum >= 0;
+}
+
 bool BlockPin::operator==(const BlockPin &other) const {
     return (blockNum() == other.blockNum()) && (pinName() == other.pinName());
 }
@@ -30,7 +34,9 @@ uint qHash(const BlockPin b) {
     return (b.blockNum() * 31) + qHash(b.pinName());
 }
 
-Block::Block() {}
+Block::Block() {
+    m_blockType = BlockType();
+}
 
 Block::Block(BlockType blockType, QPointF pos) {
     m_blockType = blockType;
@@ -41,6 +47,10 @@ Block::Block(BlockType blockType, QPointF pos) {
 Block::Block(BlockType blockType, QPointF pos, QHash<QString, BlockPin> inputConnections, QHash< QString, QSet< BlockPin > > outputConnections) : Block(blockType, pos) {
     m_inputConnections = inputConnections;
     m_outputConnections = outputConnections;
+}
+
+bool Block::isValid() const {
+    return m_blockType.isValid();
 }
 
 void Block::connectOutput(QString outputPinName, BlockPin inputPin) {
