@@ -19,11 +19,6 @@
 class BlockOption {
 public:
     /**
-     * Construct an invalid BlockOption.
-     */
-    explicit BlockOption();
-
-    /**
      * Construct a BlockOption.
      * @param displayName the BlockOption's display name.
      * @param defaultValue the BlockOption's default value.

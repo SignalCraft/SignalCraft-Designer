@@ -1,9 +1,5 @@
 #include "blockoption.h"
 
-BlockOption::BlockOption() {
-    m_displayName = "bad";
-}
-
 BlockOption::BlockOption(QString displayName, QString defaultValue) {
     m_displayName = displayName;
     m_defaultValue = defaultValue;
