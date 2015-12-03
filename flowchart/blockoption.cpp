@@ -13,11 +13,6 @@ QString BlockOption::defaultValue() const {
     return m_defaultValue;
 }
 
-BlockOptionControl *BlockOption::makeControl() const {
-    return NULL;
-    // TODO: throw
-}
-
 BlockOptionControl *BlockOption::makeControl(QString currentValue) const {
     BlockOptionControl *control = makeControl();
     control->setCurrentValue(currentValue);

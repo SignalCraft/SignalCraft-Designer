@@ -40,7 +40,7 @@ public:
      * This is a pure virtual function: subclasses must implement it.
      * @return A pointer to the heap-allocated control object.
      */
-    virtual BlockOptionControl *makeControl() const;
+    virtual BlockOptionControl *makeControl() const = 0;
 
     /**
      * Create the BlockOptionControl for controlling this option, with the given current value.
