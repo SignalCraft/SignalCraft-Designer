@@ -12,6 +12,9 @@
  * values, default value, and display characteristics. It also handles the
  * creation of the appropriate BlockOptionControl object.
  *
+ * Note that option values are always represented as QStrings, since their
+ * only function is to end up as text anyway.
+ *
  * Since BlockOption is abstract, only its subclasses should be
  * instantiated. Subclasses must override makeControl() but should not
  * override makeControl(QString), which calls makeControl internally.
