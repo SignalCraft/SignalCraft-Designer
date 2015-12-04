@@ -19,7 +19,7 @@ BlockType BlockTypeListModel::blockTypeAt(const QModelIndex &index) const {
     return m_blockTypes[index.row()];
 }
 
-int BlockTypeListModel::rowCount(const QModelIndex &parent) const {
+int BlockTypeListModel::rowCount(const QModelIndex &) const {
     return m_blockTypes.size();
 }
 

@@ -58,7 +58,7 @@ QPainterPath WireGraphicsItem::shape() const {
     return QPainterPath();
 }
 
-void WireGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+void WireGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidget *) {
     painter->setPen(QPen(QColor(0,0,0), 15));
     QPointF myPinPos = blockOutputPinPos(m_blockPin);
     auto otherBlockPins = m_flow->block(m_blockPin.blockNum()).outputConnections()[m_blockPin.pinName()];
