@@ -7,8 +7,9 @@
 #include <QStyleOptionGraphicsItem>
 #include <QWidget>
 #include <QTextOption>
+#include "gui/blockgraphicsitem.h"
 
-PinGraphicsItem::PinGraphicsItem(QGraphicsItem *parent, QString pinName, DataType pinDataType, bool isOutput) : QGraphicsItem(parent) {
+PinGraphicsItem::PinGraphicsItem(BlockGraphicsItem *parent, QString pinName, DataType pinDataType, bool isOutput) : QGraphicsItem(parent) {
     m_pinName = pinName;
     m_pinDataType = pinDataType;
     m_isOutput = isOutput;
@@ -27,15 +28,15 @@ QRectF PinGraphicsItem::boundingRect() const {
     return QRectF(0, 0, 200, 100);
 }
 
-QString PinGraphicsItem::pinName() {
+QString PinGraphicsItem::pinName() const {
     return m_pinName;
 }
 
-DataType PinGraphicsItem::pinDataType() {
+DataType PinGraphicsItem::pinDataType() const {
     return m_pinDataType;
 }
 
-bool PinGraphicsItem::isOutput() {
+bool PinGraphicsItem::isOutput() const {
     return m_isOutput;
 }
 

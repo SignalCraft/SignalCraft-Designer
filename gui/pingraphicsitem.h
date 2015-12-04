@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QString>
 #include "flowchart/datatype.h"
+#include "gui/blockgraphicsitem.h"
 
 /**
  * @brief The PinGraphicsItem class is a QGraphicsItem that represents a block's pin.
@@ -17,7 +18,7 @@ public:
      * @param pinDataType the pin's data type
      * @param isOutput true if the pin is an output, false if it's an input
      */
-    PinGraphicsItem(QGraphicsItem *parent, QString pinName, DataType pinDataType, bool isOutput);
+    PinGraphicsItem(BlockGraphicsItem *parent, QString pinName, DataType pinDataType, bool isOutput);
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
 
@@ -26,17 +27,17 @@ public:
     /**
      * @return the pin's name
      */
-    QString pinName();
+    QString pinName() const;
 
     /**
      * @return the pin's data type
      */
-    DataType pinDataType();
+    DataType pinDataType() const;
 
     /**
      * @return true if this pin is an output, false if it's an input
      */
-    bool isOutput();
+    bool isOutput() const;
 
 private:
     QString m_pinName;
