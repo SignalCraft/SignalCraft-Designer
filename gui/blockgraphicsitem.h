@@ -4,15 +4,34 @@
 #include <QGraphicsItem>
 #include "flowchart/blocktype.h"
 
-class BlockGraphicsItem : public QGraphicsItem
-{
+/**
+ * The BlockGraphicsItem class is a QGraphicsItem that represents a block.
+ */
+class BlockGraphicsItem : public QGraphicsItem {
 public:
+    /**
+     * Construct a BlockGraphicsItem.
+     * @param blockType the block's BlockType
+     * @param index the block's index
+     */
     BlockGraphicsItem(BlockType blockType, int index);
+
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
+
     QRectF boundingRect() const override;
+
+    /**
+     * @return the block's BlockType
+     */
     BlockType blockType();
-    BlockType m_blockType;
+
+    /**
+     * Stores the block's index
+     */
     int blockIndex;
+
+private:
+    BlockType m_blockType;
     QRectF m_boundingRect;
 };
 
