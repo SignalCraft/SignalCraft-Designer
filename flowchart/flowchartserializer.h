@@ -10,13 +10,33 @@
 #include <QHash>
 #include <QSet>
 
-class FlowChartSerializer
-{
+/**
+ * The FlowChartSerializer class handles JSON serialization and deserialization
+ * of a FlowChart.
+ */
+class FlowChartSerializer {
 public:
+    /**
+     * Construct a FlowChartSerializer.
+     * @param blockTypes An ordered mapping of block type names to BlockTypes.
+     */
     FlowChartSerializer(QMap<QString, BlockType> blockTypes);
+
+    /**
+     * Deserialize a JSON-encoded FlowChart.
+     * @param node the JSON root node of the encoded FlowChart
+     * @return the deserialized FlowChart
+     */
     FlowChart jsonParseFlowChart(Json::Value node);
+
+    /**
+     * Serialize a FlowChart as JSON
+     * @param b the FlowChart to serialize
+     * @return the JSON serialization of the FlowChart
+     */
     Json::Value jsonComposeFlowChart(FlowChart b);
-protected:
+
+private:
     QHash<int, Block> jsonParseBlocks(Json::Value node);
     Json::Value jsonComposeBlocks(QHash<int, Block> map);
     Block jsonParseBlock(Json::Value node);
