@@ -14,14 +14,35 @@ namespace Ui {
     class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+/**
+ * A MainWindow is the main window of the program, containing the flow chart and the block type list.
+ */
+class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
+    /**
+     * Construct a MainWindow.
+     * @param parent the optional parent widget
+     */
     explicit MainWindow(QWidget *parent = 0);
-    MainWindow(ApplicationData _appData);
+
+    /**
+     * Consruct a MainWindow with the given ApplicationData.
+     * @param _appData the application data
+     */
+    explicit MainWindow(ApplicationData _appData);
+
     ~MainWindow();
-protected:
+
+protected slots:
+    void handleCurrentItemChanged(const QModelIndex& current, const QModelIndex& previous);
+    void handleZoomIn();
+    void handleZoomOut();
+    void handleSaveAs();
+    void handleCompile();
+    void handleProgram();
+
+private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     BlockTypeListModel *blocks;
@@ -30,13 +51,6 @@ protected:
     FlowChart flow;
     DeviceConnection device;
     ApplicationData appData;
-protected slots:
-    void handleCurrentItemChanged(const QModelIndex& current, const QModelIndex&);
-    void handleZoomIn();
-    void handleZoomOut();
-    void handleSaveAs();
-    void handleCompile();
-    void handleProgram();
 };
 
 #endif // MAINWINDOW_H
