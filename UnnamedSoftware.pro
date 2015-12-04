@@ -31,7 +31,8 @@ SOURCES += gui/main.cpp\
     flowchart/blockoption.cpp \
     flowchart/blockoptioninteger.cpp \
     flowchart/blockoptioncombobox.cpp \
-    gui/blockoptioncontrolcombobox.cpp
+    gui/blockoptioncontrolcombobox.cpp \
+    flowchart/blockpin.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/blockgraphicsitem.h \
@@ -53,7 +54,8 @@ HEADERS  += gui/mainwindow.h \
     flowchart/blockoption.h \
     flowchart/blockoptioninteger.h \
     flowchart/blockoptioncombobox.h \
-    gui/blockoptioncontrolcombobox.h
+    gui/blockoptioncontrolcombobox.h \
+    flowchart/blockpin.h
 
 FORMS    += gui/mainwindow.ui \
     gui/blockoptionsdialog.ui

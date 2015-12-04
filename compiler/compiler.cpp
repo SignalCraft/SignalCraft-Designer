@@ -4,6 +4,8 @@
 #include <QList>
 #include <QSet>
 #include <QVector>
+#include "flowchart/blockpin.h"
+#include "flowchart/block.h"
 
 using namespace std;
 

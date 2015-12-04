@@ -21,6 +21,7 @@
 #include "gui/pingraphicsitem.h"
 #include "gui/wiregraphicsitem.h"
 #include "gui/blockoptionsdialog.h"
+#include "flowchart/blockpin.h"
 
 FlowChartGraphicsView::FlowChartGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 

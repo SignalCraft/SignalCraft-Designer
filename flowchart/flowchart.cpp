@@ -4,6 +4,7 @@
 #include <QString>
 #include "flowchart/block.h"
 #include "flowchart/blocktype.h"
+#include "flowchart/blockpin.h"
 
 FlowChart::FlowChart() {}
 

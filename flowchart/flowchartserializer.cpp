@@ -9,6 +9,7 @@
 #include "flowchart/blocktype.h"
 #include "flowchart/flowchart.h"
 #include "flowchart/block.h"
+#include "flowchart/blockpin.h"
 
 FlowChartSerializer::FlowChartSerializer(QMap<QString, BlockType> blockTypes) {
     m_blockTypes = blockTypes;

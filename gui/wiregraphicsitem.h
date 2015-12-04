@@ -3,7 +3,7 @@
 
 #include <QGraphicsPathItem>
 #include "flowchart/flowchart.h"
-#include "flowchart/block.h"
+#include "flowchart/blockpin.h"
 #include <QRectF>
 #include <QPainterPath>
 #include <QPointF>

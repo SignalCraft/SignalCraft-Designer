@@ -9,6 +9,7 @@
 #include "json/json.h"
 #include <QHash>
 #include <QSet>
+#include "flowchart/blockpin.h"
 
 /**
  * The FlowChartSerializer class handles JSON serialization and deserialization

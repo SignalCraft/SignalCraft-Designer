@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QWidget>
+#include "flowchart/blockpin.h"
 
 QPointF WireGraphicsItem::blockInputPinPos(const BlockPin bp) const {
     Block block = m_flow->block(bp.blockNum());
