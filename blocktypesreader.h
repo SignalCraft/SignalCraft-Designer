@@ -32,7 +32,7 @@ public:
      * Read a JSON file as a list of block types to be stored.
      * @param device the device to read from
      */
-    void read(QIODevice *device);
+    void read(QIODevice *device); // TODO: stop using IO device in this class
 
 private:
     QMap<QString, BlockType> m_blockTypes;

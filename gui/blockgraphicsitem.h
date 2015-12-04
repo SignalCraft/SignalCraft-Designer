@@ -28,7 +28,7 @@ public:
     /**
      * Stores the block's index
      */
-    int blockIndex;
+    int blockIndex; // TODO: accessor
 
 private:
     BlockType m_blockType;

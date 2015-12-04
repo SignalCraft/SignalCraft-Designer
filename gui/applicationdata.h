@@ -19,7 +19,7 @@ public:
     /**
      * Stores an order mapping from block names to BlockTypes.
      */
-    QMap<QString, BlockType> blockTypes;
+    QMap<QString, BlockType> blockTypes; // TODO: QHash
 };
 
 #endif // APPLICATIONDATA_H

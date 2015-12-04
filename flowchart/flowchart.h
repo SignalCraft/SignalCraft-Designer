@@ -44,7 +44,7 @@ public:
      * @param sinkBlockID the second BlockPin's block index
      * @param sinkPinName the second BlockPin's pin name
      */
-    void connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName);
+    void connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName); // TODO: use blockpins
 
     /**
      * Move a block to the given position.
@@ -70,7 +70,7 @@ public:
     /**
      * @return a mapping of block indexes to Block objects
      */
-    QHash<int, Block> blocks() const;
+    QHash<int, Block> blocks() const; // TODO: remove
 
     /**
      * Get the block with the given index

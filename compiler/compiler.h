@@ -9,6 +9,8 @@
 
 /** @file */
 
+// TODO: refactor into FlowChart
+
 /**
  * Compile the given flowchart into c code for the device.
  * @param flow the flowchart to compile
