@@ -11,19 +11,29 @@
 #include <QStyleOptionGraphicsItem>
 #include <QWidget>
 
-class WireGraphicsItem : public QGraphicsPathItem
-{
+/**
+ * The WireGraphicsItem class is a QGraphicsItem that represents a wire.
+ */
+class WireGraphicsItem : public QGraphicsPathItem {
 public:
+    /**
+     * Construct a WireGraphicsItem.
+     * @param flow the flowchart containing the wire
+     * @param blockPin the blockpin that sources the wire
+     */
     WireGraphicsItem(FlowChart *flow, BlockPin blockPin);
+
     QRectF boundingRect() const override;
+
     QPainterPath shape() const override;
+
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
-protected:
+
+private:
     FlowChart *m_flow;
     BlockPin m_blockPin;
-private:
-    QPointF blockInputPinPos(const BlockPin bp) const; // should be refactored into flowchart
-    QPointF blockOutputPinPos(const BlockPin bp) const; // should be refactored into flowchart
+    QPointF blockInputPinPos(const BlockPin bp) const; // TODO: should be refactored into flowchart
+    QPointF blockOutputPinPos(const BlockPin bp) const; // TODO: should be refactored into flowchart
 };
 
 #endif // WIREGRAPHICSITEM_H
