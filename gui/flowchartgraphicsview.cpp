@@ -109,8 +109,9 @@ void FlowChartGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
                     }
                 }
                 if (a && b) {
-                    flow->connect(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName(),
-                                  static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName());
+                    BlockPin aBlockPin(static_cast<BlockGraphicsItem*>(a->parentItem())->blockIndex, a->pinName());
+                    BlockPin bBlockPin(static_cast<BlockGraphicsItem*>(b->parentItem())->blockIndex, b->pinName());
+                    flow->connect(aBlockPin, bBlockPin);
                     scene()->invalidate();
                 }
             }

@@ -39,12 +39,10 @@ public:
     /**
      * Connect two BlockPins to each other.
      * This method only suceedes if one of the pins is an input and the other is an output.
-     * @param sourceBlockID the first BlockPin's block index
-     * @param sourcePinName the first BlockPin's pin name
-     * @param sinkBlockID the second BlockPin's block index
-     * @param sinkPinName the second BlockPin's pin name
+     * @param first the first BlockPin
+     * @param second the second BlockPin
      */
-    void connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName); // TODO: use blockpins
+    void connect(BlockPin first, BlockPin second);
 
     /**
      * Move a block to the given position.

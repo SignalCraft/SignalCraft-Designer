@@ -18,33 +18,31 @@ int FlowChart::addBlock(BlockType blockType, QPointF pos) {
     return m_currentIndex++;
 }
 
-void FlowChart::connect(int sourceBlockID, QString sourcePinName, int sinkBlockID, QString sinkPinName) {
-    Block* source = &m_blocks[sourceBlockID];
+void FlowChart::connect(BlockPin first, BlockPin second) {
+    Block* source = &m_blocks[first.blockNum()];
     BlockType sourceBlockType = source->blockType();
-    BlockPin sourcePin(sourceBlockID, sourcePinName);
-    Block* sink = &m_blocks[sinkBlockID];
+    Block* sink = &m_blocks[second.blockNum()];
     BlockType sinkBlockType = sink->blockType();
-    BlockPin sinkPin(sinkBlockID, sinkPinName);
-    if (sourceBlockType.isPinOutput(sourcePinName)) {
-        if (sinkBlockType.isPinOutput(sinkPinName)) {
+    if (sourceBlockType.isPinOutput(first.pinName())) {
+        if (sinkBlockType.isPinOutput(second.pinName())) {
             // both outputs, error condition
         } else {
             // output to input
-            if (sink->inputIsConnected(sinkPinName)) {
+            if (sink->inputIsConnected(second.pinName())) {
                 // error condition
             } else {
-                source->connectOutput(sourcePinName, sinkPin);
-                sink->connectInput(sinkPinName, sourcePin);
+                source->connectOutput(first.pinName(), second);
+                sink->connectInput(second.pinName(), first);
             }
         }
     } else {
-        if (sinkBlockType.isPinOutput(sinkPinName)) {
+        if (sinkBlockType.isPinOutput(second.pinName())) {
             // input to output
-            if (source->inputIsConnected(sourcePinName)) {
+            if (source->inputIsConnected(first.pinName())) {
                 // error condition
             } else {
-                sink->connectOutput(sinkPinName, sourcePin);
-                source->connectInput(sourcePinName, sinkPin);
+                sink->connectOutput(second.pinName(), first);
+                source->connectInput(first.pinName(), second);
             }
         } else {
             // both inputs, must search
