@@ -17,7 +17,6 @@ SOURCES += gui/main.cpp\
     flowchart/blocktype.cpp \
     flowchart/flowchart.cpp \
     jsoncpp.cpp \
-    usb/deviceconnection.cpp \
     compiler/compiler.cpp \
     blocktypesreader.cpp \
     gui/applicationdata.cpp \
@@ -39,7 +38,6 @@ HEADERS  += gui/mainwindow.h \
     flowchart/block.h \
     flowchart/blocktype.h \
     flowchart/flowchart.h \
-    usb/deviceconnection.h \
     compiler/compiler.h \
     blocktypesreader.h \
     gui/applicationdata.h \

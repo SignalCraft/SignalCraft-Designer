@@ -4,7 +4,6 @@
 #include <QMainWindow>
 
 #include "flowchart/flowchart.h"
-#include "usb/deviceconnection.h"
 #include "gui/applicationdata.h"
 class QGraphicsScene;
 class QModelIndex;
@@ -49,7 +48,6 @@ private:
     qreal xScale = 0.2;
     qreal yScale = 0.2;
     FlowChart flow;
-    DeviceConnection device;
     ApplicationData appData;
 };
 

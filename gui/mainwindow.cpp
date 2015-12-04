@@ -82,7 +82,4 @@ void MainWindow::handleCompile(){
     file.close();
 }
 
-void MainWindow::handleProgram() {
-    int result = device.sendProgram();
-    ui->label_actionStatus->setText(QString("Result =") + QString::number(result));
-}
+void MainWindow::handleProgram() { }
