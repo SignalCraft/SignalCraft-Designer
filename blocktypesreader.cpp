@@ -16,7 +16,7 @@
 
 BlockTypesReader::BlockTypesReader() {}
 
-QMap<QString, BlockType> BlockTypesReader::blockTypes() {
+QMap<QString, BlockType> BlockTypesReader::blockTypes() const {
     return m_blockTypes;
 }
 
