@@ -9,23 +9,53 @@
 #include "gui/blockgraphicsitem.h"
 #include "gui/pingraphicsitem.h"
 #include <QPoint>
+
 class FlowChart;
 
+/**
+ * The MouseMode enum represents what kind of action the mouse is currently
+ * doing, if anything.
+ */
 enum MouseMode {NONE, CONNECT, DRAG_BLOCK, DRAG_CANVAS};
 
-class FlowChartGraphicsView : public QGraphicsView
-{
+/**
+ * The FlowChartGraphicsView class displays a FlowChart by wrapping around both
+ * a FlowChart object and a QGraphicsScene, so that neither of those objects
+ * need to be accessed directly.
+ */
+class FlowChartGraphicsView : public QGraphicsView {
     Q_OBJECT
 public:
+    /**
+     * Construct a FlowChartGraphicsView.
+     * @param parent the optional parent widget
+     */
     FlowChartGraphicsView(QWidget *parent);
+
+    /**
+     * Set the FlowChart to be displayed.
+     * @param f the new FlowChart
+     */
     void setFlowChart(FlowChart *f);
+
+    /**
+     * Set the ordered mapping from block type names to BlockTypes, by pointer
+     * @param blockTypes a pointer to the BlockTypes mapping
+     */
     void setBlockTypes(QMap<QString, BlockType> *blockTypes);
+
 public slots:
+    /**
+     * Set the curent block type, to be used in the case of a double click.
+     * @param blockType the current block type
+     */
     void setCurrentBlockType(BlockType blockType);
+
 protected:
     void addBlock(BlockType blockType, QPoint viewPos);
     void addBlockByCenter(BlockType blockType, QPoint viewPos);
     void moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos);
+
 protected slots:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
@@ -35,7 +65,8 @@ protected slots:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-protected:
+
+private:
     BlockType m_currentBlockType;
     FlowChart *flow;
     QPoint mouseDownPos;
@@ -44,7 +75,7 @@ protected:
     PinGraphicsItem *pinBeingConnected;
     BlockGraphicsItem *blockBeingDragged;
     QPoint blockDragMouseOffset;
-    void addBlockInternal(BlockType blockType, QPointF scenePos); // should be refactored into custom graphicsscene class
+    void addBlockInternal(BlockType blockType, QPointF scenePos); // TODO: should be refactored into custom graphicsscene class
     void contextMenuEvent(QContextMenuEvent * event) override;
 };
 
