@@ -6,11 +6,12 @@
 #include <QWidget>
 
 /**
- * A BlockOptionControl is an input widget used in an BlockOptionsDialog
- * to set one of a block's options.
+ * A BlockOptionControl is an input widget used in an BlockOptionsDialog to
+ * set one of a block's options.
  *
- * BlockOptionControl must be subclassed to be used, and all subclasses
- * must implement setCurrentValue(QString) and textValue().
+ * Since BlockOptionControl is an abstract class, it must be subclassed to
+ * be used, and all subclasses must implement setCurrentValue(QString) and
+ * textValue().
  */
 class BlockOptionControl : public QGroupBox {
     Q_OBJECT
@@ -26,13 +27,13 @@ public:
      * Set the current value of the control.
      * @param value the new value
      */
-    virtual void setCurrentValue(QString value);
+    virtual void setCurrentValue(QString value) = 0;
 
     /**
      * Determine the current value of the control.
      * @return the current value
      */
-    virtual QString textValue() const;
+    virtual QString textValue() const = 0;
 };
 
 #endif // BLOCKOPTIONCONTROL_H
