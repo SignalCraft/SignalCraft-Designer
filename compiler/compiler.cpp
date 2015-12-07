@@ -4,8 +4,10 @@
 #include <QList>
 #include <QSet>
 #include <QVector>
+#include <QMap>
 #include "flowchart/blockpin.h"
 #include "flowchart/block.h"
+#include "flowchart/blocktype.h"
 
 using namespace std;
 
@@ -18,7 +20,8 @@ using namespace std;
  * wire_<blocknumber>_<pinname>
  */
 
-QString generatePicCode(FlowChart flow) {
+QString generatePicCode(const FlowChart flow) {
+    const QMap<QString, BlockType> *blockTypes = flow.blockTypes();
     QSet<QString> blockNames = extractUniqueBlockNames(flow);
     QString mainFile = "int main() {\n\n";
     QSet<int> expanded;
@@ -32,6 +35,7 @@ QString generatePicCode(FlowChart flow) {
         // if this block has not been expanded yet
         if (expanded.find(blockIndex) == expanded.end()) {
             Block block = flow.block(blockIndex);
+            BlockType blockType = blockTypes->value(block.blockTypeName());
             // check if all this block's inputs have been expanded
             bool found_all = isExpandable(block, expanded);
             if(found_all) {
@@ -48,7 +52,7 @@ QString generatePicCode(FlowChart flow) {
                 }
                 // write this node's function call
                 QVector<BlockPin> wireBlockPins;
-                for (QString inputPinName : block.blockType().inputs().keys()) {
+                for (QString inputPinName : blockType.inputs().keys()) {
                     if (!block.inputIsConnected(inputPinName)) {
                         // error: bad structure
                         return "";
@@ -57,11 +61,11 @@ QString generatePicCode(FlowChart flow) {
                         wireBlockPins.push_back(wireSource);
                     }
                 }
-                for (QString outputPinName : block.blockType().outputs().keys()) {
+                for (QString outputPinName : blockType.outputs().keys()) {
                     BlockPin outputBlockPin(blockIndex, outputPinName);
                     wireBlockPins.push_back(outputBlockPin);
                 }
-                QString funcCall = block.blockType().name();
+                QString funcCall = block.blockTypeName();
                 funcCall += "(";
                 funcCall += "&block_options_";
                 funcCall += QString::number(blockIndex);
@@ -83,13 +87,14 @@ QString generatePicCode(FlowChart flow) {
                 mainFile += "\n";
                 // write this node's struct instance
                 QString structInstance = "struct ";
-                structInstance += block.blockType().name();
+                structInstance += block.blockTypeName();
                 structInstance += "_options ";
                 structInstance += "block_options_";
                 structInstance += QString::number(blockIndex);
                 structInstance += ";\n";
-                for (QString optionName : block.blockType().options().keys()) {
-                    QString optionValue = block.optionValues()[optionName];
+                QHash<QString, QString> optionValues = blockType.resultingOptionValues(block.optionValues());
+                for (QString optionName : blockType.options().keys()) {
+                    QString optionValue = optionValues[optionName];
                     structInstance += "block_options_";
                     structInstance += QString::number(blockIndex);
                     structInstance += ".";
@@ -135,7 +140,7 @@ QSet<QString> extractUniqueBlockNames(FlowChart flow) {
     QSet<QString> blockNames;
     for(Block block : flow.blocks().values()) {
         // make sure this block's name is in the blockNames set
-        blockNames.insert(block.blockType().name());
+        blockNames.insert(block.blockTypeName());
     }
     return blockNames;
 }

@@ -3,6 +3,8 @@
 
 #include <QString>
 #include "gui/blockoptioncontrol.h"
+#include <QJsonValue>
+#include <QSharedPointer>
 
 /**
  * The immutable BlockOption abstract class represents one of a
@@ -56,5 +58,8 @@ private:
     QString m_displayName;
     QString m_defaultValue;
 };
+
+QJsonValue BlockOption_toJson(QSharedPointer<const BlockOption> obj);
+QSharedPointer<const BlockOption> BlockOption_fromJson(QJsonValue node);
 
 #endif // BLOCKOPTION_H

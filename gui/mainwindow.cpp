@@ -12,7 +12,7 @@
 #include "json/json.h"
 #include "flowchart/flowchartserializer.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), flow(FlowChart(&appData.blockTypes)) {
     ui->setupUi(this);
 
     ui->listView_io->setAcceptDrops(false);
@@ -24,14 +24,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->graphicsView->setSceneRect(-10000, -10000, 20000, 20000);
     ui->graphicsView->centerOn(0,0);
 
-    connect(ui->actionZoom_In, &QAction::triggered, this, &MainWindow::handleZoomIn);
-    connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
-    connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
-    connect(ui->pushButton_compile, &QPushButton::pressed, this, &MainWindow::handleCompile);
-    connect(ui->pushButton_program, &QPushButton::pressed, this, &MainWindow::handleProgram);
-}
-
-MainWindow::MainWindow(ApplicationData _appData) : MainWindow() {
     appData = _appData;
 
     blocks = new BlockTypeListModel(appData.blockTypes.values());
@@ -41,6 +33,12 @@ MainWindow::MainWindow(ApplicationData _appData) : MainWindow() {
     connect(ui->listView_io->selectionModel(), &QItemSelectionModel::currentChanged, this, &MainWindow::handleCurrentItemChanged);
 
     ui->graphicsView->setBlockTypes(&(appData.blockTypes));
+
+    connect(ui->actionZoom_In, &QAction::triggered, this, &MainWindow::handleZoomIn);
+    connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
+    connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
+    connect(ui->pushButton_compile, &QPushButton::pressed, this, &MainWindow::handleCompile);
+    connect(ui->pushButton_program, &QPushButton::pressed, this, &MainWindow::handleProgram);
 }
 
 MainWindow::~MainWindow() {

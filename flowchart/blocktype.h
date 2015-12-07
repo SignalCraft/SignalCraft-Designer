@@ -9,6 +9,7 @@
 #include <QtGlobal>
 #include "flowchart/blockoption.h"
 #include <QSharedPointer>
+#include <QJsonValue>
 
 /**
  * The immutable BlockType class represents a type of Block that can exist.
@@ -114,6 +115,13 @@ public:
      */
     QHash<QString, QString> defaultOptionValues() const;
 
+    /**
+     * Use the given possibly-incomplete option values to determine the complete option values.
+     * @param optionValues the mapping of option names to values that overrides the defaults
+     * @return the resulting complete mapping of option names to option values
+     */
+    QHash<QString, QString> resultingOptionValues(QHash<QString, QString> optionValues) const;
+
 public:
     /**
      * Convert the index of an input pin to the relative position of its top-left corner.
@@ -150,5 +158,8 @@ private:
     QMap<QString, DataType> m_outputs;
     QMap<QString, QSharedPointer<const BlockOption> > m_options;
 };
+
+QJsonValue BlockType_toJson(BlockType obj);
+BlockType BlockType_fromJson(QJsonValue node);
 
 #endif // BLOCKTYPE_H

@@ -1,12 +1,12 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include "flowchart/blocktype.h"
 #include <QString>
 #include <QHash>
 #include <QSet>
 #include <QPointF>
 #include "flowchart/blockpin.h"
+#include <QJsonValue>
 
 /**
  * The Block class represents a specific instance of a block type in a flow chart.
@@ -20,23 +20,23 @@ public:
 
     /**
      * Construct a block with no connections.
-     * @param blockType the block's type
+     * @param blockTypeName the block's type name
      * @param pos the block's position
      */
-    Block(BlockType blockType, QPointF pos);
+    Block(QString blockTypeName, QPointF pos);
 
     /**
      * Construct a block with the given connections.
-     * @param blockType the block's type
+     * @param blockTypeName the block's type name
      * @param pos the block's position
      * @param inputConnections a mapping from input pin names to the BlockPin that drives that input pin
      * @param outputConnections a mapping from output pin names to the set of BlockPins driven by that output pin
      */
-    Block(BlockType blockType, QPointF pos, QHash<QString, BlockPin> inputConnections, QHash< QString, QSet< BlockPin > > outputConnections);
+    Block(QString blockTypeName, QPointF pos, QHash<QString, BlockPin> inputConnections, QHash< QString, QSet< BlockPin > > outputConnections);
 
     /**
      * Determine whether or not this Block is valid.
-     * A Block is valid if its blockType is valid.
+     * A Block is valid if its blockTypeName is not empty.
      * @return true if this is a valid Block, false otherwise
      */
     bool isValid() const;
@@ -80,9 +80,9 @@ public:
     QPointF pos() const;
 
     /**
-     * @return this block's type
+     * @return this block's type name
      */
-    BlockType blockType() const;
+    QString blockTypeName() const;
 
     /**
      * @return a mapping from input pin names to the BlockPin that drives that input pin
@@ -101,10 +101,13 @@ public:
 
 private:
     QPointF m_pos;
-    BlockType m_blockType;
+    QString m_blockTypeName;
     QHash<QString, BlockPin> m_inputConnections;
     QHash< QString, QSet< BlockPin > > m_outputConnections;
     QHash<QString, QString> m_optionValues;
 };
+
+QJsonValue Block_toJson(Block obj);
+Block Block_fromJson(QJsonValue node);
 
 #endif // BLOCK_H

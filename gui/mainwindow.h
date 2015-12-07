@@ -19,17 +19,13 @@ namespace Ui {
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    /**
-     * Construct a MainWindow.
-     * @param parent the optional parent widget
-     */
-    explicit MainWindow(QWidget *parent = 0);
 
     /**
      * Consruct a MainWindow with the given ApplicationData.
      * @param _appData the application data
+     * @param parent the optional parent widget
      */
-    explicit MainWindow(ApplicationData _appData);
+    explicit MainWindow(ApplicationData _appData, QWidget *parent = 0);
 
     ~MainWindow();
 

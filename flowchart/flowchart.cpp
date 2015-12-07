@@ -6,23 +6,25 @@
 #include "flowchart/blocktype.h"
 #include "flowchart/blockpin.h"
 
-FlowChart::FlowChart() {}
+FlowChart::FlowChart(QMap<QString, BlockType> *blockTypes) {
+    m_blockTypes = blockTypes;
+}
 
-FlowChart::FlowChart(QHash<int, Block> blocks) {
+FlowChart::FlowChart(QMap<QString, BlockType> *blockTypes, QHash<int, Block> blocks) : FlowChart(blockTypes) {
     m_blocks = blocks;
 }
 
-int FlowChart::addBlock(BlockType blockType, QPointF pos) {
-    Block b(blockType, pos);
+int FlowChart::addBlock(QString blockTypeName, QPointF pos) {
+    Block b(blockTypeName, pos);
     m_blocks[m_currentIndex] = b;
     return m_currentIndex++;
 }
 
 void FlowChart::connect(BlockPin first, BlockPin second) {
     Block* source = &m_blocks[first.blockNum()];
-    BlockType sourceBlockType = source->blockType();
+    BlockType sourceBlockType = m_blockTypes->value(source->blockTypeName());
     Block* sink = &m_blocks[second.blockNum()];
-    BlockType sinkBlockType = sink->blockType();
+    BlockType sinkBlockType = m_blockTypes->value(sink->blockTypeName());
     if (sourceBlockType.isPinOutput(first.pinName())) {
         if (sinkBlockType.isPinOutput(second.pinName())) {
             // both outputs, error condition
@@ -64,6 +66,10 @@ QPointF FlowChart::blockPos(int blockIndex) const {
 
 QHash<int, Block> FlowChart::blocks() const {
     return m_blocks;
+}
+
+const QMap<QString, BlockType> *FlowChart::blockTypes() const {
+    return m_blockTypes;
 }
 
 Block FlowChart::block(int blockIndex) const {

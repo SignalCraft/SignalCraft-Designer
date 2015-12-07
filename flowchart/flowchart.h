@@ -19,22 +19,24 @@ class FlowChart {
 public:
     /**
      * Construct an empty FlowChart.
+     * @param blockTypes a pointer to a mapping from block type names to BlockTypes
      */
-    FlowChart();
+    FlowChart(QMap<QString, BlockType> *blockTypes);
 
     /**
      * Construct a FlowChart with the given mapping from indexes to blocks.
+     * @param blockTypes a pointer to a mapping from block type names to BlockTypes
      * @param blocks a mapping from indexes to blocks
      */
-    FlowChart(QHash<int, Block> blocks);
+    FlowChart(QMap<QString, BlockType> *blockTypes, QHash<int, Block> blocks);
 
     /**
      * Add a new block to this FlowChart.
-     * @param blockType the type of the new block
+     * @param blockTypeName the type name of the new block
      * @param pos the position of the new block
      * @return the new block's index
      */
-    int addBlock(BlockType blockType, QPointF pos);
+    int addBlock(QString blockTypeName, QPointF pos);
 
     /**
      * Connect two BlockPins to each other.
@@ -71,6 +73,11 @@ public:
     QHash<int, Block> blocks() const; // TODO: remove
 
     /**
+     * @return a pointer to an ordered mapping of block time names to BlockTypes
+     */
+    const QMap<QString, BlockType> *blockTypes() const; // TODO: remove
+
+    /**
      * Get the block with the given index
      * @param blockIndex the block's index
      * @return the block
@@ -79,6 +86,7 @@ public:
 
 private:
     QHash<int, Block> m_blocks;
+    const QMap<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };
 

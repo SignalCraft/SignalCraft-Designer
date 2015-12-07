@@ -159,7 +159,7 @@ void FlowChartGraphicsView::addBlockByCenter(BlockType blockType, QPoint viewPos
 }
 
 void FlowChartGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
-    int blockIndex = flow->addBlock(blockType, scenePos);
+    int blockIndex = flow->addBlock(blockType.name(), scenePos);
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);

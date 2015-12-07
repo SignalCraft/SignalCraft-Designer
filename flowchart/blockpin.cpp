@@ -2,6 +2,8 @@
 
 #include <QString>
 #include <QHash>
+#include <QJsonValue>
+#include <QJsonObject>
 
 BlockPin::BlockPin() {
     m_blockNum = -1;
@@ -31,4 +33,18 @@ QString BlockPin::pinName() const {
 
 uint qHash(const BlockPin b) {
     return (b.blockNum() * 31) + qHash(b.pinName());
+}
+
+QJsonValue BlockPin_toJson(BlockPin obj) {
+    QJsonObject nodeObj;
+    nodeObj["blockNum"] = obj.blockNum();
+    nodeObj["pinName"] = obj.pinName();
+    return nodeObj;
+}
+
+BlockPin BlockPin_fromJson(QJsonValue node) {
+    QJsonObject nodeObj = node.toObject();
+    int blockNum = nodeObj["blockNum"].toInt();
+    QString pinName = nodeObj["pinName"].toString();
+    return BlockPin(blockNum, pinName);
 }

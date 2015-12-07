@@ -14,7 +14,7 @@
 QPointF WireGraphicsItem::blockInputPinPos(const BlockPin bp) const {
     Block block = m_flow->block(bp.blockNum());
     QPointF blockPos = block.pos();
-    BlockType blockType = block.blockType();
+    BlockType blockType = m_flow->blockTypes()->value(block.blockTypeName());
     QPointF relativePinPos = blockType.inputPinCenterPos(bp.pinName());
     QPointF pinPos = blockPos + relativePinPos;
     return pinPos;
@@ -23,7 +23,7 @@ QPointF WireGraphicsItem::blockInputPinPos(const BlockPin bp) const {
 QPointF WireGraphicsItem::blockOutputPinPos(const BlockPin bp) const {
     Block block = m_flow->block(bp.blockNum());
     QPointF blockPos = block.pos();
-    BlockType blockType = block.blockType();
+    BlockType blockType = m_flow->blockTypes()->value(block.blockTypeName());
     QPointF relativePinPos = blockType.outputPinCenterPos(bp.pinName());
     QPointF pinPos = blockPos + relativePinPos;
     return pinPos;

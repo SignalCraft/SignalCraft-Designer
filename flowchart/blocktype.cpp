@@ -4,6 +4,11 @@
 #include <QPointF>
 #include <QString>
 #include <QSharedPointer>
+#include "flowchart/blockoption.h"
+#include "jsonforqt.h"
+#include "flowchart/datatype.h"
+#include <QJsonValue>
+#include <QJsonObject>
 
 BlockType::BlockType() {
     m_name = "";
@@ -93,6 +98,15 @@ QHash<QString, QString> BlockType::defaultOptionValues() const {
     return defaults;
 }
 
+QHash<QString, QString> BlockType::resultingOptionValues(QHash<QString, QString> optionValues) const {
+    for (QString optionName : options().keys()) {
+        if (!optionValues.contains(optionName)) {
+            optionValues.insert(optionName, options().value(optionName)->defaultValue());
+        }
+    }
+    return optionValues;
+}
+
 QPointF BlockType::inputPinIndexToPos(int pinIndex) {
     return QPointF(0, 100*(1+pinIndex));
 }
@@ -107,4 +121,24 @@ QPointF BlockType::inputPinIndexToCenterPos(int pinIndex) {
 
 QPointF BlockType::outputPinIndexToCenterPos(int pinIndex) {
     return outputPinIndexToPos(pinIndex) + QPointF(100, 50);
+}
+
+QJsonValue BlockType_toJson(BlockType obj) {
+    QJsonObject nodeObj;
+    nodeObj["name"] = obj.name();
+    nodeObj["displayName"] = obj.displayName();
+    nodeObj["inputs"] = QMap_QString_DataType_toJson(obj.inputs());
+    nodeObj["outputs"] = QMap_QString_DataType_toJson(obj.outputs());
+    nodeObj["options"] = QMap_QString_BlockOption_toJson(obj.options());
+    return nodeObj;
+}
+
+BlockType BlockType_fromJson(QJsonValue node) {
+    QJsonObject nodeObj = node.toObject();
+    QString name = nodeObj["name"].toString();
+    QString displayName = nodeObj["displayName"].toString();
+    QMap<QString, DataType> inputs = QMap_QString_DataType_fromJson(nodeObj["inputs"]);
+    QMap<QString, DataType> outputs = QMap_QString_DataType_fromJson(nodeObj["outputs"]);
+    QMap<QString, QSharedPointer<const BlockOption>> options = QMap_QString_BlockOption_fromJson(nodeObj["options"]);
+    return BlockType(name, displayName, inputs, outputs, options);
 }

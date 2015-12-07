@@ -32,7 +32,9 @@ SOURCES += gui/main.cpp\
     flowchart/blockoptioninteger.cpp \
     flowchart/blockoptioncombobox.cpp \
     gui/blockoptioncontrolcombobox.cpp \
-    flowchart/blockpin.cpp
+    flowchart/blockpin.cpp \
+    jsonforqt.cpp \
+    flowchart/datatype.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/blockgraphicsitem.h \
@@ -55,7 +57,8 @@ HEADERS  += gui/mainwindow.h \
     flowchart/blockoptioninteger.h \
     flowchart/blockoptioncombobox.h \
     gui/blockoptioncontrolcombobox.h \
-    flowchart/blockpin.h
+    flowchart/blockpin.h \
+    jsonforqt.h
 
 FORMS    += gui/mainwindow.ui \
     gui/blockoptionsdialog.ui

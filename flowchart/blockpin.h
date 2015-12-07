@@ -2,6 +2,7 @@
 #define BLOCKPIN_H
 
 #include <QString>
+#include <QJsonValue>
 
 /**
  * The immutable BlockPin class identifies a pin on a specific block in a flowchart.
@@ -50,5 +51,8 @@ private:
 };
 
 uint qHash(const BlockPin b);
+
+QJsonValue BlockPin_toJson(BlockPin obj);
+BlockPin BlockPin_fromJson(QJsonValue node);
 
 #endif // BLOCKPIN_H

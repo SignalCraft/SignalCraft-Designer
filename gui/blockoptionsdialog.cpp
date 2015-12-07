@@ -8,8 +8,9 @@
 #include <QSharedPointer>
 #include <QHash>
 
-BlockOptionsDialog::BlockOptionsDialog(BlockType bt, QHash<QString, QString> optionValues, QWidget *parent) : QDialog(parent), ui(new Ui::BlockOptionsDialog), m_optionValues(optionValues) {
+BlockOptionsDialog::BlockOptionsDialog(BlockType bt, QHash<QString, QString> optionValues, QWidget *parent) : QDialog(parent), ui(new Ui::BlockOptionsDialog) {
     ui->setupUi(this);
+    m_optionValues = bt.resultingOptionValues(optionValues);
     for (QString blockOptionName : bt.options().keys()) {
         QSharedPointer<const BlockOption> blockOption = bt.options()[blockOptionName];
         BlockOptionControl *control = blockOption->makeControl(optionValues[blockOptionName]);
