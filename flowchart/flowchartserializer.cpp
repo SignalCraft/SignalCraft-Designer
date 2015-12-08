@@ -16,7 +16,8 @@ FlowChartSerializer::FlowChartSerializer(QMap<QString, BlockType> blockTypes) {
 }
 
 FlowChart FlowChartSerializer::jsonParseFlowChart(Json::Value node) {
-    FlowChart f(&m_blockTypes, jsonParseBlocks(node["blocks"]));
+    FlowChart f(jsonParseBlocks(node["blocks"]));
+    f.setBlockTypes(&m_blockTypes);
     return f;
 }
 

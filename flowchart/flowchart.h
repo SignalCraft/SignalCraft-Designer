@@ -19,16 +19,20 @@ class FlowChart {
 public:
     /**
      * Construct an empty FlowChart.
-     * @param blockTypes a pointer to a mapping from block type names to BlockTypes
      */
-    FlowChart(QMap<QString, BlockType> *blockTypes);
+    FlowChart();
 
     /**
      * Construct a FlowChart with the given mapping from indexes to blocks.
-     * @param blockTypes a pointer to a mapping from block type names to BlockTypes
      * @param blocks a mapping from indexes to blocks
      */
-    FlowChart(QMap<QString, BlockType> *blockTypes, QHash<int, Block> blocks);
+    FlowChart(QHash<int, Block> blocks);
+
+    /**
+     * Set the mapping from block type names to BlockTypes used in this FlowChart.
+     * @param blockTypes a pointer to an ordered mapping from block type names to BlockTypes
+     */
+    void setBlockTypes(QMap<QString, BlockType> *blockTypes);
 
     /**
      * Add a new block to this FlowChart.
@@ -89,5 +93,8 @@ private:
     const QMap<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };
+
+QJsonValue FlowChart_toJson(FlowChart obj);
+FlowChart FlowChart_fromJson(QJsonValue node);
 
 #endif // FLOWCHART_H

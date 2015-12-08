@@ -5,12 +5,13 @@
 #include "flowchart/block.h"
 #include "flowchart/blocktype.h"
 #include "flowchart/blockpin.h"
+#include <QJsonValue>
+#include <QJsonObject>
+#include "jsonforqt.h"
 
-FlowChart::FlowChart(QMap<QString, BlockType> *blockTypes) {
-    m_blockTypes = blockTypes;
-}
+FlowChart::FlowChart() { }
 
-FlowChart::FlowChart(QMap<QString, BlockType> *blockTypes, QHash<int, Block> blocks) : FlowChart(blockTypes) {
+FlowChart::FlowChart(QHash<int, Block> blocks) {
     m_blocks = blocks;
 }
 
@@ -18,6 +19,10 @@ int FlowChart::addBlock(QString blockTypeName, QPointF pos) {
     Block b(blockTypeName, pos);
     m_blocks[m_currentIndex] = b;
     return m_currentIndex++;
+}
+
+void FlowChart::setBlockTypes(QMap<QString, BlockType> *blockTypes) {
+    m_blockTypes = blockTypes;
 }
 
 void FlowChart::connect(BlockPin first, BlockPin second) {
@@ -74,4 +79,16 @@ const QMap<QString, BlockType> *FlowChart::blockTypes() const {
 
 Block FlowChart::block(int blockIndex) const {
     return blocks()[blockIndex];
+}
+
+QJsonValue FlowChart_toJson(FlowChart obj) {
+    QJsonObject nodeObj;
+    nodeObj["blocks"] = QHash_int_Block_toJson(obj.blocks());
+    return nodeObj;
+}
+
+FlowChart FlowChart_fromJson(QJsonValue node) {
+    QJsonObject nodeObj = node.toObject();
+    QHash<int, Block> blocks = QHash_int_Block_fromJson(nodeObj["blocks"]);
+    return FlowChart(blocks);
 }

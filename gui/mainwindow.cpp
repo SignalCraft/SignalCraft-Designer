@@ -12,10 +12,12 @@
 #include "json/json.h"
 #include "flowchart/flowchartserializer.h"
 
-MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), flow(FlowChart(&appData.blockTypes)) {
+MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     ui->listView_io->setAcceptDrops(false);
+
+    flow.setBlockTypes(&_appData.blockTypes);
 
     ui->graphicsView->setFlowChart(&flow);
     scene = new QGraphicsScene();
