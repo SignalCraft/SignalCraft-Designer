@@ -16,7 +16,6 @@ SOURCES += gui/main.cpp\
     flowchart/block.cpp \
     flowchart/blocktype.cpp \
     flowchart/flowchart.cpp \
-    jsoncpp.cpp \
     compiler/compiler.cpp \
     gui/applicationdata.cpp \
     gui/pingraphicsitem.cpp \
