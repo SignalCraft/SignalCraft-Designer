@@ -9,6 +9,7 @@
 #include "flowchart/datatype.h"
 #include <QJsonValue>
 #include <QJsonObject>
+#include <QJsonArray>
 
 BlockType::BlockType() {
     m_name = "";
@@ -141,4 +142,23 @@ BlockType BlockType_fromJson(QJsonValue node) {
     QMap<QString, DataType> outputs = QMap_QString_DataType_fromJson(nodeObj["outputs"]);
     QMap<QString, QSharedPointer<const BlockOption>> options = QMap_QString_BlockOption_fromJson(nodeObj["options"]);
     return BlockType(name, displayName, inputs, outputs, options);
+}
+
+QJsonValue BlockTypes_toJson(QMap<QString, BlockType> obj) {
+    QJsonArray nodeArray;
+    for (BlockType bt : obj) {
+        nodeArray.append(BlockType_toJson(bt));
+    }
+    return nodeArray;
+}
+
+QMap<QString, BlockType> BlockTypes_fromJson(QJsonValue node) {
+    QJsonArray nodeArray = node.toArray();
+    QMap<QString, BlockType> blockTypes;
+    for (int i = 0; i < nodeArray.size(); i++) {
+        QJsonValue element = nodeArray[i];
+        BlockType bt = BlockType_fromJson(element);
+        blockTypes[bt.name()] = bt;
+    }
+    return blockTypes;
 }

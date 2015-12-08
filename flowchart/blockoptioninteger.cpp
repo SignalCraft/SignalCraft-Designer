@@ -2,8 +2,10 @@
 #include "gui/blockoptioncontrol.h"
 #include "gui/blockoptioncontrolinteger.h"
 #include <QString>
+#include <QJsonValue>
+#include <QJsonObject>
 
-BlockOptionInteger::BlockOptionInteger(QString displayName, QString defaultValue, int minimum, int maximum) : BlockOption(displayName, defaultValue) {
+BlockOptionInteger::BlockOptionInteger(QString displayName, QString defaultValue, int minimum, int maximum) : BlockOption(displayName, defaultValue, INTEGER) {
     m_minimum = minimum;
     m_maximum = maximum;
 }
@@ -13,3 +15,9 @@ BlockOptionControl *BlockOptionInteger::makeControl() const {
     return control;
 }
 
+QJsonValue BlockOptionInteger::toJson() const {
+    QJsonObject nodeObj = BlockOption::toJson().toObject();
+    nodeObj["minimum"] = m_minimum;
+    nodeObj["maximum"] = m_maximum;
+    return nodeObj;
+}

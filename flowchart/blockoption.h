@@ -7,6 +7,11 @@
 #include <QSharedPointer>
 
 /**
+ * The BlockOptionType enum stores what subtype a BlcokOption is at runtime.
+ */
+enum BlockOptionType { COMBOBOX = 1, INTEGER = 2 };
+
+/**
  * The immutable BlockOption abstract class represents one of a
  * blocktype's options.
  *
@@ -25,10 +30,11 @@ class BlockOption {
 public:
     /**
      * Construct a BlockOption.
-     * @param displayName the BlockOption's display name.
-     * @param defaultValue the BlockOption's default value.
+     * @param displayName the BlockOption's display name
+     * @param defaultValue the BlockOption's default value
+     * @param type the BlockOption's subtype
      */
-    explicit BlockOption(QString displayName, QString defaultValue);
+    explicit BlockOption(QString displayName, QString defaultValue, BlockOptionType type);
 
     /**
      * @return the display name
@@ -39,6 +45,11 @@ public:
      * @return the default value
      */
     QString defaultValue() const;
+
+    /**
+     * @return the specific subtype
+     */
+    BlockOptionType type() const;
 
     /**
      * Create the BlockOptionControl for controlling this option.
@@ -54,10 +65,16 @@ public:
      */
     BlockOptionControl *makeControl(QString currentValue) const;
 
+    virtual QJsonValue toJson() const;
+
 private:
     QString m_displayName;
     QString m_defaultValue;
+    BlockOptionType m_type;
 };
+
+QJsonValue BlockOptionType_toJson(BlockOptionType obj);
+BlockOptionType BlockOptionType_fromJson(QJsonValue node);
 
 QJsonValue BlockOption_toJson(QSharedPointer<const BlockOption> obj);
 QSharedPointer<const BlockOption> BlockOption_fromJson(QJsonValue node);

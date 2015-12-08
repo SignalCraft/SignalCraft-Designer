@@ -162,4 +162,7 @@ private:
 QJsonValue BlockType_toJson(BlockType obj);
 BlockType BlockType_fromJson(QJsonValue node);
 
+QJsonValue BlockTypes_toJson(QMap<QString, BlockType> obj);
+QMap<QString, BlockType> BlockTypes_fromJson(QJsonValue node);
+
 #endif // BLOCKTYPE_H

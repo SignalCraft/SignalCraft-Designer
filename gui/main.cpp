@@ -3,6 +3,9 @@
 #include <QFile>
 #include "blocktypesreader.h"
 #include "gui/applicationdata.h"
+#include "flowchart/blocktype.h"
+#include <QJsonDocument>
+#include <QJsonArray>
 
 int main(int argc, char *argv[])
 {
@@ -16,10 +19,11 @@ int main(int argc, char *argv[])
         // error message
         return 1;
     }
-    BlockTypesReader reader;
-    reader.read(&xmlFile);
+    QByteArray bytes = xmlFile.readAll();
+    QJsonDocument doc = QJsonDocument::fromJson(bytes);
+    QJsonArray nodeArray = doc.array();
     ApplicationData appData;
-    appData.blockTypes = reader.blockTypes();
+    appData.blockTypes = BlockTypes_fromJson(nodeArray);
 
     MainWindow w(appData);
     w.show();

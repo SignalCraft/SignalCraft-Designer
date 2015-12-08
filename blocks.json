@@ -1,194 +1,318 @@
-{
-	"BlockTypes" : [
-		{
-			"name" : "analog_input",
-			"displayName" : "Analog Input",
-			"inputs" : {},
-			"outputs" : {
-				"" : 1
-			},
-			"options" : {
-				"data" : {
-					"variableType" : "int*",
-					"displayName" : "Input channel",
-					"defaultValue" : "0x0000",
-					"optionType" : "combobox",
-					"choices" : {
-						"1" : "0x0000",
-						"2" : "0x0001",
-						"3" : "0x0002",
-						"4" : "0x0003"
-					}
-				}
-			}
-		},
-		{
-			"name" : "analog_output",
-			"displayName" : "Analog Output",
-			"inputs" : {
-				"" : 1
-			},
-			"outputs" : {},
-			"options" : {
-				"data" : {
-					"variableType" : "int*",
-					"displayName" : "Output channel",
-					"defaultValue" : "0x0000",
-					"optionType" : "combobox",
-					"choices" : {
-						"1" : "0x0000",
-						"2" : "0x0001",
-						"3" : "0x0002",
-						"4" : "0x0003"
-					}
-				}
-			}
-		},
-		{
-			"name" : "digital_input",
-			"displayName" : "Digital Input",
-			"inputs" : {},
-			"outputs" : {
-				"" : 2
-			},
-			"options" : {
-				"data" : {
-					"variableType" : "int*",
-					"displayName" : "Input channel",
-					"defaultValue" : "0x0000",
-					"optionType" : "combobox",
-					"choices" : {
-						"1" : "0x0000",
-						"2" : "0x0001",
-						"3" : "0x0002",
-						"4" : "0x0003"
-					}
-				}
-			}
-		},
-		{
-			"name" : "digital_output",
-			"displayName" : "Digital Output",
-			"inputs" : {
-				"" : 2
-			},
-			"outputs" : {},
-			"options" : {
-				"data" : {
-					"variableType" : "int*",
-					"displayName" : "Output channel",
-					"defaultValue" : "0x0000",
-					"optionType" : "combobox",
-					"choices" : {
-						"1" : "0x0000",
-						"2" : "0x0001",
-						"3" : "0x0002",
-						"4" : "0x0003"
-					}
-				}
-			}
-		},
-		{
-			"name" : "analog_logging",
-			"displayName" : "Analog Logging",
-			"inputs" : {
-				"" : 1
-			},
-			"outputs" : {},
-			"options" : {
-				"channel" : {
-					"variableType" : "int",
-					"displayName" : "Log channel",
-					"defaultValue" : "0",
-					"optionType" : "integer",
-					"minimum" : 0
-				}
-			}
-		},
-		{
-			"name" : "digital_logging",
-			"displayName" : "Digital Logging",
-			"inputs" : {
-				"" : 2
-			},
-			"outputs" : {},
-			"options" : {
-				"channel" : {
-					"variableType" : "int",
-					"displayName" : "Log channel",
-					"defaultValue" : "0",
-					"optionType" : "integer",
-					"minimum" : 0
-				}
-			}
-		},
-		{
-			"name" : "analog_constant",
-			"displayName" : "Analog Constant",
-			"inputs" : {},
-			"outputs" : {
-				"" : 1
-			},
-			"options" : {
-				"value" : {
-					"variableType" : "int",
-					"displayName" : "Value",
-					"defaultValue" : "0",
-					"optionType" : "integer"
-				}
-			}
-		},
-		{
-			"name" : "digital_constant",
-			"displayName" : "Digital Constant",
-			"inputs" : {},
-			"outputs" : {
-				"" : 2
-			},
-			"options" : {
-				"value" : {
-					"variableType" : "int",
-					"displayName" : "Value",
-					"defaultValue" : "0",
-					"optionType" : "integer"
-				}
-			}
-		},
-		{
-			"name" : "addition",
-			"displayName" : "Addition",
-			"inputs" : {
-				"input1" : 1,
-				"input2" : 1
-			},
-			"outputs" : {
-				"sum" : 1
-			},
-			"options" : {}
-		},
-		{
-			"name" : "saturation",
-			"displayName" : "Saturation",
-			"inputs" : {
-				"input" : 1
-			},
-			"outputs" : {
-				"output" : 1
-			},
-			"options" : {
-				"low_limit" : {
-					"variableType" : "int",
-					"displayName" : "Low limit",
-					"defaultValue" : "-10",
-					"optionType" : "integer"
-				},
-				"high_limit" : {
-					"variableType" : "int",
-					"displayName" : "High limit",
-					"defaultValue" : "10",
-					"optionType" : "integer"
-				}
-			}
-		}
-	]
-}
+[
+    {
+        "displayName": "Addition",
+        "inputs": [
+            {
+                "key": "input1",
+                "value": 1
+            },
+            {
+                "key": "input2",
+                "value": 1
+            }
+        ],
+        "name": "addition",
+        "options": [
+        ],
+        "outputs": [
+            {
+                "key": "sum",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "displayName": "Analog Constant",
+        "inputs": [
+        ],
+        "name": "analog_constant",
+        "options": [
+            {
+                "key": "value",
+                "value": {
+                    "defaultValue": "0",
+                    "displayName": "Value",
+                    "maximum": 99,
+                    "minimum": 0,
+                    "type": 2
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "key": "",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "displayName": "Analog Input",
+        "inputs": [
+        ],
+        "name": "analog_input",
+        "options": [
+            {
+                "key": "data",
+                "value": {
+                    "choices": [
+                        {
+                            "key": "1",
+                            "value": "0x0000"
+                        },
+                        {
+                            "key": "2",
+                            "value": "0x0001"
+                        },
+                        {
+                            "key": "3",
+                            "value": "0x0002"
+                        },
+                        {
+                            "key": "4",
+                            "value": "0x0003"
+                        }
+                    ],
+                    "defaultValue": "0x0000",
+                    "displayName": "Input channel",
+                    "type": 1
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "key": "",
+                "value": 1
+            }
+        ]
+    },
+    {
+        "displayName": "Analog Logging",
+        "inputs": [
+            {
+                "key": "",
+                "value": 1
+            }
+        ],
+        "name": "analog_logging",
+        "options": [
+            {
+                "key": "channel",
+                "value": {
+                    "defaultValue": "0",
+                    "displayName": "Log channel",
+                    "maximum": 99,
+                    "minimum": 0,
+                    "type": 2
+                }
+            }
+        ],
+        "outputs": [
+        ]
+    },
+    {
+        "displayName": "Analog Output",
+        "inputs": [
+            {
+                "key": "",
+                "value": 1
+            }
+        ],
+        "name": "analog_output",
+        "options": [
+            {
+                "key": "data",
+                "value": {
+                    "choices": [
+                        {
+                            "key": "1",
+                            "value": "0x0000"
+                        },
+                        {
+                            "key": "2",
+                            "value": "0x0001"
+                        },
+                        {
+                            "key": "3",
+                            "value": "0x0002"
+                        },
+                        {
+                            "key": "4",
+                            "value": "0x0003"
+                        }
+                    ],
+                    "defaultValue": "0x0000",
+                    "displayName": "Output channel",
+                    "type": 1
+                }
+            }
+        ],
+        "outputs": [
+        ]
+    },
+    {
+        "displayName": "Digital Constant",
+        "inputs": [
+        ],
+        "name": "digital_constant",
+        "options": [
+            {
+                "key": "value",
+                "value": {
+                    "defaultValue": "0",
+                    "displayName": "Value",
+                    "maximum": 99,
+                    "minimum": 0,
+                    "type": 2
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "key": "",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "displayName": "Digital Input",
+        "inputs": [
+        ],
+        "name": "digital_input",
+        "options": [
+            {
+                "key": "data",
+                "value": {
+                    "choices": [
+                        {
+                            "key": "1",
+                            "value": "0x0000"
+                        },
+                        {
+                            "key": "2",
+                            "value": "0x0001"
+                        },
+                        {
+                            "key": "3",
+                            "value": "0x0002"
+                        },
+                        {
+                            "key": "4",
+                            "value": "0x0003"
+                        }
+                    ],
+                    "defaultValue": "0x0000",
+                    "displayName": "Input channel",
+                    "type": 1
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "key": "",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "displayName": "Digital Logging",
+        "inputs": [
+            {
+                "key": "",
+                "value": 2
+            }
+        ],
+        "name": "digital_logging",
+        "options": [
+            {
+                "key": "channel",
+                "value": {
+                    "defaultValue": "0",
+                    "displayName": "Log channel",
+                    "maximum": 99,
+                    "minimum": 0,
+                    "type": 2
+                }
+            }
+        ],
+        "outputs": [
+        ]
+    },
+    {
+        "displayName": "Digital Output",
+        "inputs": [
+            {
+                "key": "",
+                "value": 2
+            }
+        ],
+        "name": "digital_output",
+        "options": [
+            {
+                "key": "data",
+                "value": {
+                    "choices": [
+                        {
+                            "key": "1",
+                            "value": "0x0000"
+                        },
+                        {
+                            "key": "2",
+                            "value": "0x0001"
+                        },
+                        {
+                            "key": "3",
+                            "value": "0x0002"
+                        },
+                        {
+                            "key": "4",
+                            "value": "0x0003"
+                        }
+                    ],
+                    "defaultValue": "0x0000",
+                    "displayName": "Output channel",
+                    "type": 1
+                }
+            }
+        ],
+        "outputs": [
+        ]
+    },
+    {
+        "displayName": "Saturation",
+        "inputs": [
+            {
+                "key": "input",
+                "value": 1
+            }
+        ],
+        "name": "saturation",
+        "options": [
+            {
+                "key": "high_limit",
+                "value": {
+                    "defaultValue": "10",
+                    "displayName": "High limit",
+                    "maximum": 99,
+                    "minimum": 0,
+                    "type": 2
+                }
+            },
+            {
+                "key": "low_limit",
+                "value": {
+                    "defaultValue": "-10",
+                    "displayName": "Low limit",
+                    "maximum": 99,
+                    "minimum": 0,
+                    "type": 2
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "key": "output",
+                "value": 1
+            }
+        ]
+    }
+]

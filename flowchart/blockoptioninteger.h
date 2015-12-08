@@ -4,6 +4,7 @@
 #include "flowchart/blockoption.h"
 #include <QString>
 #include "gui/blockoptioncontrol.h"
+#include <QJsonValue>
 
 /**
  * A BlockOptionInteger is a BlockOption that selects from a range of integers.
@@ -25,6 +26,8 @@ public:
      * @return A pointer to the heap-allocated control object.
      */
     virtual BlockOptionControl *makeControl() const override;
+
+    virtual QJsonValue toJson() const override;
 
 private:
     int m_minimum;

@@ -5,6 +5,7 @@
 #include <QString>
 #include "gui/blockoptioncontrol.h"
 #include <QMap>
+#include <QJsonValue>
 
 /**
  * A BlockOptionComboBox is a BlockOption that specifies a set of values, from
@@ -27,6 +28,8 @@ public:
      * @return A pointer to the heap-allocated control object.
      */
     virtual BlockOptionControl *makeControl() const override;
+
+    virtual QJsonValue toJson() const override;
 
 private:
     QMap<QString, QString> m_choices;
