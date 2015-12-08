@@ -1,7 +1,6 @@
 #include "gui/mainwindow.h"
 #include <QApplication>
 #include <QFile>
-#include "blocktypesreader.h"
 #include "gui/applicationdata.h"
 #include "flowchart/blocktype.h"
 #include <QJsonDocument>
