@@ -8,6 +8,7 @@
 #include <QJsonValue>
 #include <QJsonObject>
 #include "jsonforqt.h"
+#include <QMap>
 
 FlowChart::FlowChart() { }
 
@@ -21,7 +22,7 @@ int FlowChart::addBlock(QString blockTypeName, QPointF pos) {
     return m_currentIndex++;
 }
 
-void FlowChart::setBlockTypes(QMap<QString, BlockType> *blockTypes) {
+void FlowChart::setBlockTypes(QHash<QString, BlockType> *blockTypes) {
     m_blockTypes = blockTypes;
 }
 
@@ -73,7 +74,7 @@ QHash<int, Block> FlowChart::blocks() const {
     return m_blocks;
 }
 
-const QMap<QString, BlockType> *FlowChart::blockTypes() const {
+const QHash<QString, BlockType> *FlowChart::blockTypes() const {
     return m_blockTypes;
 }
 

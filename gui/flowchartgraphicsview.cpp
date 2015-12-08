@@ -15,6 +15,7 @@
 #include <QMimeData>
 #include <QContextMenuEvent>
 #include <QMenu>
+#include <QHash>
 #include "gui/blockgraphicsitem.h"
 #include "flowchart/flowchart.h"
 #include "flowchart/blocktype.h"
@@ -29,7 +30,7 @@ void FlowChartGraphicsView::setFlowChart(FlowChart *f) {
     flow = f;
 }
 
-void FlowChartGraphicsView::setBlockTypes(QMap<QString, BlockType> *blockTypes) {
+void FlowChartGraphicsView::setBlockTypes(QHash<QString, BlockType> *blockTypes) {
     m_blockTypes = blockTypes;
 }
 

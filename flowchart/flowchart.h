@@ -2,6 +2,7 @@
 #define FLOWCHART_H
 
 #include <QString>
+#include <QMap>
 #include <QHash>
 #include <QPointF>
 #include "flowchart/block.h"
@@ -30,9 +31,9 @@ public:
 
     /**
      * Set the mapping from block type names to BlockTypes used in this FlowChart.
-     * @param blockTypes a pointer to an ordered mapping from block type names to BlockTypes
+     * @param blockTypes a pointer to a mapping from block type names to BlockTypes
      */
-    void setBlockTypes(QMap<QString, BlockType> *blockTypes);
+    void setBlockTypes(QHash<QString, BlockType> *blockTypes);
 
     /**
      * Add a new block to this FlowChart.
@@ -77,9 +78,9 @@ public:
     QHash<int, Block> blocks() const; // TODO: remove
 
     /**
-     * @return a pointer to an ordered mapping of block time names to BlockTypes
+     * @return a pointer to the mapping of block time names to BlockTypes
      */
-    const QMap<QString, BlockType> *blockTypes() const; // TODO: remove
+    const QHash<QString, BlockType> *blockTypes() const; // TODO: remove
 
     /**
      * Get the block with the given index
@@ -90,7 +91,7 @@ public:
 
 private:
     QHash<int, Block> m_blocks;
-    const QMap<QString, BlockType> *m_blockTypes;
+    const QHash<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };
 

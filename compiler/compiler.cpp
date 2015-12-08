@@ -4,7 +4,7 @@
 #include <QList>
 #include <QSet>
 #include <QVector>
-#include <QMap>
+#include <QHash>
 #include "flowchart/blockpin.h"
 #include "flowchart/block.h"
 #include "flowchart/blocktype.h"
@@ -21,7 +21,7 @@ using namespace std;
  */
 
 QString generatePicCode(const FlowChart flow) {
-    const QMap<QString, BlockType> *blockTypes = flow.blockTypes();
+    const QHash<QString, BlockType> *blockTypes = flow.blockTypes();
     QSet<QString> blockNames = extractUniqueBlockNames(flow);
     QString mainFile = "int main() {\n\n";
     QSet<int> expanded;

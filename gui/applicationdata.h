@@ -1,7 +1,7 @@
 #ifndef APPLICATIONDATA_H
 #define APPLICATIONDATA_H
 
-#include <QMap>
+#include <QHash>
 #include <QString>
 #include "flowchart/blocktype.h"
 
@@ -17,9 +17,9 @@ public:
     ApplicationData();
 
     /**
-     * Stores an order mapping from block names to BlockTypes.
+     * Stores a mapping from block names to BlockTypes.
      */
-    QMap<QString, BlockType> blockTypes; // TODO: QHash
+    QHash<QString, BlockType> blockTypes;
 };
 
 #endif // APPLICATIONDATA_H

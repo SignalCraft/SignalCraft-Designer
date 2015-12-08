@@ -2,7 +2,7 @@
 #define MYGRAPHICSVIEW_H
 
 #include <QGraphicsView>
-#include <QMap>
+#include <QHash>
 #include <QString>
 #include <QContextMenuEvent>
 #include "flowchart/blocktype.h"
@@ -39,10 +39,10 @@ public:
     void setFlowChart(FlowChart *f);
 
     /**
-     * Set the ordered mapping from block type names to BlockTypes, by pointer
+     * Set the mapping from block type names to BlockTypes, by pointer
      * @param blockTypes a pointer to the BlockTypes mapping
      */
-    void setBlockTypes(QMap<QString, BlockType> *blockTypes);
+    void setBlockTypes(QHash<QString, BlockType> *blockTypes);
 
 public slots:
     /**
@@ -70,7 +70,7 @@ private:
     BlockType m_currentBlockType;
     FlowChart *flow;
     QPoint mouseDownPos;
-    QMap<QString, BlockType> *m_blockTypes;
+    QHash<QString, BlockType> *m_blockTypes;
     MouseMode mouseMode = NONE;
     PinGraphicsItem *pinBeingConnected;
     BlockGraphicsItem *blockBeingDragged;

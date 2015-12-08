@@ -10,6 +10,8 @@
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMap>
+#include <QHash>
 
 BlockType::BlockType() {
     m_name = "";
@@ -144,7 +146,7 @@ BlockType BlockType_fromJson(QJsonValue node) {
     return BlockType(name, displayName, inputs, outputs, options);
 }
 
-QJsonValue BlockTypes_toJson(QMap<QString, BlockType> obj) {
+QJsonValue BlockTypes_toJson(QHash<QString, BlockType> obj) {
     QJsonArray nodeArray;
     for (BlockType bt : obj) {
         nodeArray.append(BlockType_toJson(bt));
@@ -152,9 +154,9 @@ QJsonValue BlockTypes_toJson(QMap<QString, BlockType> obj) {
     return nodeArray;
 }
 
-QMap<QString, BlockType> BlockTypes_fromJson(QJsonValue node) {
+QHash<QString, BlockType> BlockTypes_fromJson(QJsonValue node) {
     QJsonArray nodeArray = node.toArray();
-    QMap<QString, BlockType> blockTypes;
+    QHash<QString, BlockType> blockTypes;
     for (int i = 0; i < nodeArray.size(); i++) {
         QJsonValue element = nodeArray[i];
         BlockType bt = BlockType_fromJson(element);
