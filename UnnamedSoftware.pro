@@ -18,7 +18,6 @@ SOURCES += gui/main.cpp\
     flowchart/flowchart.cpp \
     jsoncpp.cpp \
     compiler/compiler.cpp \
-    blocktypesreader.cpp \
     gui/applicationdata.cpp \
     gui/pingraphicsitem.cpp \
     flowchart/flowchartserializer.cpp \
@@ -42,7 +41,6 @@ HEADERS  += gui/mainwindow.h \
     flowchart/blocktype.h \
     flowchart/flowchart.h \
     compiler/compiler.h \
-    blocktypesreader.h \
     gui/applicationdata.h \
     flowchart/datatype.h \
     gui/pingraphicsitem.h \
