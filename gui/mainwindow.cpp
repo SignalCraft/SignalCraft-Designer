@@ -9,8 +9,9 @@
 #include <QTextStream>
 #include "gui/applicationdata.h"
 #include "flowchart/blocktype.h"
-#include "json/json.h"
-#include "flowchart/flowchartserializer.h"
+#include <QJsonDocument>
+#include <QJsonValue>
+#include <QJsonObject>
 
 MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -64,11 +65,9 @@ void MainWindow::handleSaveAs() {
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
-    QTextStream out(&file);
-    Json::StyledWriter json;
-    FlowChartSerializer serializer(appData.blockTypes);
-    out << json.write(serializer.jsonComposeFlowChart(flow)).c_str();
-    file.close();
+    QJsonDocument doc(FlowChart_toJson(flow).toObject());
+    QByteArray bytes = doc.toJson();
+    file.write(bytes);
 }
 
 void MainWindow::handleCompile(){
