@@ -39,8 +39,7 @@ void FlowChart::connect(BlockPin first, BlockPin second) {
             if (sink->inputIsConnected(second.pinName())) {
                 // error condition
             } else {
-                source->connectOutput(first.pinName(), second);
-                sink->connectInput(second.pinName(), first);
+                connectOutputToInput(first, second);
             }
         }
     } else {
@@ -49,13 +48,19 @@ void FlowChart::connect(BlockPin first, BlockPin second) {
             if (source->inputIsConnected(first.pinName())) {
                 // error condition
             } else {
-                sink->connectOutput(second.pinName(), first);
-                source->connectInput(first.pinName(), second);
+                connectOutputToInput(second, first);
             }
         } else {
             // both inputs, must search
         }
     }
+}
+
+void FlowChart::connectOutputToInput(BlockPin output, BlockPin input) {
+    Block* outputBlock = &m_blocks[output.blockNum()];
+    Block* inputBlock = &m_blocks[input.blockNum()];
+    outputBlock->connectOutput(output.pinName(), input);
+    inputBlock->connectInput(input.pinName(), output);
 }
 
 void FlowChart::moveBlock(int blockIndex, QPointF pos) {
