@@ -44,20 +44,12 @@ public:
     int addBlock(QString blockTypeName, QPointF pos);
 
     /**
-     * Connect two arbritrary BlockPins to each other.
-     * This method requires checking the block types. It only suceedes if one
-     * of the pins is an input and the other is an output.
+     * Connect two BlockPins to each other.
+     * This method only suceedes if one of the pins is an input and the other is an output.
      * @param first the first BlockPin
      * @param second the second BlockPin
      */
     void connect(BlockPin first, BlockPin second);
-
-    /**
-     * Connect an output pin to an input pin.
-     * @param output the output pin
-     * @param input the input pin
-     */
-    void connectOutputToInput(BlockPin output, BlockPin input);
 
     /**
      * Move a block to the given position.
