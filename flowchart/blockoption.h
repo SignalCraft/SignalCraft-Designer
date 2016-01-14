@@ -9,7 +9,7 @@
 /**
  * The BlockOptionType enum stores what subtype a BlcokOption is at runtime.
  */
-enum BlockOptionType { COMBOBOX = 1, INTEGER = 2 };
+enum BlockOptionType { BLOCK_OPTION_TYPE_COMBOBOX = 1, BLOCK_OPTION_TYPE_INTEGER = 2 };
 
 /**
  * The immutable BlockOption abstract class represents one of a
