@@ -8,7 +8,7 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
-BlockOptionComboBox::BlockOptionComboBox(QString displayName, QString defaultValue, QMap<QString, QString> choices) : BlockOption(displayName, defaultValue, COMBOBOX_OPTION) {
+BlockOptionComboBox::BlockOptionComboBox(QString displayName, QString defaultValue, QMap<QString, QString> choices) : BlockOption(displayName, defaultValue, BLOCK_OPTION_TYPE_COMBOBOX) {
     m_choices = choices;
 }
 

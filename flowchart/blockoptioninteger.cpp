@@ -5,7 +5,7 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
-BlockOptionInteger::BlockOptionInteger(QString displayName, QString defaultValue, int minimum, int maximum) : BlockOption(displayName, defaultValue, INTEGER_OPTION) {
+BlockOptionInteger::BlockOptionInteger(QString displayName, QString defaultValue, int minimum, int maximum) : BlockOption(displayName, defaultValue, BLOCK_OPTION_TYPE_INTEGER) {
     m_minimum = minimum;
     m_maximum = maximum;
 }
