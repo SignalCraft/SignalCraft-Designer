@@ -24,7 +24,7 @@ QString generatePicCode(const FlowChart flow) {
     const QHash<QString, BlockType> *blockTypes = flow.blockTypes();
     QSet<QString> blockNames = extractUniqueBlockNames(flow);
     QString mainFilePrefix = "int main() {\n\nSystemInit();\ninit_adc();\ninit_dac();\nWDT->WDT_MR |= WDT_MR_WDDIS;\n\n";
-    QString mainFile = "while (1) {\n\n";
+    QString mainFile = "while (1) {\n\ntrigger_adc();\n\n";
     QSet<int> expanded;
     QList<int> toBeExpanded = extractInputBlocks(flow);
     QSet<QString> wires = extractWireNames(flow);
@@ -114,7 +114,7 @@ QString generatePicCode(const FlowChart flow) {
             }
         }
     }
-    mainFile += "\n}\n\nreturn 0;\n\n}";
+    mainFile += "\ntrigger_dac();\n}\n\nreturn 0;\n\n}";
 
     QString includesFile = "#include \"sam.h\"\n#include \"adc.h\"\n#include \"dac.h\"\n";
     for (QString blockName : blockNames) {
@@ -138,7 +138,7 @@ QString generatePicCode(const FlowChart flow) {
 
     QString declarationsFile = "";
     for (QString wireName : wires) {
-        declarationsFile += "int ";
+        declarationsFile += "int16_t ";
         declarationsFile += wireName;
         declarationsFile += ";\n";
     }

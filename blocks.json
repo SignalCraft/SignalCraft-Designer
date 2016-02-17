@@ -188,8 +188,8 @@
                 "value": {
                     "defaultValue": "10",
                     "displayName": "High limit",
-                    "maximum": 99,
-                    "minimum": -99,
+                    "maximum": 32767,
+                    "minimum": -32768,
                     "type": 2
                 }
             },
@@ -198,8 +198,8 @@
                 "value": {
                     "defaultValue": "-10",
                     "displayName": "Low limit",
-                    "maximum": 99,
-                    "minimum": -10,
+                    "maximum": 32767,
+                    "minimum": -32768,
                     "type": 2
                 }
             }
