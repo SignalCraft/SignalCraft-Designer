@@ -23,11 +23,13 @@ using namespace std;
 QString generatePicCode(const FlowChart flow) {
     const QHash<QString, BlockType> *blockTypes = flow.blockTypes();
     QSet<QString> blockNames = extractUniqueBlockNames(flow);
-    QString mainFile = "int main() {\n\nSystemInit();\ninit_adc();\ninit_dac();\nWDT->WDT_MR |= WDT_MR_WDDIS;\n\nwhile (1) {\n\n";
+    QString mainFilePrefix = "int main() {\n\nSystemInit();\ninit_adc();\ninit_dac();\nWDT->WDT_MR |= WDT_MR_WDDIS;\n\n";
+    QString mainFile = "while (1) {\n\n";
     QSet<int> expanded;
     QList<int> toBeExpanded = extractInputBlocks(flow);
     QSet<QString> wires = extractWireNames(flow);
     QList<QString> structInstances;
+    QList<QString> structInitializers;
     // directed graph traversal: write the sequence of functions
     while(!toBeExpanded.empty()) {
         int blockIndex = toBeExpanded.front();
@@ -92,18 +94,21 @@ QString generatePicCode(const FlowChart flow) {
                 structInstance += "block_options_";
                 structInstance += QString::number(blockIndex);
                 structInstance += ";\n";
+                structInstances.append(structInstance);
+                // write this node's struct initializer
+                QString structInitializer = "";
                 QHash<QString, QString> optionValues = blockType.resultingOptionValues(block.optionValues());
                 for (QString optionName : blockType.options().keys()) {
                     QString optionValue = optionValues[optionName];
-                    structInstance += "block_options_";
-                    structInstance += QString::number(blockIndex);
-                    structInstance += ".";
-                    structInstance += optionName;
-                    structInstance += " = ";
-                    structInstance += optionValue; // TODO: factor in data type
-                    structInstance += ";\n";
+                    structInitializer += "block_options_";
+                    structInitializer += QString::number(blockIndex);
+                    structInitializer += ".";
+                    structInitializer += optionName;
+                    structInitializer += " = ";
+                    structInitializer += optionValue; // TODO: factor in data type
+                    structInitializer += ";\n";
                 }
-                structInstances.append(structInstance);
+                structInitializers.append(structInitializer);
             } else {
                toBeExpanded.push_back(blockIndex);
             }
@@ -125,6 +130,12 @@ QString generatePicCode(const FlowChart flow) {
     }
     structInstancesFile += "\n";
 
+    QString structInitializersFile;
+    for (QString structInitializer : structInitializers) {
+        structInitializersFile += structInitializer;
+    }
+    structInitializersFile += "\n";
+
     QString declarationsFile = "";
     for (QString wireName : wires) {
         declarationsFile += "int ";
@@ -133,7 +144,7 @@ QString generatePicCode(const FlowChart flow) {
     }
     declarationsFile += "\n";
 
-    return includesFile + structInstancesFile + declarationsFile + mainFile;
+    return includesFile + structInstancesFile + declarationsFile + mainFilePrefix + structInitializersFile + mainFile;
 }
 
 QSet<QString> extractUniqueBlockNames(FlowChart flow) {

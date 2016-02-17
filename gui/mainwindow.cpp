@@ -12,6 +12,9 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonObject>
+#include <QProcess>
+#include <QString>
+#include <QList>
 
 MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -72,13 +75,34 @@ void MainWindow::handleSaveAs() {
 
 void MainWindow::handleCompile(){
     QString picCode = generatePicCode(flow);
-    QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", ".c");
+    //QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", ".c");
+    QString filePath = "GccApplication1.c";
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
     QTextStream out(&file);
     out << picCode;
     file.close();
+
+    QString exefile = "\"C:\\Program Files (x86)\\Atmel\\Studio\\7.0\\shellUtils\\make.exe\"";
+    QList<QString> args;
+    args.append("-C");
+    args.append("build-firmware");
+    args.append("all");
+    QProcess::execute(exefile, args);
 }
 
-void MainWindow::handleProgram() { }
+void MainWindow::handleProgram() {
+    QString exefile = "\"C:\\Program Files (x86)\\Atmel\\Studio\\7.0\\atbackend\\atprogram.exe\"";
+    QList<QString> args;
+    args.append("-t");
+    args.append("edbg");
+    args.append("-i");
+    args.append("SWD");
+    args.append("-d");
+    args.append("atsamg55j19");
+    args.append("program");
+    args.append("-f");
+    args.append("build-firmware\\GccApplication1.elf");
+    QProcess::execute(exefile, args);
+}
