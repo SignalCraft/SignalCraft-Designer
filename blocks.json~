@@ -342,33 +342,5 @@
                 "value": 1
 	    }
         ]
-    },
-    {
-        "displayName": "Simple High Pass Filter",
-        "inputs": [
-            {
-                "key": "input",
-                "value": 1
-            }
-        ],
-        "name": "high_pass_filter",
-        "options": [
-            {
-                "key": "threshold",
-                "value": {
-                    "defaultValue": "0",
-                    "displayName": "Threshold",
-                    "maximum": 1000,
-                    "minimum": 0,
-                    "type": 2
-                }
-            }
-        ],
-        "outputs": [
-	    {
-		"key": "output",
-                "value": 1
-	    }
-        ]
     }
 ]
