@@ -23,7 +23,7 @@ using namespace std;
 QString generatePicCode(const FlowChart flow) {
     const QHash<QString, BlockType> *blockTypes = flow.blockTypes();
     QSet<QString> blockNames = extractUniqueBlockNames(flow);
-    QString mainFile = "int main() {\n\n";
+    QString mainFile = "int main() {\n\nSystemInit();\ninit_adc();\ninit_dac();\n\nwhile (1) {\n\n";
     QSet<int> expanded;
     QList<int> toBeExpanded = extractInputBlocks(flow);
     QSet<QString> wires = extractWireNames(flow);
@@ -109,9 +109,9 @@ QString generatePicCode(const FlowChart flow) {
             }
         }
     }
-    mainFile += "\nreturn 0;\n\n}";
+    mainFile += "\n}\n\nreturn 0;\n\n}";
 
-    QString includesFile = "#include <avr/io.h>\n";
+    QString includesFile = "#include \"sam.h\"\n#include \"adc.h\"\n#include \"dac.h\"\n";
     for (QString blockName : blockNames) {
         includesFile += "#include \"blocks/";
         includesFile += blockName;
