@@ -22,6 +22,28 @@
         ]
     },
     {
+        "displayName": "Multiplication",
+        "inputs": [
+            {
+                "key": "input1",
+                "value": 1
+            },
+            {
+                "key": "input2",
+                "value": 1
+            }
+        ],
+        "name": "multiplication",
+        "options": [
+        ],
+        "outputs": [
+            {
+                "key": "product",
+                "value": 1
+            }
+        ]
+    },
+    {
         "displayName": "Analog Constant",
         "inputs": [
         ],

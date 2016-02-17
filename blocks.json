@@ -288,5 +288,23 @@
                 "value": 1
 	    }
         ]
-    }
+    },
+    {
+        "displayName": "Peak",
+        "inputs": [
+            {
+                "key": "input1",
+                "value": 1
+            }
+        ],
+        "name": "peak",
+        "options": [
+        ],
+        "outputs": [
+            {
+                "key": "peak",
+                "value": 1
+            }
+        ]
+    },
 ]
