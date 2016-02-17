@@ -210,8 +210,8 @@
                 "value": {
                     "defaultValue": "10",
                     "displayName": "High limit",
-                    "maximum": 32767,
-                    "minimum": -32768,
+                    "maximum": 99,
+                    "minimum": -99,
                     "type": 2
                 }
             },
@@ -220,8 +220,8 @@
                 "value": {
                     "defaultValue": "-10",
                     "displayName": "Low limit",
-                    "maximum": 32767,
-                    "minimum": -32768,
+                    "maximum": 99,
+                    "minimum": -10,
                     "type": 2
                 }
             }
@@ -288,23 +288,5 @@
                 "value": 1
 	    }
         ]
-    },
-    {
-        "displayName": "Peak",
-        "inputs": [
-            {
-                "key": "input1",
-                "value": 1
-            }
-        ],
-        "name": "peak",
-        "options": [
-        ],
-        "outputs": [
-            {
-                "key": "peak",
-                "value": 1
-            }
-        ]
-    },
+    }
 ]
