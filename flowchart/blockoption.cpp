@@ -58,11 +58,11 @@ QSharedPointer<const BlockOption> BlockOption_fromJson(QJsonValue node) {
     QString defaultValue = nodeObj["defaultValue"].toString();
     BlockOptionType type = BlockOptionType_fromJson(nodeObj["type"]);
     switch (type) {
-    case COMBOBOX: {
+    case COMBOBOX_OPTION: {
         QMap<QString, QString> choices = QMap_QString_QString_fromJson(nodeObj["choices"]);
         return QSharedPointer<const BlockOption>(new BlockOptionComboBox(displayName, defaultValue, choices));
     }
-    case INTEGER: {
+    case INTEGER_OPTION: {
         int minimum = nodeObj["minimum"].toInt();
         int maximum = nodeObj["maximum"].toInt();
         return QSharedPointer<const BlockOption>(new BlockOptionInteger(displayName, defaultValue, minimum, maximum));

@@ -7,6 +7,8 @@
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QMAKE_CXXFLAGS += -std=c++11
+
 TARGET = unnamedsoftware
 TEMPLATE = app
 
@@ -61,26 +63,6 @@ FORMS    += gui/mainwindow.ui \
 RESOURCES += \
     gui/resources.qrc
 
-# include libUSB
-win32 {
-    INCLUDEPATH += $$(LIBUSBDIR)/libusb/
-    !contains(QMAKE_TARGET.arch, x86_64) {
-        #Win32
-        LIBS += -L$$(LIBUSBDIR)/Win32/Release/lib/
-    } else {
-        #Win64
-        LIBS += -L$$(LIBUSBDIR)/x64/Release/lib/
-    }
-    LIBS += -llibusb-1.0
-}
-linux-g++ {
-    INCLUDEPATH += /usr/include/libusb-1.0/
-    LIBS += -L/usr/lib/
-    QMAKE_CXXFLAGS += -std=c++11
-    LIBS += -lusb-1.0
-}
-
-
 CONFIG(debug, debug|release) {
     DESTDIR = debug
 } else {
@@ -112,9 +94,5 @@ macx {
 
 BUILD_TARGET = $$shell_quote($$shell_path($${OUT_PWD}/$$DESTDIR/$${TARGET}$${TARGET_CUSTOM_EXT}))
 
-QMAKE_POST_LINK += $$quote($${QT_DEPLOY_COMMAND}) $$quote($${BUILD_TARGET}) $$escape_expand(\\n\\t)
-QMAKE_POST_LINK += $$quote($$QMAKE_COPY) $$quote($$shell_path($$_PRO_FILE_PWD_/blocks.json)) $$quote($$shell_path($${OUT_PWD}/$$DESTDIR)) $$escape_expand(\\n\\t)
-
-
-
-
+QMAKE_POST_LINK += $$quote($${QT_DEPLOY_COMMAND}) $$shell_quote($${BUILD_TARGET}) $$escape_expand(\\n\\t)
+QMAKE_POST_LINK += $$quote($$QMAKE_COPY) $$shell_quote($$shell_path($$_PRO_FILE_PWD_/blocks.json)) $$shell_quote($$shell_path($${OUT_PWD}/$$DESTDIR)) $$escape_expand(\\n\\t)
