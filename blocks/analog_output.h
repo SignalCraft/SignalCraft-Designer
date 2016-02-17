@@ -1,7 +1,7 @@
 struct analog_output_options {
-	int *data;
+	int channel;
 };
 
 void analog_output (struct analog_output_options *options, int *in0) {
-	*(options->data) = *in0;
+	write_dac(options->channel, *in0);
 }

@@ -33,7 +33,7 @@
                     "defaultValue": "0",
                     "displayName": "Value",
                     "maximum": 99,
-                    "minimum": 0,
+                    "minimum": -99,
                     "type": 2
                 }
             }
@@ -52,27 +52,27 @@
         "name": "analog_input",
         "options": [
             {
-                "key": "data",
+                "key": "channel",
                 "value": {
                     "choices": [
                         {
                             "key": "1",
-                            "value": "0x0000"
+                            "value": "0"
                         },
                         {
                             "key": "2",
-                            "value": "0x0001"
+                            "value": "1"
                         },
                         {
                             "key": "3",
-                            "value": "0x0002"
+                            "value": "2"
                         },
                         {
                             "key": "4",
-                            "value": "0x0003"
+                            "value": "3"
                         }
                     ],
-                    "defaultValue": "0x0000",
+                    "defaultValue": "0",
                     "displayName": "Input channel",
                     "type": 1
                 }
@@ -120,27 +120,27 @@
         "name": "analog_output",
         "options": [
             {
-                "key": "data",
+                "key": "channel",
                 "value": {
                     "choices": [
                         {
                             "key": "1",
-                            "value": "0x0000"
+                            "value": "0"
                         },
                         {
                             "key": "2",
-                            "value": "0x0001"
+                            "value": "1"
                         },
                         {
                             "key": "3",
-                            "value": "0x0002"
+                            "value": "2"
                         },
                         {
                             "key": "4",
-                            "value": "0x0003"
+                            "value": "3"
                         }
                     ],
-                    "defaultValue": "0x0000",
+                    "defaultValue": "0",
                     "displayName": "Output channel",
                     "type": 1
                 }
@@ -161,7 +161,7 @@
                     "defaultValue": "0",
                     "displayName": "Value",
                     "maximum": 99,
-                    "minimum": 0,
+                    "minimum": -99,
                     "type": 2
                 }
             }
@@ -171,110 +171,6 @@
                 "key": "",
                 "value": 2
             }
-        ]
-    },
-    {
-        "displayName": "Digital Input",
-        "inputs": [
-        ],
-        "name": "digital_input",
-        "options": [
-            {
-                "key": "data",
-                "value": {
-                    "choices": [
-                        {
-                            "key": "1",
-                            "value": "0x0000"
-                        },
-                        {
-                            "key": "2",
-                            "value": "0x0001"
-                        },
-                        {
-                            "key": "3",
-                            "value": "0x0002"
-                        },
-                        {
-                            "key": "4",
-                            "value": "0x0003"
-                        }
-                    ],
-                    "defaultValue": "0x0000",
-                    "displayName": "Input channel",
-                    "type": 1
-                }
-            }
-        ],
-        "outputs": [
-            {
-                "key": "",
-                "value": 2
-            }
-        ]
-    },
-    {
-        "displayName": "Digital Logging",
-        "inputs": [
-            {
-                "key": "",
-                "value": 2
-            }
-        ],
-        "name": "digital_logging",
-        "options": [
-            {
-                "key": "channel",
-                "value": {
-                    "defaultValue": "0",
-                    "displayName": "Log channel",
-                    "maximum": 99,
-                    "minimum": 0,
-                    "type": 2
-                }
-            }
-        ],
-        "outputs": [
-        ]
-    },
-    {
-        "displayName": "Digital Output",
-        "inputs": [
-            {
-                "key": "",
-                "value": 2
-            }
-        ],
-        "name": "digital_output",
-        "options": [
-            {
-                "key": "data",
-                "value": {
-                    "choices": [
-                        {
-                            "key": "1",
-                            "value": "0x0000"
-                        },
-                        {
-                            "key": "2",
-                            "value": "0x0001"
-                        },
-                        {
-                            "key": "3",
-                            "value": "0x0002"
-                        },
-                        {
-                            "key": "4",
-                            "value": "0x0003"
-                        }
-                    ],
-                    "defaultValue": "0x0000",
-                    "displayName": "Output channel",
-                    "type": 1
-                }
-            }
-        ],
-        "outputs": [
         ]
     },
     {
@@ -293,7 +189,7 @@
                     "defaultValue": "10",
                     "displayName": "High limit",
                     "maximum": 99,
-                    "minimum": 0,
+                    "minimum": -99,
                     "type": 2
                 }
             },
@@ -303,7 +199,7 @@
                     "defaultValue": "-10",
                     "displayName": "Low limit",
                     "maximum": 99,
-                    "minimum": 0,
+                    "minimum": -10,
                     "type": 2
                 }
             }
@@ -316,21 +212,21 @@
         ]
     },
     {
-        "displayName": "Simple Low Pass Filter",
+        "displayName": "Low Pass Filter",
         "inputs": [
             {
-                "key": "input",
+                "key": "in",
                 "value": 1
             }
         ],
         "name": "low_pass_filter",
         "options": [
             {
-                "key": "threshold",
+                "key": "factor",
                 "value": {
-                    "defaultValue": "0",
-                    "displayName": "Threshold",
-                    "maximum": 1000,
+                    "defaultValue": "61440",
+                    "displayName": "Factor",
+                    "maximum": 65535,
                     "minimum": 0,
                     "type": 2
                 }
@@ -338,27 +234,27 @@
         ],
         "outputs": [
 	    {
-		"key": "output",
+		"key": "out",
                 "value": 1
 	    }
         ]
     },
     {
-        "displayName": "Simple High Pass Filter",
+        "displayName": "High Pass Filter",
         "inputs": [
             {
-                "key": "input",
+                "key": "in",
                 "value": 1
             }
         ],
         "name": "high_pass_filter",
         "options": [
             {
-                "key": "threshold",
+                "key": "factor",
                 "value": {
-                    "defaultValue": "0",
-                    "displayName": "Threshold",
-                    "maximum": 1000,
+                    "defaultValue": "61440",
+                    "displayName": "Factor",
+                    "maximum": 65535,
                     "minimum": 0,
                     "type": 2
                 }
@@ -366,7 +262,7 @@
         ],
         "outputs": [
 	    {
-		"key": "output",
+		"key": "out",
                 "value": 1
 	    }
         ]

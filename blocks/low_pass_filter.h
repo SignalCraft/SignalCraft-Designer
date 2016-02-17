@@ -1,31 +1,13 @@
-/*
- * =====================================================================================
- *
- *       Filename:  low_pass_filter.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  02/17/2016 02:12:01 AM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author: Josh Tang
- *   Organization: SignalCraft 
- *
- * =====================================================================================
- */
-
 struct low_pass_filter_options {
-  int threshold;
-}
+  uint16_t factor;
+};
 
-void low_pass_filter(struct low_pass_filter_options *options, int *in0, int *out0){
-  int Beta = threshold;//4;
-  *in0 <<= FP_Shift;
-  *out0 = (*out0 << Beta) - *out0;
-  *out0 += *in0;
-  *out0 >>= Beta;
-  *out0 >>= FP_Shift;
+int32_t low_pass_filter_acc = 0;
+
+void low_pass_filter(struct low_pass_filter_options *options, int *in, int *out) {
+	low_pass_filter_acc *= options->factor;
+	low_pass_filter_acc += ((int32_t)(*in) * (~(options->factor) + 1));
+	low_pass_filter_acc = low_pass_filter_acc >> 16;
+	*out = (int16_t)low_pass_filter_acc;
 }
 
