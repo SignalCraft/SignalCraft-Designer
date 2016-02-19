@@ -94,5 +94,8 @@ macx {
 
 BUILD_TARGET = $$shell_quote($$shell_path($${OUT_PWD}/$$DESTDIR/$${TARGET}$${TARGET_CUSTOM_EXT}))
 
-QMAKE_POST_LINK += $$quote($${QT_DEPLOY_COMMAND}) $${BUILD_TARGET} $$escape_expand(\\n\\t)
+win32|macx {
+    QMAKE_POST_LINK += $$quote($${QT_DEPLOY_COMMAND}) $${BUILD_TARGET} $$escape_expand(\\n\\t)
+}
+
 QMAKE_POST_LINK += $$quote($$QMAKE_COPY) $$shell_quote($$shell_path($$_PRO_FILE_PWD_/blocks.json)) $$shell_quote($$shell_path($${OUT_PWD}/$$DESTDIR)) $$escape_expand(\\n\\t)

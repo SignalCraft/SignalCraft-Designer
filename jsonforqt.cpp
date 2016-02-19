@@ -57,7 +57,7 @@ QHash<QString, QString> QHash_QString_QString_fromJson(QJsonValue node) {
     QHash<QString, QString> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         QString value = item["value"].toString();
         obj.insert(key, value);
@@ -80,7 +80,7 @@ QMap<QString, QString> QMap_QString_QString_fromJson(QJsonValue node) {
     QMap<QString, QString> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         QString value = item["value"].toString();
         obj.insert(key, value);
@@ -103,7 +103,7 @@ QHash<QString, DataType> QHash_QString_DataType_fromJson(QJsonValue node) {
     QHash<QString, DataType> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         DataType value = DataType_fromJson(item["value"]);
         obj.insert(key, value);
@@ -126,7 +126,7 @@ QMap<QString, DataType> QMap_QString_DataType_fromJson(QJsonValue node) {
     QMap<QString, DataType> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         DataType value = DataType_fromJson(item["value"]);
         obj.insert(key, value);
@@ -149,7 +149,7 @@ QHash<QString, BlockPin> QHash_QString_BlockPin_fromJson(QJsonValue node) {
     QHash<QString, BlockPin> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         BlockPin value = BlockPin_fromJson(item["value"]);
         obj.insert(key, value);
@@ -172,7 +172,7 @@ QMap<QString, BlockPin> QMap_QString_BlockPin_fromJson(QJsonValue node) {
     QMap<QString, BlockPin> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         BlockPin value = BlockPin_fromJson(item["value"]);
         obj.insert(key, value);
@@ -195,7 +195,7 @@ QHash<QString, QSharedPointer<const BlockOption>> QHash_QString_BlockOption_from
     QHash<QString, QSharedPointer<const BlockOption>> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         QSharedPointer<const BlockOption> value = BlockOption_fromJson(item["value"]);
         obj.insert(key, value);
@@ -218,7 +218,7 @@ QMap<QString, QSharedPointer<const BlockOption>> QMap_QString_BlockOption_fromJs
     QMap<QString, QSharedPointer<const BlockOption>> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         QSharedPointer<const BlockOption> value = BlockOption_fromJson(item["value"]);
         obj.insert(key, value);
@@ -241,7 +241,7 @@ QHash<QString, QSet<BlockPin>> QHash_QString_QSet_BlockPin_fromJson(QJsonValue n
     QHash<QString, QSet<BlockPin>> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         QSet<BlockPin> value = QSet_BlockPin_fromJson(item["value"]);
         obj.insert(key, value);
@@ -264,7 +264,7 @@ QMap<QString, QSet<BlockPin>> QMap_QString_QSet_BlockPin_fromJson(QJsonValue nod
     QMap<QString, QSet<BlockPin>> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
         QSet<BlockPin> value = QSet_BlockPin_fromJson(item["value"]);
         obj.insert(key, value);
@@ -287,7 +287,7 @@ QHash<int, Block> QHash_int_Block_fromJson(QJsonValue node) {
     QHash<int, Block> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         int key = item["key"].toInt();
         Block value = Block_fromJson(item["value"]);
         obj.insert(key, value);
@@ -310,7 +310,7 @@ QMap<int, Block> QMap_int_Block_fromJson(QJsonValue node) {
     QMap<int, Block> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        QJsonObject item = i->toObject();
+        QJsonObject item = (*i).toObject();
         int key = item["key"].toInt();
         Block value = Block_fromJson(item["value"]);
         obj.insert(key, value);
