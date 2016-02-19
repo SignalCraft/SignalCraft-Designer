@@ -32,7 +32,7 @@ mingw32-make
 
 ### On Debian/Ubuntu/Mint (apt-get)
 
-- Run `sudo apt-get install build-essential libgl1-mesa-dev qtdeclarative5-devq`
+- Run `sudo apt-get install build-essential qt5-default`
 - Get the repository using git (`sudo apt-get install git`)
 
 #### Building from the command line
