@@ -21,7 +21,6 @@ cd build
 qmake ..\SignalCraft.pro -r
 mingw32-make
 ```
-- Executible ends up in `build/release`
 
 #### Building with the Qt Creator IDE (first time)
 - Open Qt Creator
@@ -37,7 +36,7 @@ mingw32-make
 
 #### Building from the command line
 
-- In the repo directory
+- In the repo directory:
 ```
 mkdir build
 cd build
@@ -47,4 +46,9 @@ make
 
 #### Building with the Qt Creator IDE
 
-- Don't even bother with this on linux
+- Run `sudo apt-get install qtcreator`
+- Run `qtcreator`
+- Click "Open Project", and navigate to SignalCraft.pro
+- In the "Configure Project" dialog, a kit called "Desktop" should be set up for you. Otherwise you will have to set it up manually by navigating to qmake and g++ inside the Qt install directory.
+- You can modify the default build directories by clicking "Details"
+- Click "Configure Project" and everything should work as expected
