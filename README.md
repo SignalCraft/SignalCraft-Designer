@@ -7,7 +7,7 @@ A flowchart builder for programming our hardware DSP project.
 ### On windows:
 - Install Qt
   - Download: http://www.qt.io/download-open-source/
-  - At minimum, install the latest version of Qt 5.5 for MinGW with OpenGL, and the latest version of MinGW in Tools (unless you already have MinGW).
+  - At minimum, install the latest version of Qt 5.5 for MinGW with OpenGL, and the latest version of MinGW in Tools (unless you already have MinGW 32 bit).
 - Get the repository using git (https://git-scm.com/downloads)
 
 #### Building from command line (first time)
