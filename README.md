@@ -72,3 +72,22 @@ make
 ##### Building with the Qt Creator IDE
 
 I cannot get this to work, but if you find a way, write about it here!
+
+### On Arch (pacman)
+
+- Run `sudo pacman -S qt5-base gc make`
+- Get the repository using git (`sudo pacman -S git`)
+
+##### Building from the command line
+
+- In the repo directory:
+```
+mkdir build
+cd build
+qmake ../SignalCraft.pro -r
+make
+```
+
+##### Building with the Qt Creator IDE
+
+Untested. If you get it to work, put it here!
