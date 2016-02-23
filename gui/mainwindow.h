@@ -34,6 +34,7 @@ protected slots:
     void handleZoomIn();
     void handleZoomOut();
     void handleSaveAs();
+    void handleLoad();
     void handleCompile();
     void handleProgram();
 

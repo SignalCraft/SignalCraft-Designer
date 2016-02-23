@@ -14,6 +14,11 @@ FlowChart::FlowChart() { }
 
 FlowChart::FlowChart(QHash<int, Block> blocks) {
     m_blocks = blocks;
+    for (int blockIndex : blocks.keys()) {
+        if (blockIndex >= m_currentIndex) {
+            m_currentIndex = blockIndex + 1;
+        }
+    }
 }
 
 int FlowChart::addBlock(QString blockTypeName, QPointF pos) {

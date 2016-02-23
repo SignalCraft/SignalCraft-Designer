@@ -161,6 +161,28 @@ void FlowChartGraphicsView::addBlockByCenter(BlockType blockType, QPoint viewPos
 
 void FlowChartGraphicsView::addBlockInternal(BlockType blockType, QPointF scenePos) {
     int blockIndex = flow->addBlock(blockType.name(), scenePos);
+    addGraphicsItems(blockType, blockIndex, scenePos);
+}
+
+void FlowChartGraphicsView::moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos) {
+    int blockIndex = blockGraphics->blockIndex;
+    QPointF scenePos = mapToScene(viewPos);
+    flow->moveBlock(blockIndex, scenePos);
+    blockGraphics->setPos(scenePos);
+}
+
+void FlowChartGraphicsView::syncGraphicsItems() {
+    for (QGraphicsItem* item : this->scene()->items()) {
+        this->scene()->removeItem(item);
+    }
+    for (int blockIndex : flow->blocks().keys()) {
+        Block block = flow->blocks().value(blockIndex);
+        BlockType blockType = m_blockTypes->value(block.blockTypeName());
+        addGraphicsItems(blockType, blockIndex, block.pos());
+    }
+}
+
+void FlowChartGraphicsView::addGraphicsItems(BlockType blockType, int blockIndex, QPointF scenePos) {
     QGraphicsItem *itm = new BlockGraphicsItem(blockType, blockIndex);
     itm->setPos(scenePos);
     this->scene()->addItem(itm);
@@ -169,13 +191,5 @@ void FlowChartGraphicsView::addBlockInternal(BlockType blockType, QPointF sceneP
         wgi->setPos(QPointF(0,0));
         this->scene()->addItem(wgi);
     }
-
-}
-
-void FlowChartGraphicsView::moveBlock(BlockGraphicsItem *blockGraphics, QPoint viewPos) {
-    int blockIndex = blockGraphics->blockIndex;
-    QPointF scenePos = mapToScene(viewPos);
-    flow->moveBlock(blockIndex, scenePos);
-    blockGraphics->setPos(scenePos);
 }
 

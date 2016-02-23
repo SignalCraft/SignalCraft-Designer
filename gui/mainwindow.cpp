@@ -43,6 +43,7 @@ MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(
     connect(ui->actionZoom_In, &QAction::triggered, this, &MainWindow::handleZoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::handleZoomOut);
     connect(ui->actionSave_As, &QAction::triggered, this, &MainWindow::handleSaveAs);
+    connect(ui->actionLoad, &QAction::triggered, this, &MainWindow::handleLoad);
     connect(ui->pushButton_compile, &QPushButton::pressed, this, &MainWindow::handleCompile);
     connect(ui->pushButton_program, &QPushButton::pressed, this, &MainWindow::handleProgram);
 }
@@ -71,6 +72,19 @@ void MainWindow::handleSaveAs() {
     QJsonDocument doc(FlowChart_toJson(flow).toObject());
     QByteArray bytes = doc.toJson();
     file.write(bytes);
+}
+
+void MainWindow::handleLoad() {
+    QString filePath = QFileDialog::getOpenFileName(this, "Save As", "", ".flow");
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+    QByteArray bytes = file.readAll();
+    auto doc = QJsonDocument::fromJson(bytes);
+    flow = FlowChart_fromJson(doc.object());
+    flow.setBlockTypes(&appData.blockTypes);
+    ui->graphicsView->setFlowChart(&flow);
+    ui->graphicsView->syncGraphicsItems();
 }
 
 void MainWindow::handleCompile(){

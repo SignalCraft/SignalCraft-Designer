@@ -44,6 +44,13 @@ public:
      */
     void setBlockTypes(QHash<QString, BlockType> *blockTypes);
 
+    /**
+     * Remove all current graphics items, and replace them with what they
+     * should be according to the flowchart
+     */
+    void syncGraphicsItems();
+
+
 public slots:
     /**
      * Set the curent block type, to be used in the case of a double click.
@@ -76,6 +83,7 @@ private:
     BlockGraphicsItem *blockBeingDragged;
     QPoint blockDragMouseOffset;
     void addBlockInternal(BlockType blockType, QPointF scenePos); // TODO: should be refactored into custom graphicsscene class
+    void addGraphicsItems(BlockType blockType, int blockIndex, QPointF scenePos);
     void contextMenuEvent(QContextMenuEvent * event) override;
 };
 
