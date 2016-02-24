@@ -31,6 +31,21 @@ void FlowChart::setBlockTypes(QHash<QString, BlockType> *blockTypes) {
     m_blockTypes = blockTypes;
 }
 
+void FlowChart::removeBlock(int blockIndex) {
+    Block b = m_blocks[blockIndex];
+    for (QString inputPinName : b.inputConnections().keys()) {
+        BlockPin preBlockPin = b.inputConnections().value(inputPinName);
+        m_blocks[preBlockPin.blockNum()].disconnectOutput(preBlockPin.pinName(), BlockPin(blockIndex, inputPinName));
+    }
+    for (QString outputPinName : b.outputConnections().keys()) {
+        QSet<BlockPin> postBlockPins = b.outputConnections().value(outputPinName);
+        for (BlockPin postBlockPin : postBlockPins) {
+            m_blocks[postBlockPin.blockNum()].disconnectInput(postBlockPin.pinName());
+        }
+    }
+    m_blocks.remove(blockIndex);
+}
+
 void FlowChart::connect(BlockPin first, BlockPin second) {
     Block* source = &m_blocks[first.blockNum()];
     BlockType sourceBlockType = m_blockTypes->value(source->blockTypeName());

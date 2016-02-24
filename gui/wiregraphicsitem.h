@@ -23,6 +23,8 @@ public:
      */
     WireGraphicsItem(FlowChart *flow, BlockPin blockPin);
 
+    BlockPin blockPin() const;
+
     QRectF boundingRect() const override;
 
     QPainterPath shape() const override;

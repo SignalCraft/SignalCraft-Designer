@@ -34,6 +34,10 @@ WireGraphicsItem::WireGraphicsItem(FlowChart *flow, BlockPin blockPin) {
     m_blockPin = blockPin;
 }
 
+BlockPin WireGraphicsItem::blockPin() const {
+    return m_blockPin;
+}
+
 QRectF WireGraphicsItem::boundingRect() const {
     QPointF myPinPos = blockOutputPinPos(m_blockPin);
     QRectF bounds(myPinPos, QSizeF(0,0));

@@ -137,16 +137,47 @@ void FlowChartGraphicsView::contextMenuEvent(QContextMenuEvent * event) {
     }
     if (bgi) {
         BlockType bt = bgi->blockType();
+        int blockIndex = bgi->blockIndex;
         QPoint globalPos = mapToGlobal(event->pos());
         QMenu myMenu;
-        myMenu.addAction(bt.displayName() + " options");
-        QAction* selectedItem = myMenu.exec(globalPos);
-        if (selectedItem) {
-            BlockOptionsDialog bod(bt, flow->block(bgi->blockIndex).optionValues(), this);
-            bod.exec();
-            flow->setBlockOptionValues(bgi->blockIndex, bod.optionValues());
+        QAction optionsAction(bt.displayName() + " options", this);
+        connect(&optionsAction, &QAction::triggered, this, [this, blockIndex]{ handleBlockOptions(blockIndex); });
+        myMenu.addAction(&optionsAction);
+        myMenu.addSeparator();
+        QAction deleteAction("Delete", this);
+        connect(&deleteAction, &QAction::triggered, this, [this, blockIndex]{ handleBlockDelete(blockIndex); });
+        myMenu.addAction(&deleteAction);
+        myMenu.exec(globalPos);
+    }
+}
+
+void FlowChartGraphicsView::handleBlockOptions(int blockIndex) {
+    Block block = flow->block(blockIndex);
+    BlockType bt = m_blockTypes->value(block.blockTypeName());
+    BlockOptionsDialog bod(bt, block.optionValues(), this);
+    bod.exec();
+    flow->setBlockOptionValues(blockIndex, bod.optionValues());
+}
+
+// This is a terrible implementation. To fix this, store pointers to graphics
+// items in a structured way.
+void FlowChartGraphicsView::handleBlockDelete(int blockIndex) {
+    BlockGraphicsItem *bgi = NULL;
+    WireGraphicsItem *wgi = NULL;
+    for (QGraphicsItem *qgi : this->scene()->items()) {
+        bgi = dynamic_cast<BlockGraphicsItem*>(qgi);
+        wgi = dynamic_cast<WireGraphicsItem*>(qgi);
+        if (bgi) {
+            if (bgi->blockIndex == blockIndex) {
+                scene()->removeItem(bgi);
+            }
+        } else if (wgi) {
+            if (wgi->blockPin().blockNum() == blockIndex) {
+                scene()->removeItem(wgi);
+            }
         }
     }
+    flow->removeBlock(blockIndex);
 }
 
 void FlowChartGraphicsView::addBlock(BlockType blockType, QPoint viewPos) {

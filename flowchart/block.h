@@ -49,11 +49,24 @@ public:
     void connectOutput(QString outputPinName, BlockPin inputPin);
 
     /**
+     * Disconnect the given output pin from the given BlockPin.
+     * @param outputPinName the name of the output pin
+     * @param inputPin the BlockPin to disconnect from
+     */
+    void disconnectOutput(QString outputPinName, BlockPin inputPin);
+
+    /**
      * Connect the given input pin to the given BlockPin.
      * @param inputPinName the name of the input pin
      * @param outputPin the BlockPin to connect to
      */
     void connectInput(QString inputPinName, BlockPin outputPin);
+
+    /**
+     * Disconnect the given input pin from its associated BlockPin.
+     * @param inputPinName the name of the input pin
+     */
+    void disconnectInput(QString inputPinName);
 
     /**
      * Set this block's position.

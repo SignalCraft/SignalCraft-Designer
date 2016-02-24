@@ -57,6 +57,8 @@ public slots:
      * @param blockType the current block type
      */
     void setCurrentBlockType(BlockType blockType);
+    void handleBlockOptions(int blockIndex);
+    void handleBlockDelete(int blockIndex);
 
 protected:
     void addBlock(BlockType blockType, QPoint viewPos);

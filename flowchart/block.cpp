@@ -29,8 +29,16 @@ void Block::connectOutput(QString outputPinName, BlockPin inputPin) {
     m_outputConnections[outputPinName].insert(inputPin);
 }
 
+void Block::disconnectOutput(QString outputPinName, BlockPin inputPin) {
+    m_outputConnections[outputPinName].remove(inputPin);
+}
+
 void Block::connectInput(QString inputPinName, BlockPin outputPin) {
     m_inputConnections[inputPinName] = outputPin;
+}
+
+void Block::disconnectInput(QString inputPinName) {
+    m_inputConnections.remove(inputPinName);
 }
 
 void Block::setPos(QPointF pos) {

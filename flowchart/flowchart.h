@@ -44,6 +44,13 @@ public:
     int addBlock(QString blockTypeName, QPointF pos);
 
     /**
+     * Remove the indexed block from this flowchart, cleaning up all the
+     * connetions associated with it.
+     * @param blockIndex the block's index
+     */
+    void removeBlock(int blockIndex);
+
+    /**
      * Connect two BlockPins to each other.
      * This method only suceedes if one of the pins is an input and the other is an output.
      * @param first the first BlockPin
