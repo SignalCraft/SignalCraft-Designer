@@ -10,7 +10,7 @@
 #include <QMap>
 #include <QString>
 #include "flowchart/blockpin.h"
-#include "flowchart/datatype.h"
+#include "flowchart/pintype.h"
 #include "flowchart/blockoption.h"
 #include "flowchart/block.h"
 
@@ -88,47 +88,47 @@ QMap<QString, QString> QMap_QString_QString_fromJson(QJsonValue node) {
     return obj;
 }
 
-QJsonValue QHash_QString_DataType_toJson(QHash<QString, DataType> obj) {
+QJsonValue QHash_QString_PinType_toJson(QHash<QString, PinType> obj) {
     QJsonArray nodeArr;
     for (auto i = obj.constBegin(); i != obj.constEnd(); i++) {
         QJsonObject item;
         item["key"] = i.key();
-        item["value"] = DataType_toJson(i.value());
+        item["value"] = PinType_toJson(i.value());
         nodeArr.append(item);
     }
     return nodeArr;
 }
 
-QHash<QString, DataType> QHash_QString_DataType_fromJson(QJsonValue node) {
-    QHash<QString, DataType> obj;
+QHash<QString, PinType> QHash_QString_PinType_fromJson(QJsonValue node) {
+    QHash<QString, PinType> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
-        DataType value = DataType_fromJson(item["value"]);
+        PinType value = PinType_fromJson(item["value"]);
         obj.insert(key, value);
     }
     return obj;
 }
 
-QJsonValue QMap_QString_DataType_toJson(QMap<QString, DataType> obj) {
+QJsonValue QMap_QString_PinType_toJson(QMap<QString, PinType> obj) {
     QJsonArray nodeArr;
     for (auto i = obj.constBegin(); i != obj.constEnd(); i++) {
         QJsonObject item;
         item["key"] = i.key();
-        item["value"] = DataType_toJson(i.value());
+        item["value"] = PinType_toJson(i.value());
         nodeArr.append(item);
     }
     return nodeArr;
 }
 
-QMap<QString, DataType> QMap_QString_DataType_fromJson(QJsonValue node) {
-    QMap<QString, DataType> obj;
+QMap<QString, PinType> QMap_QString_PinType_fromJson(QJsonValue node) {
+    QMap<QString, PinType> obj;
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
         QString key = item["key"].toString();
-        DataType value = DataType_fromJson(item["value"]);
+        PinType value = PinType_fromJson(item["value"]);
         obj.insert(key, value);
     }
     return obj;

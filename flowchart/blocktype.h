@@ -4,12 +4,13 @@
 #include <QMap>
 #include <QHash>
 #include <QString>
-#include "flowchart/datatype.h"
+#include "flowchart/pintype.h"
 #include <QPointF>
 #include <QtGlobal>
 #include "flowchart/blockoption.h"
 #include <QSharedPointer>
 #include <QJsonValue>
+#include "flowchart/overloadtype.h"
 
 /**
  * The immutable BlockType class represents a type of Block that can exist.
@@ -25,11 +26,12 @@ public:
      * Construct a BlockType.
      * @param name the programmatic name that determines this BlockType's identity
      * @param displayName the display name
+     * @param overload the type of overloading this block uses
      * @param inputs the mapping of input pin names to data types
      * @param outputs the mapping of output pin names to data types
      * @param options the mapping of option names to shared BlockOption objects
      */
-    BlockType(QString name, QString displayName, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options);
+    BlockType(QString name, QString displayName, OverloadType overload, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options);
 
     /**
      * Determine whether or not this BlockType is valid.
@@ -96,14 +98,19 @@ public:
     QString displayName() const;
 
     /**
+     * @return the overload type
+     */
+    OverloadType overloadType() const;
+
+    /**
      * @return the mapping of input pin names to data types
      */
-    QMap<QString, DataType> inputs() const;
+    QMap<QString, PinType> inputs() const;
 
     /**
      * @return the mapping of output pin names to data types
      */
-    QMap<QString, DataType> outputs() const;
+    QMap<QString, PinType> outputs() const;
 
     /**
      * @return the mapping of option names to shared BlockOption objects
@@ -154,8 +161,9 @@ public:
 private:
     QString m_name;
     QString m_displayName;
-    QMap<QString, DataType> m_inputs;
-    QMap<QString, DataType> m_outputs;
+    OverloadType m_overloadType;
+    QMap<QString, PinType> m_inputs;
+    QMap<QString, PinType> m_outputs;
     QMap<QString, QSharedPointer<const BlockOption> > m_options;
 };
 

@@ -6,20 +6,22 @@
 #include <QSharedPointer>
 #include "flowchart/blockoption.h"
 #include "jsonforqt.h"
-#include "flowchart/datatype.h"
+#include "flowchart/pintype.h"
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMap>
 #include <QHash>
+#include "flowchart/overloadtype.h"
 
 BlockType::BlockType() {
     m_name = "";
 }
 
-BlockType::BlockType(QString name, QString displayName, QMap<QString, DataType> inputs, QMap<QString, DataType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options) {
+BlockType::BlockType(QString name, QString displayName, OverloadType overloadType, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options) {
     m_name = name;
     m_displayName = displayName;
+    m_overloadType = overloadType;
     m_inputs = inputs;
     m_outputs = outputs;
     m_options = options;
@@ -80,11 +82,15 @@ QString BlockType::displayName() const {
     return m_displayName;
 }
 
-QMap<QString, DataType> BlockType::inputs() const {
+OverloadType BlockType::overloadType() const {
+    return m_overloadType;
+}
+
+QMap<QString, PinType> BlockType::inputs() const {
     return m_inputs;
 }
 
-QMap<QString, DataType> BlockType::outputs() const {
+QMap<QString, PinType> BlockType::outputs() const {
     return m_outputs;
 }
 
@@ -130,8 +136,9 @@ QJsonValue BlockType_toJson(BlockType obj) {
     QJsonObject nodeObj;
     nodeObj["name"] = obj.name();
     nodeObj["displayName"] = obj.displayName();
-    nodeObj["inputs"] = QMap_QString_DataType_toJson(obj.inputs());
-    nodeObj["outputs"] = QMap_QString_DataType_toJson(obj.outputs());
+    nodeObj["overloadType"] = OverloadType_toJson(obj.overloadType());
+    nodeObj["inputs"] = QMap_QString_PinType_toJson(obj.inputs());
+    nodeObj["outputs"] = QMap_QString_PinType_toJson(obj.outputs());
     nodeObj["options"] = QMap_QString_BlockOption_toJson(obj.options());
     return nodeObj;
 }
@@ -140,10 +147,11 @@ BlockType BlockType_fromJson(QJsonValue node) {
     QJsonObject nodeObj = node.toObject();
     QString name = nodeObj["name"].toString();
     QString displayName = nodeObj["displayName"].toString();
-    QMap<QString, DataType> inputs = QMap_QString_DataType_fromJson(nodeObj["inputs"]);
-    QMap<QString, DataType> outputs = QMap_QString_DataType_fromJson(nodeObj["outputs"]);
+    OverloadType overloadType = OverloadType_fromJson(nodeObj["overloadType"]);
+    QMap<QString, PinType> inputs = QMap_QString_PinType_fromJson(nodeObj["inputs"]);
+    QMap<QString, PinType> outputs = QMap_QString_PinType_fromJson(nodeObj["outputs"]);
     QMap<QString, QSharedPointer<const BlockOption>> options = QMap_QString_BlockOption_fromJson(nodeObj["options"]);
-    return BlockType(name, displayName, inputs, outputs, options);
+    return BlockType(name, displayName, overloadType, inputs, outputs, options);
 }
 
 QJsonValue BlockTypes_toJson(QHash<QString, BlockType> obj) {
@@ -161,6 +169,7 @@ QHash<QString, BlockType> BlockTypes_fromJson(QJsonValue node) {
         QJsonValue element = nodeArray[i];
         BlockType bt = BlockType_fromJson(element);
         blockTypes[bt.name()] = bt;
+
     }
     return blockTypes;
 }

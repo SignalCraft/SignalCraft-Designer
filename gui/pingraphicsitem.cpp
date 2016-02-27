@@ -2,16 +2,16 @@
 
 #include <QGraphicsItem>
 #include <QString>
-#include "flowchart/datatype.h"
+#include "flowchart/pintype.h"
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QWidget>
 #include <QTextOption>
 #include "gui/blockgraphicsitem.h"
 
-PinGraphicsItem::PinGraphicsItem(BlockGraphicsItem *parent, QString pinName, DataType pinDataType, bool isOutput) : QGraphicsItem(parent) {
+PinGraphicsItem::PinGraphicsItem(BlockGraphicsItem *parent, QString pinName, PinType pinType, bool isOutput) : QGraphicsItem(parent) {
     m_pinName = pinName;
-    m_pinDataType = pinDataType;
+    m_pinType = pinType;
     m_isOutput = isOutput;
 }
 
@@ -32,8 +32,8 @@ QString PinGraphicsItem::pinName() const {
     return m_pinName;
 }
 
-DataType PinGraphicsItem::pinDataType() const {
-    return m_pinDataType;
+PinType PinGraphicsItem::pinType() const {
+    return m_pinType;
 }
 
 bool PinGraphicsItem::isOutput() const {

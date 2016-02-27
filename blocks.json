@@ -4,11 +4,11 @@
         "inputs": [
             {
                 "key": "input1",
-                "value": 1
+                "value": 4
             },
             {
                 "key": "input2",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "addition",
@@ -17,20 +17,21 @@
         "outputs": [
             {
                 "key": "sum",
-                "value": 1
+                "value": 4
             }
-        ]
+        ],
+		"overloadType": 1
     },
     {
         "displayName": "Multiplication",
         "inputs": [
             {
                 "key": "input1",
-                "value": 1
+                "value": 4
             },
             {
                 "key": "input2",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "multiplication",
@@ -39,9 +40,10 @@
         "outputs": [
             {
                 "key": "product",
-                "value": 1
+                "value": 4
             }
-        ]
+        ],
+		"overloadType": 1
     },
     {
         "displayName": "Analog Constant",
@@ -63,9 +65,10 @@
         "outputs": [
             {
                 "key": "",
-                "value": 1
+                "value": 2
             }
-        ]
+        ],
+		"overloadType": 0
     },
     {
         "displayName": "Analog Input",
@@ -103,16 +106,17 @@
         "outputs": [
             {
                 "key": "",
-                "value": 1
+                "value": 2
             }
-        ]
+        ],
+		"overloadType": 0
     },
     {
         "displayName": "Analog Logging",
         "inputs": [
             {
                 "key": "",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "analog_logging",
@@ -129,14 +133,15 @@
             }
         ],
         "outputs": [
-        ]
+        ],
+		"overloadType": 1
     },
     {
         "displayName": "Analog Output",
         "inputs": [
             {
                 "key": "",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "analog_output",
@@ -169,7 +174,8 @@
             }
         ],
         "outputs": [
-        ]
+        ],
+		"overloadType": 1
     },
     {
         "displayName": "Digital Constant",
@@ -193,14 +199,15 @@
                 "key": "",
                 "value": 2
             }
-        ]
+        ],
+		"overloadType": 0
     },
     {
         "displayName": "Saturation",
         "inputs": [
             {
                 "key": "input",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "saturation",
@@ -229,16 +236,17 @@
         "outputs": [
             {
                 "key": "output",
-                "value": 1
+                "value": 4
             }
-        ]
+        ],
+		"overloadType": 1
     },
     {
         "displayName": "Low Pass Filter",
         "inputs": [
             {
                 "key": "in",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "low_pass_filter",
@@ -257,16 +265,17 @@
         "outputs": [
 	    {
 		"key": "out",
-                "value": 1
+                "value": 4
 	    }
-        ]
+        ],
+		"overloadType": 1
     },
     {
         "displayName": "High Pass Filter",
         "inputs": [
             {
                 "key": "in",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "high_pass_filter",
@@ -285,16 +294,17 @@
         "outputs": [
 	    {
 		"key": "out",
-                "value": 1
+                "value": 4
 	    }
-        ]
+        ],
+		"overloadType": 1
     },
     {
         "displayName": "Peak",
         "inputs": [
             {
                 "key": "input1",
-                "value": 1
+                "value": 4
             }
         ],
         "name": "peak",
@@ -303,8 +313,9 @@
         "outputs": [
             {
                 "key": "peak",
-                "value": 1
+                "value": 4
             }
-        ]
+        ],
+		"overloadType": 1
     }
 ]

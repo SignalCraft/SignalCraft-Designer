@@ -6,7 +6,7 @@
 #include <QSize>
 #include <QTextOption>
 #include "flowchart/blocktype.h"
-#include "flowchart/datatype.h"
+#include "flowchart/pintype.h"
 #include "gui/pingraphicsitem.h"
 
 BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
@@ -19,7 +19,7 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
 
     int i = 0;
     for (QString pinName : blockType.inputs().keys()) {
-        DataType t = blockType.inputs()[pinName];
+        PinType t = blockType.inputs()[pinName];
         PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t, false);
         pgi->setParentItem(this);
         pgi->setPos(blockType.inputPinIndexToPos(i));
@@ -28,7 +28,7 @@ BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
 
     i=0;
     for (QString pinName : blockType.outputs().keys()) {
-        DataType t = blockType.outputs()[pinName];
+        PinType t = blockType.outputs()[pinName];
         PinGraphicsItem *pgi = new PinGraphicsItem(this, pinName, t, true);
         pgi->setParentItem(this);
         pgi->setPos(blockType.outputPinIndexToPos(i));

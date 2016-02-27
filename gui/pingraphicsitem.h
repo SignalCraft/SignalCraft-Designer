@@ -3,7 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QString>
-#include "flowchart/datatype.h"
+#include "flowchart/pintype.h"
 #include "gui/blockgraphicsitem.h"
 
 /**
@@ -15,10 +15,10 @@ public:
      * Construct a PinGraphicsItem.
      * @param parent the BlockGraphicsItem that this pin belongs to
      * @param pinName the pin's name
-     * @param pinDataType the pin's data type
+     * @param pinPinType the pin's data type
      * @param isOutput true if the pin is an output, false if it's an input
      */
-    PinGraphicsItem(BlockGraphicsItem *parent, QString pinName, DataType pinDataType, bool isOutput);
+    PinGraphicsItem(BlockGraphicsItem *parent, QString pinName, PinType pinType, bool isOutput);
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
 
@@ -30,9 +30,9 @@ public:
     QString pinName() const;
 
     /**
-     * @return the pin's data type
+     * @return the pin's type
      */
-    DataType pinDataType() const;
+    PinType pinType() const;
 
     /**
      * @return true if this pin is an output, false if it's an input
@@ -41,7 +41,7 @@ public:
 
 private:
     QString m_pinName;
-    DataType m_pinDataType;
+    PinType m_pinType;
     bool m_isOutput;
 };
 
