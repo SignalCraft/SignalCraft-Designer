@@ -18,7 +18,6 @@ SOURCES += gui/main.cpp\
     flowchart/block.cpp \
     flowchart/blocktype.cpp \
     flowchart/flowchart.cpp \
-    compiler/compiler.cpp \
     gui/applicationdata.cpp \
     gui/pingraphicsitem.cpp \
     gui/wiregraphicsitem.cpp \
@@ -36,14 +35,15 @@ SOURCES += gui/main.cpp\
     flowchart/overloadtype.cpp \
     compiler/compiledblockinfo.cpp \
     flowchart/pintype.cpp \
-    compiler/datatype.cpp
+    compiler/datatype.cpp \
+    compiler/automatictypecast.cpp \
+    compiler/compiler.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/blockgraphicsitem.h \
     flowchart/block.h \
     flowchart/blocktype.h \
     flowchart/flowchart.h \
-    compiler/compiler.h \
     gui/applicationdata.h \
     gui/pingraphicsitem.h \
     gui/wiregraphicsitem.h \
@@ -61,7 +61,10 @@ HEADERS  += gui/mainwindow.h \
     flowchart/overloadtype.h \
     compiler/compiledblockinfo.h \
     flowchart/pintype.h \
-    compiler/datatype.h
+    compiler/datatype.h \
+    compiler/automatictypecast.h \
+    compiler/overloadresult.h \
+    compiler/compiler.h
 
 FORMS    += gui/mainwindow.ui \
     gui/blockoptionsdialog.ui

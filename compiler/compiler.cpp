@@ -1,4 +1,4 @@
-#include "compiler.h"
+#include "compiler/compiler.h"
 
 #include <QString>
 #include <QList>
@@ -8,6 +8,7 @@
 #include "flowchart/blockpin.h"
 #include "flowchart/block.h"
 #include "flowchart/blocktype.h"
+#include "compiler/compiledblockinfo.h"
 
 using namespace std;
 
@@ -27,7 +28,8 @@ QString generatePicCode(const FlowChart flow) {
     QString mainFile = "while (1) {\n\ntrigger_adc();\n\n";
     QSet<int> expanded;
     QList<int> toBeExpanded = extractInputBlocks(flow);
-    QSet<QString> wires = extractWireNames(flow);
+    QHash<int, CompiledBlockInfo> compiledBlocks;
+    QString declarationsFile;
     QList<QString> structInstances;
     QList<QString> structInitializers;
     // directed graph traversal: write the sequence of functions
@@ -53,40 +55,9 @@ QString generatePicCode(const FlowChart flow) {
                     }
                 }
                 // write this node's function call
-                QVector<BlockPin> wireBlockPins;
-                for (QString inputPinName : blockType.inputs().keys()) {
-                    if (!block.inputIsConnected(inputPinName)) {
-                        // error: bad structure
-                        return "";
-                    } else {
-                        BlockPin wireSource = block.inputConnections()[inputPinName];
-                        wireBlockPins.push_back(wireSource);
-                    }
-                }
-                for (QString outputPinName : blockType.outputs().keys()) {
-                    BlockPin outputBlockPin(blockIndex, outputPinName);
-                    wireBlockPins.push_back(outputBlockPin);
-                }
-                QString funcCall = block.blockTypeName();
-                funcCall += "(";
-                funcCall += "&block_options_";
-                funcCall += QString::number(blockIndex);
-                if (0 < wireBlockPins.size()) {
-                    funcCall += ",";
-                }
-                for (int i = 0; i < wireBlockPins.size(); i++) {
-                    BlockPin wireSource = wireBlockPins[i];
-                    funcCall += "&wire_";
-                    funcCall += QString::number(wireSource.blockNum());
-                    funcCall += "_";
-                    funcCall += wireSource.pinName();
-                    if (i < wireBlockPins.size() - 1) {
-                        funcCall += ",";
-                    }
-                }
-                funcCall += ");";
-                mainFile += funcCall;
-                mainFile += "\n";
+                CompiledBlockInfo compiledBlock = CompiledBlockInfo::compileBlock(blockIndex, block, compiledBlocks, blockTypes);
+                compiledBlocks[blockIndex] = compiledBlock;
+                mainFile += compiledBlock.code();
                 // write this node's struct instance
                 QString structInstance = "struct ";
                 structInstance += block.blockTypeName();
@@ -109,6 +80,8 @@ QString generatePicCode(const FlowChart flow) {
                     structInitializer += ";\n";
                 }
                 structInitializers.append(structInitializer);
+                // write this node's declarations
+                declarationsFile += compiledBlock.wireCode();
             } else {
                toBeExpanded.push_back(blockIndex);
             }
@@ -136,14 +109,6 @@ QString generatePicCode(const FlowChart flow) {
     }
     structInitializersFile += "\n";
 
-    QString declarationsFile = "";
-    for (QString wireName : wires) {
-        declarationsFile += "int16_t ";
-        declarationsFile += wireName;
-        declarationsFile += ";\n";
-    }
-    declarationsFile += "\n";
-
     return includesFile + structInstancesFile + declarationsFile + mainFilePrefix + structInitializersFile + mainFile;
 }
 
@@ -166,23 +131,6 @@ QList<int> extractInputBlocks(FlowChart flow) {
         }
     }
     return inputBlocks;
-}
-
-QSet<QString> extractWireNames(FlowChart flow) {
-    QSet<QString> wireNames;
-    for(int blockIndex : flow.blocks().keys()) {
-        Block block = flow.block(blockIndex);
-        // for each output connection
-        for (QString pinName : block.outputConnections().keys()) {
-            // construct wire name
-            QString wireName = "wire_";
-            wireName += QString::number(blockIndex);
-            wireName += "_";
-            wireName += pinName;
-            wireNames.insert(wireName);
-        }
-    }
-    return wireNames;
 }
 
 bool isExpandable(Block block, QSet<int> expanded) {

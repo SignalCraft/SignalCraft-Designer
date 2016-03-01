@@ -41,12 +41,5 @@ QSet<QString> extractUniqueBlockNames(const FlowChart flow);
  */
 QList<int> extractInputBlocks(const FlowChart flow);
 
-/**
- * Determine the set of wire names from the given flowchart.
- * @param flow the flowchart in question
- * @return the set of wire names
- */
-QSet<QString> extractWireNames(const FlowChart flow);
-
 #endif // COMPILER_H
 
