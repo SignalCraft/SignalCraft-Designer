@@ -34,13 +34,14 @@ lisp_exp parse(QList<QString> & tokens) {
     if (token == "(") {
         QList<lisp_exp> cells;
         while (tokens.front() != ")") {
-            cells.push_back(parse(tokens));
+            lisp_exp cell = parse(tokens);
+            cells.push_back(cell);
         }
         tokens.pop_front();
         return lisp_exp(cells);
-    }
-    else
+    } else {
         return lisp_exp(token);
+    }
 }
 
 lisp_exp lisp_exp::parseString(QString str) {
@@ -49,12 +50,22 @@ lisp_exp lisp_exp::parseString(QString str) {
     return exp;
 }
 
+lisp_exp::lisp_exp() {
+    m_valid = false;
+    m_value = "";
+    m_elements = QList<lisp_exp>();
+}
+
 lisp_exp::lisp_exp(QList<lisp_exp> cells) {
+    m_valid = true;
+    m_value = "";
     m_elements = cells;
 }
 
 lisp_exp::lisp_exp(QString token) {
+    m_valid = true;
     m_value = token;
+    m_elements = QList<lisp_exp>();
 }
 
 bool lisp_exp::isLeaf() const {

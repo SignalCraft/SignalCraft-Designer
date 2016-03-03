@@ -11,6 +11,7 @@
 #include <QSharedPointer>
 #include <QJsonValue>
 #include "flowchart/overloadtype.h"
+#include "compiler/lisp_exp.h"
 
 /**
  * The immutable BlockType class represents a type of Block that can exist.
@@ -27,11 +28,13 @@ public:
      * @param name the programmatic name that determines this BlockType's identity
      * @param displayName the display name
      * @param overload the type of overloading this block uses
-     * @param inputs the mapping of input pin names to data types
-     * @param outputs the mapping of output pin names to data types
+     * @param inputs the mapping of input pin names to pin types
+     * @param outputs the mapping of output pin names to pin types
      * @param options the mapping of option names to shared BlockOption objects
+     * @param storage the mapping of storage "pin" names to pin types
+     * @param parseTree the block type's parse tree as a lisp expression
      */
-    BlockType(QString name, QString displayName, OverloadType overload, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options);
+    BlockType(QString name, QString displayName, OverloadType overload, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options, QMap<QString, PinType> storage, lisp_exp parseTree);
 
     /**
      * Determine whether or not this BlockType is valid.
@@ -103,12 +106,12 @@ public:
     OverloadType overloadType() const;
 
     /**
-     * @return the mapping of input pin names to data types
+     * @return the mapping of input pin names to pin types
      */
     QMap<QString, PinType> inputs() const;
 
     /**
-     * @return the mapping of output pin names to data types
+     * @return the mapping of output pin names to pin types
      */
     QMap<QString, PinType> outputs() const;
 
@@ -116,6 +119,16 @@ public:
      * @return the mapping of option names to shared BlockOption objects
      */
     QMap<QString, QSharedPointer<const BlockOption> > options() const;
+
+    /**
+     * @return the mapping of storage "pin" names to pin types
+     */
+    QMap<QString, PinType> storage() const;
+
+    /**
+     * @return the block type's parse tree as a lisp expression
+     */
+    lisp_exp parseTree() const;
 
     /**
      * @return the mapping of option names to default option values
@@ -165,6 +178,8 @@ private:
     QMap<QString, PinType> m_inputs;
     QMap<QString, PinType> m_outputs;
     QMap<QString, QSharedPointer<const BlockOption> > m_options;
+    QMap<QString, PinType> m_storage;
+    lisp_exp m_parseTree;
 };
 
 QJsonValue BlockType_toJson(BlockType obj);

@@ -141,6 +141,12 @@ c_exp c_exp::fromLispExp(lisp_exp exp, QHash<QString, DataType> dataTypes, QHash
             DataType resultType = moreGeneralType(ifTrueResult.type(), ifFalseResult.type());
             QString code = "(" + condResult.code() + ") ? (" + ifTrueResult.conversionTo(resultType).code() + ") : (" + ifFalseResult.conversionTo(resultType).code() + ")";
             return c_exp(code, resultType);
+        } else if (operand == ">" || operand == "<" || operand == ">=" || operand == "<=" || operand == "==" || operand == "!=") {
+            c_exp leftOperand = c_exp::fromLispExp(exp.element(1), dataTypes, wireNames);
+            c_exp rightOperand = c_exp::fromLispExp(exp.element(2), dataTypes, wireNames);
+            DataType resultType = moreGeneralType(leftOperand.type(), rightOperand.type());
+            QString code = "(" + leftOperand.conversionTo(resultType).code() + ") " + operand + " (" + rightOperand.conversionTo(resultType).code() + ")";
+            return c_exp(code, resultType);
         } else if (operand == "read_adc") {
             QString code = "(int)read_adc(" + c_exp::fromLispExp(exp.element(1), dataTypes, wireNames).conversionTo(DATATYPE_INT).code() + ") << 16";
             return c_exp(code, DATATYPE_AFP(27));

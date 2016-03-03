@@ -7,7 +7,7 @@
 /**
  * The lisp_exp class represents a lisp expression.
  *
- * Each lisp expression is either a list of lisp expressions, or a value.
+ * Each valid lisp expression is either a list of lisp expressions, or a value.
  */
 class lisp_exp {
 public:
@@ -17,6 +17,11 @@ public:
      * @return the resulting lisp expression
      */
     static lisp_exp parseString(QString str);
+
+    /**
+     * Construct an invalid lisp expression
+     */
+    lisp_exp();
 
     /**
      * Construct a lisp expression representing the given list of lisp expressions
@@ -51,6 +56,7 @@ public:
      */
     lisp_exp element(int i) const;
 private:
+    bool m_valid;
     QList<lisp_exp> m_elements;
     QString m_value;
 };

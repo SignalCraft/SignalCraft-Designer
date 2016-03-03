@@ -30,7 +30,6 @@ QString generatePicCode(const FlowChart flow) {
     QList<int> toBeExpanded = extractInputBlocks(flow);
     QHash<int, CompiledBlockInfo> compiledBlocks;
     QString declarationsFile;
-    QList<QString> structInstances;
     QList<QString> structInitializers;
     // directed graph traversal: write the sequence of functions
     while(!toBeExpanded.empty()) {
@@ -58,22 +57,14 @@ QString generatePicCode(const FlowChart flow) {
                 CompiledBlockInfo compiledBlock = CompiledBlockInfo::compileBlock(blockIndex, block, compiledBlocks, blockTypes);
                 compiledBlocks[blockIndex] = compiledBlock;
                 mainFile += compiledBlock.code();
-                // write this node's struct instance
-                QString structInstance = "struct ";
-                structInstance += block.blockTypeName();
-                structInstance += "_options ";
-                structInstance += "block_options_";
-                structInstance += QString::number(blockIndex);
-                structInstance += ";\n";
-                structInstances.append(structInstance);
                 // write this node's struct initializer
                 QString structInitializer = "";
                 QHash<QString, QString> optionValues = blockType.resultingOptionValues(block.optionValues());
                 for (QString optionName : blockType.options().keys()) {
                     QString optionValue = optionValues[optionName];
-                    structInitializer += "block_options_";
+                    structInitializer += "int block_options_"; // TODO: factor in data type
                     structInitializer += QString::number(blockIndex);
-                    structInitializer += ".";
+                    structInitializer += "_";
                     structInitializer += optionName;
                     structInitializer += " = ";
                     structInitializer += optionValue; // TODO: factor in data type
@@ -97,19 +88,13 @@ QString generatePicCode(const FlowChart flow) {
     }
     includesFile += "\n";
 
-    QString structInstancesFile;
-    for (QString structInstance : structInstances) {
-        structInstancesFile += structInstance;
-    }
-    structInstancesFile += "\n";
-
     QString structInitializersFile;
     for (QString structInitializer : structInitializers) {
         structInitializersFile += structInitializer;
     }
     structInitializersFile += "\n";
 
-    return includesFile + structInstancesFile + declarationsFile + mainFilePrefix + structInitializersFile + mainFile;
+    return includesFile + declarationsFile + mainFilePrefix + structInitializersFile + mainFile;
 }
 
 QSet<QString> extractUniqueBlockNames(FlowChart flow) {

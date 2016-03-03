@@ -48,17 +48,13 @@ public:
      * @param block the block itself
      *
      * @param blockType the block's BlockType
-     * 
-     * @param overloadResult the result of this block's overloadoing logic, or
-     * NONE if the block does not overload
      *
      * @param pinDataTypes a complete mapping from output pin names to
-     * DataTypes
+     * DataType
      *
-     * @param pinTypeCasts an optional mapping from input pin names to
-     * AutomaticTypeCasts
+     * @param code the block's C code
      */
-    CompiledBlockInfo(int blockIndex, Block block, BlockType blockType, OverloadResult overloadResult, QHash<QString, DataType> pinDataTypes, QHash<QString, AutomaticTypeCast> pinTypeCasts);
+    CompiledBlockInfo(int blockIndex, Block block, BlockType blockType, QHash<QString, DataType> pinDataTypes, QString code);
 
     /**
      * @return the block's index
@@ -76,22 +72,10 @@ public:
     BlockType blockType() const;
 
     /**
-     * @return the result of the block's overloading logic, or NONE if the
-     * block does not overload
-     */
-    OverloadResult overloadResult() const;
-
-    /**
      * @param pinName the name of an output pin
      * @return the DataType of the named output pin
      */
     DataType pinDataType(QString pinName) const;
-
-    /**
-     * @param pinName the name of an input pin
-     * @return the AutomaticTypeCast of the named input pin
-     */
-    AutomaticTypeCast pinTypeCast(QString pinName) const;
 
     /**
      * @return the line of C code for this block, including the newline
@@ -99,7 +83,7 @@ public:
     QString code() const;
 
     /**
-     * @return the lines of C code for declaring the wires defiend by this
+     * @return the lines of C code for declaring the wires defined by this
      * block's outputs
      */
     QString wireCode() const;
@@ -108,9 +92,8 @@ private:
     int m_blockIndex;
     Block m_block;
     BlockType m_blockType;
-    OverloadResult m_overloadResult;
     QHash<QString, DataType> m_pinDataTypes;
-    QHash<QString, AutomaticTypeCast> m_pinTypeCasts;
+    QString m_code;
 };
 
 #endif // COMPILEDBLOCKINFO_H

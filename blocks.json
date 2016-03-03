@@ -20,7 +20,10 @@
                 "value": 4
             }
         ],
-		"overloadType": 1
+		"overloadType": 1,
+		"parseTree": "(stmt-list (set sum (+ input1 input2)))",
+		"storage": [
+		]
     },
     {
         "displayName": "Multiplication",
@@ -43,7 +46,10 @@
                 "value": 4
             }
         ],
-		"overloadType": 1
+		"overloadType": 1,
+		"parseTree": "(stmt-list (set product (* input1 input2)))",
+		"storage": [
+		]
     },
     {
         "displayName": "Analog Constant",
@@ -64,11 +70,14 @@
         ],
         "outputs": [
             {
-                "key": "",
+                "key": "value",
                 "value": 2
             }
         ],
-		"overloadType": 0
+		"overloadType": 0,
+		"parseTree": "(stmt-list (set value options.value))",
+		"storage": [
+		]
     },
     {
         "displayName": "Analog Input",
@@ -105,17 +114,20 @@
         ],
         "outputs": [
             {
-                "key": "",
+                "key": "value",
                 "value": 2
             }
         ],
-		"overloadType": 0
+		"overloadType": 0,
+		"parseTree": "(stmt-list (set value (read_adc options.channel)))",
+		"storage": [
+		]
     },
     {
         "displayName": "Analog Output",
         "inputs": [
             {
-                "key": "",
+                "key": "value",
                 "value": 4
             }
         ],
@@ -150,7 +162,10 @@
         ],
         "outputs": [
         ],
-		"overloadType": 1
+		"overloadType": 1,
+		"parseTree": "(stmt-list (write_dac options.channel value))",
+		"storage": [
+		]
     },
     {
         "displayName": "Saturation",
@@ -189,7 +204,10 @@
                 "value": 4
             }
         ],
-		"overloadType": 1
+		"overloadType": 1,
+		"parseTree": "(stmt-list (set output (if (> input options.high_limit) options.high_limit (if (< input options.low_limit) options.low_limit input))))",
+		"storage": [
+		]
     },
     {
         "displayName": "Low Pass Filter",
@@ -206,7 +224,7 @@
                 "value": {
                     "defaultValue": "61440",
                     "displayName": "Factor",
-                    "maximum": 65535,
+                    "maximum": 1,
                     "minimum": 0,
                     "type": 2
                 }
@@ -218,7 +236,14 @@
                 "value": 4
 	    }
         ],
-		"overloadType": 1
+		"overloadType": 1,
+		"parseTree": "(stmt-list (set acc (+ (* acc options.factor) (* in (- 1 options.factor)))) (set out acc))",
+		"storage": [
+			{
+				"key": "acc",
+				"value": 4
+			}
+		]
     },
     {
         "displayName": "High Pass Filter",
@@ -235,7 +260,7 @@
                 "value": {
                     "defaultValue": "61440",
                     "displayName": "Factor",
-                    "maximum": 65535,
+                    "maximum": 1,
                     "minimum": 0,
                     "type": 2
                 }
@@ -247,7 +272,14 @@
                 "value": 4
 	    }
         ],
-		"overloadType": 1
+		"overloadType": 1,
+		"parseTree": "(stmt-list (set acc (+ (* acc options.factor) (* in (- 1 options.factor)))) (set out (- in acc)))",
+		"storage": [
+			{
+				"key": "acc",
+				"value": 4
+			}
+		]
     },
     {
         "displayName": "Peak",
@@ -266,6 +298,13 @@
                 "value": 4
             }
         ],
-		"overloadType": 1
+		"overloadType": 1,
+		"parseTree": "(stmt-list (set stored_peak (if (> input1 stored_peak) input1 stored_peak)) (set peak stored_peak))",
+		"storage": [
+			{
+				"key": "stored_peak",
+				"value": 4
+			}
+		]
     }
 ]

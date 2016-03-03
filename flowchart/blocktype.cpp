@@ -13,18 +13,21 @@
 #include <QMap>
 #include <QHash>
 #include "flowchart/overloadtype.h"
+#include "compiler/lisp_exp.h"
 
 BlockType::BlockType() {
     m_name = "";
 }
 
-BlockType::BlockType(QString name, QString displayName, OverloadType overloadType, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options) {
+BlockType::BlockType(QString name, QString displayName, OverloadType overloadType, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options, QMap<QString, PinType> storage, lisp_exp parseTree) {
     m_name = name;
     m_displayName = displayName;
     m_overloadType = overloadType;
     m_inputs = inputs;
     m_outputs = outputs;
     m_options = options;
+    m_storage = storage;
+    m_parseTree = parseTree;
 }
 
 bool BlockType::isValid() const {
@@ -98,6 +101,14 @@ QMap<QString, QSharedPointer<const BlockOption> > BlockType::options() const {
     return m_options;
 }
 
+QMap<QString, PinType> BlockType::storage() const {
+    return m_storage;
+}
+
+lisp_exp BlockType::parseTree() const {
+    return m_parseTree;
+}
+
 QHash<QString, QString> BlockType::defaultOptionValues() const {
     QHash<QString, QString> defaults;
     for (QString optionName : options().keys()) {
@@ -140,6 +151,8 @@ QJsonValue BlockType_toJson(BlockType obj) {
     nodeObj["inputs"] = QMap_QString_PinType_toJson(obj.inputs());
     nodeObj["outputs"] = QMap_QString_PinType_toJson(obj.outputs());
     nodeObj["options"] = QMap_QString_BlockOption_toJson(obj.options());
+    nodeObj["storage"] = QMap_QString_PinType_toJson(obj.storage());
+    // TODO: storing parseTree requires lisp_exp.toString()
     return nodeObj;
 }
 
@@ -151,7 +164,9 @@ BlockType BlockType_fromJson(QJsonValue node) {
     QMap<QString, PinType> inputs = QMap_QString_PinType_fromJson(nodeObj["inputs"]);
     QMap<QString, PinType> outputs = QMap_QString_PinType_fromJson(nodeObj["outputs"]);
     QMap<QString, QSharedPointer<const BlockOption>> options = QMap_QString_BlockOption_fromJson(nodeObj["options"]);
-    return BlockType(name, displayName, overloadType, inputs, outputs, options);
+    QMap<QString, PinType> storage = QMap_QString_PinType_fromJson(nodeObj["storage"]);
+    lisp_exp parseTree = lisp_exp::parseString(nodeObj["parseTree"].toString());
+    return BlockType(name, displayName, overloadType, inputs, outputs, options, storage, parseTree);
 }
 
 QJsonValue BlockTypes_toJson(QHash<QString, BlockType> obj) {
