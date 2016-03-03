@@ -15,13 +15,35 @@
  *
  * =====================================================================================
  */
-struct peak_options {}
+struct peak_options_int {};
 
-int peak_max = 0;
+struct peak_options_afp {};
 
-void peak(struct peak_options *options, int *in, int *out){
-  if(*in > peak_max){
-    peak_max = *in;
+struct peak_options_float {};
+
+int peak_max_int = 0;
+
+int peak_max_afp = 0;
+
+float peak_max_float = 0;
+
+void peak_int(struct peak_options_int *options, int *in, int *out){
+  if(*in > peak_max_int){
+    peak_max_int = *in;
   }
-  *out = peak_max;
+  *out = peak_max_int;
+}
+
+void peak_afp(struct peak_options_afp *options, int *in, int *out){
+  if(*in > peak_max_afp){
+    peak_max_afp = *in;
+  }
+  *out = peak_max_afp;
+}
+
+void peak_float(struct peak_options_float *options, float *in, float *out){
+  if(*in > peak_max_float){
+    peak_max_float = *in;
+  }
+  *out = peak_max_float;
 }

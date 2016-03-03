@@ -16,8 +16,20 @@
  * =====================================================================================
  */
 
-struct multiplication_options {};
+struct multiplication_options_int {};
 
-void multiplication(struct multiplication_options *options, int *in0, int *in1, int *out0){
+struct multiplication_options_afp {};
+
+struct multiplication_options_float {};
+
+void multiplication_int(struct multiplication_options_int *options, int *in0, int *in1, int *out0){
+  *out0 = *in0 * *in1;
+}
+
+void multiplication_afp(struct multiplication_options_afp *options, int *in0, int *in1, int *out0){
+  *out0 = (int64_t)(*in0) * *in1;
+}
+
+void multiplication_float(struct multiplication_options_float *options, float *in0, float *in1, float *out0){
   *out0 = *in0 * *in1;
 }

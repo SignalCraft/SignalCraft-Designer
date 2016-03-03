@@ -37,7 +37,10 @@ SOURCES += gui/main.cpp\
     flowchart/pintype.cpp \
     compiler/datatype.cpp \
     compiler/automatictypecast.cpp \
-    compiler/compiler.cpp
+    compiler/compiler.cpp \
+    compiler/c_exp.cpp \
+    compiler/lisp_exp.cpp \
+    compiler/c_stmt.cpp
 
 HEADERS  += gui/mainwindow.h \
     gui/blockgraphicsitem.h \
@@ -64,7 +67,10 @@ HEADERS  += gui/mainwindow.h \
     compiler/datatype.h \
     compiler/automatictypecast.h \
     compiler/overloadresult.h \
-    compiler/compiler.h
+    compiler/compiler.h \
+    compiler/c_exp.h \
+    compiler/lisp_exp.h \
+    compiler/c_stmt.h
 
 FORMS    += gui/mainwindow.ui \
     gui/blockoptionsdialog.ui

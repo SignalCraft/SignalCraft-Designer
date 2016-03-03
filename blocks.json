@@ -112,31 +112,6 @@
 		"overloadType": 0
     },
     {
-        "displayName": "Analog Logging",
-        "inputs": [
-            {
-                "key": "",
-                "value": 4
-            }
-        ],
-        "name": "analog_logging",
-        "options": [
-            {
-                "key": "channel",
-                "value": {
-                    "defaultValue": "0",
-                    "displayName": "Log channel",
-                    "maximum": 99,
-                    "minimum": 0,
-                    "type": 2
-                }
-            }
-        ],
-        "outputs": [
-        ],
-		"overloadType": 1
-    },
-    {
         "displayName": "Analog Output",
         "inputs": [
             {
@@ -176,31 +151,6 @@
         "outputs": [
         ],
 		"overloadType": 1
-    },
-    {
-        "displayName": "Digital Constant",
-        "inputs": [
-        ],
-        "name": "digital_constant",
-        "options": [
-            {
-                "key": "value",
-                "value": {
-                    "defaultValue": "0",
-                    "displayName": "Value",
-                    "maximum": 99,
-                    "minimum": -99,
-                    "type": 2
-                }
-            }
-        ],
-        "outputs": [
-            {
-                "key": "",
-                "value": 2
-            }
-        ],
-		"overloadType": 0
     },
     {
         "displayName": "Saturation",

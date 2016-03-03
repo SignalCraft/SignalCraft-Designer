@@ -1,5 +1,7 @@
 #include "compiler/datatype.h"
 
+#include <QString>
+
 DataType::DataType() {
     m_dtt = DTT_NONE;
 }
@@ -34,4 +36,18 @@ int DataType::afpPrecision() const {
         // debug error condition
     }
     return m_afpPrecision;
+}
+
+QString DataType::toString() const {
+    if (isBool()) {
+        return "BOOL";
+    } else if (isInt()) {
+        return "INT";
+    } else if (isAFP()) {
+        return "AFP(" + QString::number(afpPrecision()) + ")";
+    } else if (isFloat()) {
+        return "FLOAT";
+    } else {
+        return "INVALID"; // error condition
+    }
 }

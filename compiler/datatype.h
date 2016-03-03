@@ -1,6 +1,8 @@
 #ifndef DATATYPE_H
 #define DATATYPE_H
 
+#include <QString>
+
 // For internal use only (this file)
 enum DataTypeType { DTT_NONE, DTT_BOOL, DTT_INT, DTT_AFP, DTT_FLOAT };
 
@@ -55,6 +57,11 @@ public:
      * @return the precision of this DataType, assuming it is AFP
      */
     int afpPrecision() const;
+
+    /**
+     * @return the string representation of this DataType
+     */
+    QString toString() const;
 
 private:
     DataTypeType m_dtt;
