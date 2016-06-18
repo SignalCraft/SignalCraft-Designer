@@ -6,7 +6,8 @@
 #include "flowchart/blockoptioncombobox.h"
 #include "flowchart/blockoptioninteger.h"
 #include <QJsonObject>
-#include "jsonforqt.h"
+#include <QJsonArray>
+#include "flowchart/jsonforqt.h"
 
 BlockOption::BlockOption(QString displayName, QString defaultValue, BlockOptionType type) {
     m_displayName = displayName;
@@ -70,5 +71,51 @@ QSharedPointer<const BlockOption> BlockOption_fromJson(QJsonValue node) {
     default:
         return QSharedPointer<const BlockOption>();
     }
+}
+
+QJsonValue QHash_QString_BlockOption_toJson(QHash<QString, QSharedPointer<const BlockOption>> obj) {
+    QJsonArray nodeArr;
+    for (auto i = obj.constBegin(); i != obj.constEnd(); i++) {
+        QJsonObject item;
+        item["key"] = i.key();
+        item["value"] = BlockOption_toJson(i.value());
+        nodeArr.append(item);
+    }
+    return nodeArr;
+}
+
+QHash<QString, QSharedPointer<const BlockOption>> QHash_QString_BlockOption_fromJson(QJsonValue node) {
+    QHash<QString, QSharedPointer<const BlockOption>> obj;
+    QJsonArray nodeArr = node.toArray();
+    for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
+        QJsonObject item = (*i).toObject();
+        QString key = item["key"].toString();
+        QSharedPointer<const BlockOption> value = BlockOption_fromJson(item["value"]);
+        obj.insert(key, value);
+    }
+    return obj;
+}
+
+QJsonValue QMap_QString_BlockOption_toJson(QMap<QString, QSharedPointer<const BlockOption>> obj) {
+    QJsonArray nodeArr;
+    for (auto i = obj.constBegin(); i != obj.constEnd(); i++) {
+        QJsonObject item;
+        item["key"] = i.key();
+        item["value"] = BlockOption_toJson(i.value());
+        nodeArr.append(item);
+    }
+    return nodeArr;
+}
+
+QMap<QString, QSharedPointer<const BlockOption>> QMap_QString_BlockOption_fromJson(QJsonValue node) {
+    QMap<QString, QSharedPointer<const BlockOption>> obj;
+    QJsonArray nodeArr = node.toArray();
+    for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
+        QJsonObject item = (*i).toObject();
+        QString key = item["key"].toString();
+        QSharedPointer<const BlockOption> value = BlockOption_fromJson(item["value"]);
+        obj.insert(key, value);
+    }
+    return obj;
 }
 

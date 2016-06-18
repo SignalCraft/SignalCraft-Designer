@@ -7,7 +7,7 @@
 #include "flowchart/blockpin.h"
 #include <QJsonValue>
 #include <QJsonObject>
-#include "jsonforqt.h"
+#include "flowchart/jsonforqt.h"
 #include <QMap>
 
 FlowChart::FlowChart() { }

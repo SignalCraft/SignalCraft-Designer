@@ -5,7 +5,8 @@
 #include "flowchart/blockpin.h"
 #include <QJsonValue>
 #include <QJsonObject>
-#include "jsonforqt.h"
+#include <QJsonArray>
+#include "flowchart/jsonforqt.h"
 
 Block::Block() {
     m_blockTypeName = "";
@@ -89,4 +90,50 @@ Block Block_fromJson(QJsonValue node) {
     QHash<QString, BlockPin> inputConnections = QHash_QString_BlockPin_fromJson(nodeObj["inputConnections"]);
     QHash<QString, QSet<BlockPin>> outputConnections = QHash_QString_QSet_BlockPin_fromJson(nodeObj["outputConnections"]);
     return Block(blockTypeName, pos, inputConnections, outputConnections);
+}
+
+QJsonValue QHash_int_Block_toJson(QHash<int, Block> obj) {
+    QJsonArray nodeArr;
+    for (auto i = obj.constBegin(); i != obj.constEnd(); i++) {
+        QJsonObject item;
+        item["key"] = i.key();
+        item["value"] = Block_toJson(i.value());
+        nodeArr.append(item);
+    }
+    return nodeArr;
+}
+
+QHash<int, Block> QHash_int_Block_fromJson(QJsonValue node) {
+    QHash<int, Block> obj;
+    QJsonArray nodeArr = node.toArray();
+    for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
+        QJsonObject item = (*i).toObject();
+        int key = item["key"].toInt();
+        Block value = Block_fromJson(item["value"]);
+        obj.insert(key, value);
+    }
+    return obj;
+}
+
+QJsonValue QMap_int_Block_toJson(QMap<int, Block> obj) {
+    QJsonArray nodeArr;
+    for (auto i = obj.constBegin(); i != obj.constEnd(); i++) {
+        QJsonObject item;
+        item["key"] = i.key();
+        item["value"] = Block_toJson(i.value());
+        nodeArr.append(item);
+    }
+    return nodeArr;
+}
+
+QMap<int, Block> QMap_int_Block_fromJson(QJsonValue node) {
+    QMap<int, Block> obj;
+    QJsonArray nodeArr = node.toArray();
+    for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
+        QJsonObject item = (*i).toObject();
+        int key = item["key"].toInt();
+        Block value = Block_fromJson(item["value"]);
+        obj.insert(key, value);
+    }
+    return obj;
 }

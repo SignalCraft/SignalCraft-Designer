@@ -4,7 +4,7 @@
 #include "gui/blockoptioncontrolcombobox.h"
 #include <QString>
 #include <QMap>
-#include "jsonforqt.h"
+#include "flowchart/jsonforqt.h"
 #include <QJsonValue>
 #include <QJsonObject>
 
