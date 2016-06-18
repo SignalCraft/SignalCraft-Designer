@@ -123,4 +123,10 @@ private:
 QJsonValue Block_toJson(Block obj);
 Block Block_fromJson(QJsonValue node);
 
+QJsonValue QHash_int_Block_toJson(QHash<int, Block> obj);
+QHash<int, Block> QHash_int_Block_fromJson(QJsonValue node);
+
+QJsonValue QMap_int_Block_toJson(QMap<int, Block> obj);
+QMap<int, Block> QMap_int_Block_fromJson(QJsonValue node);
+
 #endif // BLOCK_H

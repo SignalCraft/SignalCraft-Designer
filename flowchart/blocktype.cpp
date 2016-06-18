@@ -5,7 +5,7 @@
 #include <QString>
 #include <QSharedPointer>
 #include "flowchart/blockoption.h"
-#include "jsonforqt.h"
+#include "flowchart/jsonforqt.h"
 #include "flowchart/pintype.h"
 #include <QJsonValue>
 #include <QJsonObject>

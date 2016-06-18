@@ -79,4 +79,10 @@ BlockOptionType BlockOptionType_fromJson(QJsonValue node);
 QJsonValue BlockOption_toJson(QSharedPointer<const BlockOption> obj);
 QSharedPointer<const BlockOption> BlockOption_fromJson(QJsonValue node);
 
+QJsonValue QHash_QString_BlockOption_toJson(QHash<QString, QSharedPointer<const BlockOption>> obj);
+QHash<QString, QSharedPointer<const BlockOption>> QHash_QString_BlockOption_fromJson(QJsonValue node);
+
+QJsonValue QMap_QString_BlockOption_toJson(QMap<QString, QSharedPointer<const BlockOption>> obj);
+QMap<QString, QSharedPointer<const BlockOption>> QMap_QString_BlockOption_fromJson(QJsonValue node);
+
 #endif // BLOCKOPTION_H

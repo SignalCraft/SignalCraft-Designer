@@ -31,7 +31,7 @@ SOURCES += gui/main.cpp\
     flowchart/blockoptioncombobox.cpp \
     gui/blockoptioncontrolcombobox.cpp \
     flowchart/blockpin.cpp \
-    jsonforqt.cpp \
+    flowchart/jsonforqt.cpp \
     flowchart/overloadtype.cpp \
     compiler/compiledblockinfo.cpp \
     flowchart/pintype.cpp \
@@ -60,7 +60,7 @@ HEADERS  += gui/mainwindow.h \
     flowchart/blockoptioncombobox.h \
     gui/blockoptioncontrolcombobox.h \
     flowchart/blockpin.h \
-    jsonforqt.h \
+    flowchart/jsonforqt.h \
     flowchart/overloadtype.h \
     compiler/compiledblockinfo.h \
     flowchart/pintype.h \
