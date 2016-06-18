@@ -59,7 +59,7 @@ QString generatePicCode(const FlowChart flow) {
                 mainFile += compiledBlock.code();
                 // write this node's struct initializer
                 QString structInitializer = "";
-                QHash<QString, QString> optionValues = blockType.resultingOptionValues(block.optionValues());
+                QHash<QString, QString> optionValues = compiledBlock.compiledOptionValues();
                 for (QString optionName : blockType.options().keys()) {
                     QString optionValue = optionValues[optionName];
                     structInitializer += "int block_options_"; // TODO: factor in data type
@@ -80,12 +80,14 @@ QString generatePicCode(const FlowChart flow) {
     }
     mainFile += "\ntrigger_dac();\n}\n\nreturn 0;\n\n}";
 
-    QString includesFile = "#include \"sam.h\"\n#include \"adc.h\"\n#include \"dac.h\"\n";
+    QString includesFile = "#include \"sam.h\"\n#include \"adc.h\"\n#include \"dac.h\"\n#include <math.h>\n";
+    /*
     for (QString blockName : blockNames) {
         includesFile += "#include \"blocks/";
         includesFile += blockName;
         includesFile += ".h\"\n";
     }
+    */
     includesFile += "\n";
 
     QString structInitializersFile;

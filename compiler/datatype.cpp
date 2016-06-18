@@ -15,6 +15,10 @@ DataType::DataType(DataTypeType dtt, int afpPrecision) {
     m_afpPrecision = afpPrecision;
 }
 
+bool DataType::isValid() const {
+    return (m_dtt != DTT_NONE);
+}
+
 bool DataType::isBool() const {
     return (m_dtt == DTT_BOOL);
 }

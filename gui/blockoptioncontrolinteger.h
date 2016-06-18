@@ -4,7 +4,7 @@
 #include "gui/blockoptioncontrol.h"
 #include <QString>
 #include <QWidget>
-#include <QSpinBox>
+#include <QDoubleSpinBox>
 
 /**
  * A BlockOptionControlInteger is a BlockOptionControl that allows the user to
@@ -26,7 +26,7 @@ public:
     virtual QString textValue() const override;
 
 private:
-    QSpinBox *m_control;
+    QDoubleSpinBox *m_control;
 };
 
 #endif // BLOCKOPTIONCONTROLINTEGER_H

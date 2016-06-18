@@ -53,8 +53,11 @@ public:
      * DataType
      *
      * @param code the block's C code
+     *
+     * @param compiledOptionValues a mapping from option names to compiled
+     * option values
      */
-    CompiledBlockInfo(int blockIndex, Block block, BlockType blockType, QHash<QString, DataType> pinDataTypes, QString code);
+    CompiledBlockInfo(int blockIndex, Block block, BlockType blockType, QHash<QString, DataType> pinDataTypes, QString code, QHash<QString, QString>);
 
     /**
      * @return the block's index
@@ -88,12 +91,18 @@ public:
      */
     QString wireCode() const;
 
+    /**
+     * @return a mapping from option names to the compiled option values
+     */
+    QHash<QString, QString> compiledOptionValues() const;
+
 private:
     int m_blockIndex;
     Block m_block;
     BlockType m_blockType;
     QHash<QString, DataType> m_pinDataTypes;
     QString m_code;
+    QHash<QString, QString> m_compiledOptionValues;
 };
 
 #endif // COMPILEDBLOCKINFO_H

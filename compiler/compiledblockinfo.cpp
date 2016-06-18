@@ -12,6 +12,7 @@
 #include <QVector>
 #include "compiler/lisp_exp.h"
 #include "compiler/c_stmt.h"
+#include "compiler/c_exp.h"
 
 bool isLargerThan(DataType a, OverloadResult b) {
     int diff = 0;
@@ -48,6 +49,7 @@ CompiledBlockInfo CompiledBlockInfo::compileBlock(int blockIndex, Block block, Q
     lisp_exp parseTree = bt.parseTree();
     QHash<QString, DataType> dataTypes;
     QHash<QString, QString> wireNames;
+    QHash<QString, QString> compiledOptionValues;
     // add input data types and wire names to the environment
     for (QString inputPinName : bt.inputs().keys()) {
         BlockPin source = block.inputConnections().value(inputPinName);
@@ -60,14 +62,73 @@ CompiledBlockInfo CompiledBlockInfo::compileBlock(int blockIndex, Block block, Q
     for (QString optionName : bt.options().keys()) {
         QString optionLispSymbolName = "options." + optionName;
         QString optionWireName = "block_options_" + QString::number(blockIndex) + "_" + optionName;
-        DataType optionDataType = DATATYPE_INT; // TODO: temporary cop-out from the problem of determining option data types
+        BlockOptionType optionType = bt.options().value(optionName)->type();
+        DataType optionDataType;
+        QString optionValueStr = bt.resultingOptionValues(block.optionValues()).value(optionName);
+        if (optionType == BLOCK_OPTION_TYPE_COMBOBOX) {
+            optionDataType = DATATYPE_INT;
+        } else {
+            bool success;
+            int optionValueInt = optionValueStr.toInt(&success);
+            if (success) {
+                if (optionValueInt == 0) {
+                    optionDataType = DATATYPE_AFP(99); // TODO: infinitely precise zero type
+                } else {
+                    int numBits = 0;
+                    while (optionValueInt > 0 || optionValueInt < -1) {
+                        optionValueInt >>= 1;
+                        numBits++;
+                    }
+                    c_exp origValue(optionValueStr, DATATYPE_INT);
+                    //c_exp convertedValue = origValue.conversionTo(DATATYPE_AFP(32 - numBits));
+                    optionValueStr = origValue.code();
+                    optionDataType = origValue.type();
+                }
+            } else {
+                float optionValueFloat = optionValueStr.toFloat(&success);
+                float tempValue = optionValueFloat;
+                if (success) {
+                    if (optionValueFloat == 0.0) {
+                        optionDataType = DATATYPE_AFP(99); // TODO: infinitely precise zero type
+                    } else {
+                        if (optionValueFloat > 1.0 || optionValueFloat < -1.0) {
+                            int exponent = 0;
+                            while (tempValue > 1.0 || tempValue < -1.0) {
+                                tempValue /= 2;
+                                exponent++;
+                            }
+                            int rawValue = (int)(tempValue * (float)(1 << 31));
+                            optionValueStr = QString::number(rawValue);
+                            optionDataType = DATATYPE_AFP(31 - exponent);
+                        } else {
+                            int exponent = 1;
+                            while (tempValue < 1.0 && tempValue > -1.0) {
+                                tempValue *= 2;
+                                exponent--;
+                            }
+                            int rawValue = (int)(tempValue * (float)(1 << 30));
+                            optionValueStr = QString::number(rawValue);
+                            optionDataType = DATATYPE_AFP(30 - exponent);
+                        }
+                        int numBits = 0;
+                        while (optionValueInt > 0 || optionValueInt < -1) {
+                            optionValueInt >>= 1;
+                            numBits++;
+                        }
+                    }
+                } else {
+                    optionDataType = DataType();// error conditionanalog_output
+                }
+            }
+        }
+        compiledOptionValues[optionName] = optionValueStr;
         dataTypes[optionLispSymbolName] = optionDataType;
         wireNames[optionLispSymbolName] = optionWireName;
     }
     // add storage data types and wire names to the environment
     for (QString storageName : bt.storage().keys()) {
         QString storageWireName = "wire_" + QString::number(blockIndex) + "_" + storageName;
-        DataType storageDataType = DATATYPE_INT; // TODO: temporary cop-out from the problem of determining storage data types
+        DataType storageDataType = DATATYPE_AFP(27); // TODO: temporary cop-out from the problem of determining storage data types
         dataTypes[storageName] = storageDataType;
         wireNames[storageName] = storageWireName;
     }
@@ -83,7 +144,7 @@ CompiledBlockInfo CompiledBlockInfo::compileBlock(int blockIndex, Block block, Q
         pinDataTypes[outputPinName] = outputDataType;
     }
 
-    return CompiledBlockInfo(blockIndex, block, bt, pinDataTypes, code.code());
+    return CompiledBlockInfo(blockIndex, block, bt, pinDataTypes, code.code(), compiledOptionValues);
 }
 
 CompiledBlockInfo::CompiledBlockInfo() {
@@ -92,12 +153,13 @@ CompiledBlockInfo::CompiledBlockInfo() {
     m_blockType = BlockType();
 }
 
-CompiledBlockInfo::CompiledBlockInfo(int blockIndex, Block block, BlockType blockType, QHash<QString, DataType> pinDataTypes, QString code) {
+CompiledBlockInfo::CompiledBlockInfo(int blockIndex, Block block, BlockType blockType, QHash<QString, DataType> pinDataTypes, QString code, QHash<QString, QString> compiledOptionValues) {
     m_blockIndex = blockIndex;
     m_block = block;
     m_blockType = blockType;
     m_pinDataTypes = pinDataTypes;
     m_code = code;
+    m_compiledOptionValues = compiledOptionValues;
 }
 
 int CompiledBlockInfo::blockIndex() const {
@@ -134,9 +196,13 @@ QString CompiledBlockInfo::wireCode() const {
         } else if (outputDataType.isFloat()) {
             fullCode += "float ";
         } else {
-            // error condition
+            fullCode += "int "; // error condition
         }
         fullCode += "wire_" + QString::number(m_blockIndex) + "_" + outputPinName + ";\n";
     }
     return fullCode;
+}
+
+QHash<QString, QString> CompiledBlockInfo::compiledOptionValues() const {
+    return m_compiledOptionValues;
 }

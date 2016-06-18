@@ -91,8 +91,8 @@ c_exp c_exp::fromLispExp(lisp_exp exp, QHash<QString, DataType> dataTypes, QHash
             }
         }
     } else {
-        QString operand = exp.element(0).value();
-        if (operand == "+" || operand == "-") {
+        QString theOperator = exp.element(0).value();
+        if (theOperator == "+" || theOperator == "-") {
             QList<c_exp> results = evaluateArguments(exp, dataTypes, wireNames);
             DataType mostGeneralType = getMostGeneralType(results);
             DataType resultType;
@@ -102,9 +102,9 @@ c_exp c_exp::fromLispExp(lisp_exp exp, QHash<QString, DataType> dataTypes, QHash
                 resultType = mostGeneralType;
             }
             QList<QString> conversionCodes = getConversionCodes(results, resultType);
-            QString code = conversionCodes.join(" " + operand + " ");
+            QString code = conversionCodes.join(" " + theOperator + " ");
             return c_exp(code, resultType);
-        } else if (operand == "*") {
+        } else if (theOperator == "*") {
             QList<c_exp > results = evaluateArguments(exp, dataTypes, wireNames);
             DataType mostGeneralType = getMostGeneralType(results);
             if (mostGeneralType.isAFP()) {
@@ -112,11 +112,16 @@ c_exp c_exp::fromLispExp(lisp_exp exp, QHash<QString, DataType> dataTypes, QHash
                 DataType lastType = results[0].type();
                 for (int i = 1; i < results.size(); i++) {
                     c_exp result = results[i];
+                    if (! result.isValid()) {
+                        lastType = DataType();
+                    }
                     lastCode = "(" + lastCode + ") * (" + result.code() + ")";
                     lastCode = "(" + lastCode + ") >> 32";
                     int lastAFPPrecision = lastType.isAFP() ? lastType.afpPrecision() : 0;
                     int resultAFPPrecision = result.type().isAFP() ? result.type().afpPrecision() : 0;
-                    lastType = DATATYPE_AFP(32 - ((32 - lastAFPPrecision) + (32 - resultAFPPrecision)));
+                    if (lastType.isValid()) {
+                        lastType = DATATYPE_AFP(32 - ((32 - lastAFPPrecision) + (32 - resultAFPPrecision)));
+                    }
                 }
                 lastCode = "(int)(" + lastCode + ")";
                 return c_exp(lastCode, lastType);
@@ -126,29 +131,33 @@ c_exp c_exp::fromLispExp(lisp_exp exp, QHash<QString, DataType> dataTypes, QHash
                 QString code = codes.join(" * ");
                 return c_exp(code, resultType);
             }
-        } else if (operand == "/") {
+        } else if (theOperator == "/") {
             return c_exp();
-        } else if (operand == "//") {
+        } else if (theOperator == "//") {
             return c_exp();
-        } else if (operand == "%") {
+        } else if (theOperator == "%") {
             return c_exp();
-        } else if (operand == "mod") {
+        } else if (theOperator == "mod") {
             return c_exp();
-        } else if (operand == "if") {
+        } else if (theOperator == "if") {
             c_exp condResult = c_exp::fromLispExp(exp.element(1), dataTypes, wireNames);
             c_exp ifTrueResult = c_exp::fromLispExp(exp.element(2), dataTypes, wireNames);
             c_exp ifFalseResult = c_exp::fromLispExp(exp.element(3), dataTypes, wireNames);
             DataType resultType = moreGeneralType(ifTrueResult.type(), ifFalseResult.type());
             QString code = "(" + condResult.code() + ") ? (" + ifTrueResult.conversionTo(resultType).code() + ") : (" + ifFalseResult.conversionTo(resultType).code() + ")";
             return c_exp(code, resultType);
-        } else if (operand == ">" || operand == "<" || operand == ">=" || operand == "<=" || operand == "==" || operand == "!=") {
+        } else if (theOperator == ">" || theOperator == "<" || theOperator == ">=" || theOperator == "<=" || theOperator == "==" || theOperator == "!=") {
             c_exp leftOperand = c_exp::fromLispExp(exp.element(1), dataTypes, wireNames);
             c_exp rightOperand = c_exp::fromLispExp(exp.element(2), dataTypes, wireNames);
             DataType resultType = moreGeneralType(leftOperand.type(), rightOperand.type());
-            QString code = "(" + leftOperand.conversionTo(resultType).code() + ") " + operand + " (" + rightOperand.conversionTo(resultType).code() + ")";
+            QString code = "(" + leftOperand.conversionTo(resultType).code() + ") " + theOperator + " (" + rightOperand.conversionTo(resultType).code() + ")";
             return c_exp(code, resultType);
-        } else if (operand == "read_adc") {
-            QString code = "(int)read_adc(" + c_exp::fromLispExp(exp.element(1), dataTypes, wireNames).conversionTo(DATATYPE_INT).code() + ") << 16";
+        } else if (theOperator == "sqrt") {
+            c_exp operand = c_exp::fromLispExp(exp.element(1), dataTypes, wireNames);
+            QString code = "sqrt(" + operand.code() + ")";
+            return c_exp(code, DATATYPE_FLOAT);
+        } else if (theOperator == "read_adc") {
+            QString code = "((int)read_adc(" + c_exp::fromLispExp(exp.element(1), dataTypes, wireNames).conversionTo(DATATYPE_INT).code() + ") << 16)";
             return c_exp(code, DATATYPE_AFP(27));
         } else {
             return c_exp(); // error condition
@@ -175,18 +184,22 @@ c_exp c_exp::conversionTo(DataType outType) const {
             outCode = inCode;
         } else if (inType.isAFP()) {
             if (inType.afpPrecision() >= 0) {
-                outCode = "(float)(" + inCode + ") / " + QString::number(1 << inType.afpPrecision()) + ")";
+                outCode = "(float)(" + inCode + ") / " + QString::number(1 << inType.afpPrecision());
             } else {
-                outCode = "(float)(" + inCode + ") * " + QString::number(1 << (-inType.afpPrecision())) + ")";
+                outCode = "(float)(" + inCode + ") * " + QString::number(1 << (-inType.afpPrecision()));
             }
         } else if (inType.isInt()) {
             outCode = "(float)(" + inCode + ")";
         } else {
-            return c_exp(); // error condition
+            outCode = inCode; // error condition
         }
     } else if (outType.isAFP()) {
         if (inType.isFloat()) {
-            return c_exp(); // error condition
+            if (outType.afpPrecision() >= 0) {
+                outCode = "(int)(" + inCode + " * 1.6 * (1 << " + QString::number(outType.afpPrecision()) + "))";
+            } else {
+                outCode = "(int)(" + inCode + " * 1.6 / (1 << " + QString::number(-outType.afpPrecision()) + "))";
+            }
         } else if (inType.isAFP()) {
             int numLeftShifts = outType.afpPrecision() - inType.afpPrecision();
             if (numLeftShifts > 0) {
@@ -201,7 +214,7 @@ c_exp c_exp::conversionTo(DataType outType) const {
                 outCode = "(" + inCode + ") >> " + QString::number(-(outType.afpPrecision()));
             }
         } else {
-            return c_exp(); // error condition
+            outCode = inCode; // error condition
         }
     } else if (outType.isInt()) {
         if (inType.isFloat()) {
@@ -211,7 +224,7 @@ c_exp c_exp::conversionTo(DataType outType) const {
         } else if (inType.isInt()) {
             outCode = inCode;
         } else {
-            return c_exp(); // error condition
+            outCode = inCode; // error condition
         }
     }
     return c_exp(outCode, outType);

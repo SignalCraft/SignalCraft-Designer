@@ -10,19 +10,30 @@
 c_stmt c_stmt::fromLispExp(lisp_exp exp, QHash<QString, DataType> dataTypes, QHash<QString, QString> wireNames) {
     QString operand = exp.element(0).value();
     if (operand == "write_dac") {
-        QString code = "write_dac(" + c_exp::fromLispExp(exp.element(1), dataTypes, wireNames).conversionTo(DATATYPE_INT).code() + ", ((" + c_exp::fromLispExp(exp.element(2), dataTypes, wireNames).conversionTo(DATATYPE_AFP(27)).code() + ") >> 16));";
+        QString code = "write_dac(" + c_exp::fromLispExp(exp.element(1), dataTypes, wireNames).conversionTo(DATATYPE_INT).code() + ", (" + c_exp::fromLispExp(exp.element(2), dataTypes, wireNames).conversionTo(DATATYPE_AFP(27)).code() + "));";
         return c_stmt(code, QHash<QString, DataType>());
     } else if (operand == "set") {
         auto result = c_exp::fromLispExp(exp.element(2), dataTypes, wireNames);
-        QString code = wireNames[exp.element(1).value()] + " = " + result.code() + ";";
         QHash<QString, DataType> outputTypes;
+        /*
+        if (dataTypes.contains(exp.element(1).value())) {
+            result = result.conversionTo(dataTypes.value(exp.element(1).value()));
+        }
+        */
         outputTypes[wireNames[exp.element(1).value()]] = result.type();
+        QString code = wireNames[exp.element(1).value()] + " = " + result.code() + ";";
         return c_stmt(code, outputTypes);
     } else if (operand == "stmt-list") {
         QList<c_stmt> results;
         for (int i = 1; i < exp.size(); i++) {
             c_stmt result = c_stmt::fromLispExp(exp.element(i), dataTypes, wireNames);
             results.push_back(result);
+            for (QString symbolName : wireNames.keys()) {
+                QString wireName = wireNames.value(symbolName);
+                if (result.outputTypes().contains(wireName)) {
+                    dataTypes[symbolName] = result.outputTypes().value(wireName);
+                }
+            }
         }
         QString code;
         QHash<QString, DataType> outputTypes;

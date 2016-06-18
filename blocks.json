@@ -205,7 +205,7 @@
             }
         ],
 		"overloadType": 1,
-		"parseTree": "(stmt-list (set output (if (> input options.high_limit) options.high_limit (if (< input options.low_limit) options.low_limit input))))",
+		"parseTree": "(stmt-list (set output (if (> input 0.5) 0.5 (if (< input -0.5) -0.5 input))))",
 		"storage": [
 		]
     },
@@ -222,7 +222,7 @@
             {
                 "key": "factor",
                 "value": {
-                    "defaultValue": "61440",
+                    "defaultValue": "0.95",
                     "displayName": "Factor",
                     "maximum": 1,
                     "minimum": 0,
@@ -237,7 +237,7 @@
 	    }
         ],
 		"overloadType": 1,
-		"parseTree": "(stmt-list (set acc (+ (* acc options.factor) (* in (- 1 options.factor)))) (set out acc))",
+		"parseTree": "(stmt-list (set acc (+ (* acc 0.99) (* in (- 1 0.01)))) (set out acc))",
 		"storage": [
 			{
 				"key": "acc",
@@ -258,7 +258,7 @@
             {
                 "key": "factor",
                 "value": {
-                    "defaultValue": "61440",
+                    "defaultValue": "0.95",
                     "displayName": "Factor",
                     "maximum": 1,
                     "minimum": 0,
@@ -273,7 +273,7 @@
 	    }
         ],
 		"overloadType": 1,
-		"parseTree": "(stmt-list (set acc (+ (* acc options.factor) (* in (- 1 options.factor)))) (set out (- in acc)))",
+		"parseTree": "(stmt-list (set acc (+ (* acc 0.99) (* in (- 1 0.01)))) (set out (- in acc)))",
 		"storage": [
 			{
 				"key": "acc",
@@ -303,6 +303,32 @@
 		"storage": [
 			{
 				"key": "stored_peak",
+				"value": 4
+			}
+		]
+    },
+	{
+        "displayName": "RMS",
+        "inputs": [
+            {
+                "key": "input",
+                "value": 4
+            }
+        ],
+        "name": "rms",
+        "options": [
+        ],
+        "outputs": [
+            {
+                "key": "output",
+                "value": 4
+            }
+        ],
+		"overloadType": 1,
+		"parseTree": "(stmt-list (set stored_ms (+ (* 0.999 stored_ms) (* 0.001 (* input input)))) (set output (sqrt stored_ms)))",
+		"storage": [
+			{
+				"key": "stored_ms",
 				"value": 4
 			}
 		]

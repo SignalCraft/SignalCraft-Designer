@@ -1,11 +1,11 @@
 #include "gui/blockoptioncontrolinteger.h"
 #include <QWidget>
 #include <QString>
-#include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QVBoxLayout>
 
 BlockOptionControlInteger::BlockOptionControlInteger(const QString & title, int minimum, int maximum, QWidget *parent) : BlockOptionControl(title, parent) {
-    m_control = new QSpinBox(this);
+    m_control = new QDoubleSpinBox(this);
     QVBoxLayout *vbox = new QVBoxLayout(this);
     vbox->addWidget(m_control);
     this->setLayout(vbox);

@@ -34,6 +34,11 @@ public:
     DataType(DataTypeType dtt, int afpPrecision);
 
     /**
+     * @return true if this DataType is valid, false if not
+     */
+    bool isValid() const;
+
+    /**
      * @return true if this DataType is DATATYPE_BOOL, false if not
      */
     bool isBool() const;
