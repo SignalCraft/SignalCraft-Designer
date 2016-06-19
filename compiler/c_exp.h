@@ -2,8 +2,8 @@
 #define C_EXP_H
 
 #include <QString>
-#include "compiler/datatype.h"
-#include "compiler/lisp_exp.h"
+#include "datatype.h"
+#include "lisp_exp.h"
 #include <QHash>
 
 /**

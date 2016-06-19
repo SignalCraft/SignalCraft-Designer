@@ -3,8 +3,8 @@
 
 #include <QGraphicsItem>
 #include <QString>
-#include "flowchart/pintype.h"
-#include "gui/blockgraphicsitem.h"
+#include "pintype.h"
+#include "blockgraphicsitem.h"
 
 /**
  * @brief The PinGraphicsItem class is a QGraphicsItem that represents a block's pin.

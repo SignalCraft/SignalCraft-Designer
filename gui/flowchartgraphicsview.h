@@ -5,9 +5,9 @@
 #include <QHash>
 #include <QString>
 #include <QContextMenuEvent>
-#include "flowchart/blocktype.h"
-#include "gui/blockgraphicsitem.h"
-#include "gui/pingraphicsitem.h"
+#include "blocktype.h"
+#include "blockgraphicsitem.h"
+#include "pingraphicsitem.h"
 #include <QPoint>
 
 class FlowChart;

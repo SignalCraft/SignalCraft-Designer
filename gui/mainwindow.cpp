@@ -1,14 +1,14 @@
-#include "gui/mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "compiler/compiler.h"
+#include "compiler.h"
 
 #include <QStandardItem>
-#include "gui/blocktypelistmodel.h"
+#include "blocktypelistmodel.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
-#include "gui/applicationdata.h"
-#include "flowchart/blocktype.h"
+#include "applicationdata.h"
+#include "blocktype.h"
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonObject>

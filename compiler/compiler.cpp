@@ -1,14 +1,14 @@
-#include "compiler/compiler.h"
+#include "compiler.h"
 
 #include <QString>
 #include <QList>
 #include <QSet>
 #include <QVector>
 #include <QHash>
-#include "flowchart/blockpin.h"
-#include "flowchart/block.h"
-#include "flowchart/blocktype.h"
-#include "compiler/compiledblockinfo.h"
+#include "blockpin.h"
+#include "block.h"
+#include "blocktype.h"
+#include "compiledblockinfo.h"
 
 using namespace std;
 

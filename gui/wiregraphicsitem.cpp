@@ -1,7 +1,7 @@
 #include "wiregraphicsitem.h"
 
-#include "flowchart/flowchart.h"
-#include "flowchart/block.h"
+#include "flowchart.h"
+#include "block.h"
 #include <QRectF>
 #include <QSizeF>
 #include <QPainterPath>
@@ -9,7 +9,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QWidget>
-#include "flowchart/blockpin.h"
+#include "blockpin.h"
 
 QPointF WireGraphicsItem::blockInputPinPos(const BlockPin bp) const {
     Block block = m_flow->block(bp.blockNum());

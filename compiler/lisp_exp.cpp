@@ -1,4 +1,4 @@
-#include "compiler/lisp_exp.h"
+#include "lisp_exp.h"
 
 #include <QString>
 #include <QRegExp>

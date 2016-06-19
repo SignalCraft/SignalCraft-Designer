@@ -1,4 +1,4 @@
-#include "gui/blockoptioncontrolcombobox.h"
+#include "blockoptioncontrolcombobox.h"
 #include <QWidget>
 #include <QString>
 #include <QComboBox>

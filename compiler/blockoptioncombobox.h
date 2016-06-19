@@ -1,9 +1,9 @@
 #ifndef BLOCKOPTIONCOMBOBOX
 #define BLOCKOPTIONCOMBOBOX
 
-#include "flowchart/blockoption.h"
+#include "blockoption.h"
 #include <QString>
-#include "gui/blockoptioncontrol.h"
+#include "blockoptioncontrol.h"
 #include <QMap>
 #include <QJsonValue>
 

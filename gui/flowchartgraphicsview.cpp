@@ -1,4 +1,4 @@
-#include "gui/flowchartgraphicsview.h"
+#include "flowchartgraphicsview.h"
 
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
@@ -16,13 +16,13 @@
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QHash>
-#include "gui/blockgraphicsitem.h"
-#include "flowchart/flowchart.h"
-#include "flowchart/blocktype.h"
-#include "gui/pingraphicsitem.h"
-#include "gui/wiregraphicsitem.h"
-#include "gui/blockoptionsdialog.h"
-#include "flowchart/blockpin.h"
+#include "blockgraphicsitem.h"
+#include "flowchart.h"
+#include "blocktype.h"
+#include "pingraphicsitem.h"
+#include "wiregraphicsitem.h"
+#include "blockoptionsdialog.h"
+#include "blockpin.h"
 
 FlowChartGraphicsView::FlowChartGraphicsView(QWidget *parent) : QGraphicsView(parent) {}
 

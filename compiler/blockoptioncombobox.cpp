@@ -1,10 +1,10 @@
-#include "flowchart/blockoptioncombobox.h"
+#include "blockoptioncombobox.h"
 
-#include "gui/blockoptioncontrol.h"
-#include "gui/blockoptioncontrolcombobox.h"
+#include "blockoptioncontrol.h"
+#include "blockoptioncontrolcombobox.h"
 #include <QString>
 #include <QMap>
-#include "flowchart/jsonforqt.h"
+#include "jsonforqt.h"
 #include <QJsonValue>
 #include <QJsonObject>
 

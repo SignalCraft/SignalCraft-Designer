@@ -5,7 +5,7 @@
 #include <QHash>
 #include <QSet>
 #include <QPointF>
-#include "flowchart/blockpin.h"
+#include "blockpin.h"
 #include <QJsonValue>
 
 /**

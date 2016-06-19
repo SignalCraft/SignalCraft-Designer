@@ -7,7 +7,7 @@
 #include <QModelIndex>
 #include <QVariant>
 #include <QModelIndexList>
-#include "flowchart/blocktype.h"
+#include "blocktype.h"
 
 class QMimeData;
 

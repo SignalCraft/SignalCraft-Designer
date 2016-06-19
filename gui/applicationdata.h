@@ -3,7 +3,7 @@
 
 #include <QHash>
 #include <QString>
-#include "flowchart/blocktype.h"
+#include "blocktype.h"
 
 /**
  * The ApplicationData class stores all the information that is loaded at

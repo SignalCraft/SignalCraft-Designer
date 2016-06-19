@@ -1,4 +1,4 @@
-#include "flowchart/pintype.h"
+#include "pintype.h"
 
 #include <QJsonValue>
 #include <QHash>

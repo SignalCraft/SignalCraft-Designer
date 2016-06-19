@@ -1,6 +1,6 @@
 #include "automatictypecast.h"
 
-#include "compiler/datatype.h"
+#include "datatype.h"
 #include <QString>
 
 AutomaticTypeCast::AutomaticTypeCast() {

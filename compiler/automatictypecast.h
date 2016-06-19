@@ -1,7 +1,7 @@
 #ifndef AUTOMATICTYPECAST_H
 #define AUTOMATICTYPECAST_H
 
-#include "compiler/datatype.h"
+#include "datatype.h"
 #include <QString>
 
 /**

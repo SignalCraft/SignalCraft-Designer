@@ -1,11 +1,11 @@
-#include "compiler/c_stmt.h"
+#include "c_stmt.h"
 
 #include <QString>
 #include <QHash>
-#include "compiler/datatype.h"
-#include "compiler/lisp_exp.h"
+#include "datatype.h"
+#include "lisp_exp.h"
 #include <QList>
-#include "compiler/c_exp.h"
+#include "c_exp.h"
 
 c_stmt c_stmt::fromLispExp(lisp_exp exp, QHash<QString, DataType> dataTypes, QHash<QString, QString> wireNames) {
     QString operand = exp.element(0).value();

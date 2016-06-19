@@ -2,7 +2,7 @@
 #define BLOCKGRAPHICSITEM_H
 
 #include <QGraphicsItem>
-#include "flowchart/blocktype.h"
+#include "blocktype.h"
 
 /**
  * The BlockGraphicsItem class is a QGraphicsItem that represents a block.

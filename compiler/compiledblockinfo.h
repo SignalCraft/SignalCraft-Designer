@@ -1,13 +1,13 @@
 #ifndef COMPILEDBLOCKINFO_H
 #define COMPILEDBLOCKINFO_H
 
-#include "compiler/datatype.h"
+#include "datatype.h"
 #include <QHash>
 #include <QString>
-#include "compiler/automatictypecast.h"
-#include "flowchart/block.h"
-#include "compiler/overloadresult.h"
-#include "flowchart/blocktype.h"
+#include "automatictypecast.h"
+#include "block.h"
+#include "overloadresult.h"
+#include "blocktype.h"
 
 /**
  * The immutable CompiledBlockInfo class represents all of the information

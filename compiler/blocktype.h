@@ -4,13 +4,13 @@
 #include <QMap>
 #include <QHash>
 #include <QString>
-#include "flowchart/pintype.h"
+#include "pintype.h"
 #include <QPointF>
 #include <QtGlobal>
-#include "flowchart/blockoption.h"
+#include "blockoption.h"
 #include <QJsonValue>
-#include "flowchart/overloadtype.h"
-#include "compiler/lisp_exp.h"
+#include "overloadtype.h"
+#include "lisp_exp.h"
 
 /**
  * The immutable BlockType class represents a type of Block that can exist.

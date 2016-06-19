@@ -3,7 +3,7 @@
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonArray>
-#include "flowchart/jsonforqt.h"
+#include "jsonforqt.h"
 
 BlockOption::BlockOption() { }
 

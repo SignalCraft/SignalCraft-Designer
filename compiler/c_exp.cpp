@@ -1,8 +1,8 @@
-#include "compiler/c_exp.h"
+#include "c_exp.h"
 
 #include <QString>
-#include "compiler/datatype.h"
-#include "compiler/lisp_exp.h"
+#include "datatype.h"
+#include "lisp_exp.h"
 #include <QHash>
 #include <QList>
 

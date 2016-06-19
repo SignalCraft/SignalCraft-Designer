@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QHash>
-#include "compiler/datatype.h"
-#include "compiler/lisp_exp.h"
+#include "datatype.h"
+#include "lisp_exp.h"
 
 /**
  * The c_stmt class represents a C statement.

@@ -1,6 +1,6 @@
-#include "flowchart/blockoptioninteger.h"
-#include "gui/blockoptioncontrol.h"
-#include "gui/blockoptioncontrolinteger.h"
+#include "blockoptioninteger.h"
+#include "blockoptioncontrol.h"
+#include "blockoptioncontrolinteger.h"
 #include <QString>
 #include <QJsonValue>
 #include <QJsonObject>

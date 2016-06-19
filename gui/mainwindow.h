@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 
-#include "flowchart/flowchart.h"
-#include "gui/applicationdata.h"
+#include "flowchart.h"
+#include "applicationdata.h"
 class QGraphicsScene;
 class QModelIndex;
 class BlockTypeListModel;

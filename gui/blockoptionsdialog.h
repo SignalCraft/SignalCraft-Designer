@@ -2,10 +2,10 @@
 #define BLOCKOPTIONSDIALOG_H
 
 #include <QDialog>
-#include "flowchart/blocktype.h"
+#include "blocktype.h"
 #include <QHash>
 #include <QString>
-#include "gui/blockoptioncontrol.h"
+#include "blockoptioncontrol.h"
 
 namespace Ui {
     class BlockOptionsDialog;

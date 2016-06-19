@@ -1,4 +1,4 @@
-#include "compiler/datatype.h"
+#include "datatype.h"
 
 #include <QString>
 

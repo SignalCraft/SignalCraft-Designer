@@ -1,10 +1,10 @@
 #include "blockoptionsdialog.h"
 #include "ui_blockoptionsdialog.h"
-#include "flowchart/blocktype.h"
-#include "flowchart/blockoption.h"
-#include "gui/blockoptioncontrol.h"
-#include "gui/blockoptioncontrolcombobox.h"
-#include "gui/blockoptioncontrolinteger.h"
+#include "blocktype.h"
+#include "blockoption.h"
+#include "blockoptioncontrol.h"
+#include "blockoptioncontrolcombobox.h"
+#include "blockoptioncontrolinteger.h"
 #include <QWidget>
 #include <QString>
 #include <QVBoxLayout>

@@ -1,8 +1,8 @@
 #ifndef COMPILER_H
 #define COMPILER_H
 
-#include "flowchart/flowchart.h"
-#include "flowchart/block.h"
+#include "flowchart.h"
+#include "block.h"
 #include <QString>
 #include <QList>
 #include <QSet>

@@ -1,7 +1,7 @@
 #ifndef BLOCKOPTIONCONTROLCOMBOBOX
 #define BLOCKOPTIONCONTROLCOMBOBOX
 
-#include "gui/blockoptioncontrol.h"
+#include "blockoptioncontrol.h"
 #include <QString>
 #include <QWidget>
 #include <QComboBox>

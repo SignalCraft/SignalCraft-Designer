@@ -1,4 +1,4 @@
-#include "flowchart/blockpin.h"
+#include "blockpin.h"
 
 #include <QString>
 #include <QHash>

@@ -1,7 +1,7 @@
 #ifndef BLOCKOPTIONCONTROLINTEGER_H
 #define BLOCKOPTIONCONTROLINTEGER_H
 
-#include "gui/blockoptioncontrol.h"
+#include "blockoptioncontrol.h"
 #include <QString>
 #include <QWidget>
 #include <QDoubleSpinBox>

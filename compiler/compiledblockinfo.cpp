@@ -2,17 +2,17 @@
 
 #include <QHash>
 #include <QString>
-#include "compiler/datatype.h"
-#include "compiler/automatictypecast.h"
-#include "flowchart/block.h"
-#include "compiler/overloadresult.h"
-#include "flowchart/blocktype.h"
-#include "flowchart/overloadtype.h"
-#include "compiler/datatype.h"
+#include "datatype.h"
+#include "automatictypecast.h"
+#include "block.h"
+#include "overloadresult.h"
+#include "blocktype.h"
+#include "overloadtype.h"
+#include "datatype.h"
 #include <QVector>
-#include "compiler/lisp_exp.h"
-#include "compiler/c_stmt.h"
-#include "compiler/c_exp.h"
+#include "lisp_exp.h"
+#include "c_stmt.h"
+#include "c_exp.h"
 
 bool isLargerThan(DataType a, OverloadResult b) {
     int diff = 0;

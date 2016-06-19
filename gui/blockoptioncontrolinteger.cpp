@@ -1,4 +1,4 @@
-#include "gui/blockoptioncontrolinteger.h"
+#include "blockoptioncontrolinteger.h"
 #include <QWidget>
 #include <QString>
 #include <QDoubleSpinBox>

@@ -1,4 +1,4 @@
-#include "gui/applicationdata.h"
+#include "applicationdata.h"
 
 ApplicationData::ApplicationData() { }
 

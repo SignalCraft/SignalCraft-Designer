@@ -2,8 +2,8 @@
 #define WIREGRAPHICSITEM_H
 
 #include <QGraphicsPathItem>
-#include "flowchart/flowchart.h"
-#include "flowchart/blockpin.h"
+#include "flowchart.h"
+#include "blockpin.h"
 #include <QRectF>
 #include <QPainterPath>
 #include <QPointF>

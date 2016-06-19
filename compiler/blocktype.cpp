@@ -1,18 +1,18 @@
-#include "flowchart/blocktype.h"
+#include "blocktype.h"
 
 #include <QtGlobal>
 #include <QPointF>
 #include <QString>
-#include "flowchart/blockoption.h"
-#include "flowchart/jsonforqt.h"
-#include "flowchart/pintype.h"
+#include "blockoption.h"
+#include "jsonforqt.h"
+#include "pintype.h"
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMap>
 #include <QHash>
-#include "flowchart/overloadtype.h"
-#include "compiler/lisp_exp.h"
+#include "overloadtype.h"
+#include "lisp_exp.h"
 
 BlockType::BlockType() {
     m_name = "";

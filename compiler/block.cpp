@@ -1,12 +1,12 @@
-#include "flowchart/block.h"
+#include "block.h"
 
 #include <QString>
 #include <QPointF>
-#include "flowchart/blockpin.h"
+#include "blockpin.h"
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonArray>
-#include "flowchart/jsonforqt.h"
+#include "jsonforqt.h"
 
 Block::Block() {
     m_blockTypeName = "";

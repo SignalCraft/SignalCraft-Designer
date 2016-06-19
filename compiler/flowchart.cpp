@@ -1,13 +1,13 @@
-#include "flowchart/flowchart.h"
+#include "flowchart.h"
 
 #include <QPointF>
 #include <QString>
-#include "flowchart/block.h"
-#include "flowchart/blocktype.h"
-#include "flowchart/blockpin.h"
+#include "block.h"
+#include "blocktype.h"
+#include "blockpin.h"
 #include <QJsonValue>
 #include <QJsonObject>
-#include "flowchart/jsonforqt.h"
+#include "jsonforqt.h"
 #include <QMap>
 
 FlowChart::FlowChart() { }

@@ -5,8 +5,8 @@
 #include <QMap>
 #include <QHash>
 #include <QPointF>
-#include "flowchart/block.h"
-#include "flowchart/blocktype.h"
+#include "block.h"
+#include "blocktype.h"
 
 /**
  * The FlowChart class represents a user-written program as a set of

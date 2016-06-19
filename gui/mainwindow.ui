@@ -307,7 +307,7 @@
   <customwidget>
    <class>FlowChartGraphicsView</class>
    <extends>QGraphicsView</extends>
-   <header>gui/flowchartgraphicsview.h</header>
+   <header>flowchartgraphicsview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

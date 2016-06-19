@@ -1,9 +1,9 @@
 #ifndef BLOCKOPTIONINTEGER_H
 #define BLOCKOPTIONINTEGER_H
 
-#include "flowchart/blockoption.h"
+#include "blockoption.h"
 #include <QString>
-#include "gui/blockoptioncontrol.h"
+#include "blockoptioncontrol.h"
 #include <QJsonValue>
 
 /**

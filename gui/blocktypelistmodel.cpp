@@ -1,4 +1,4 @@
-#include "gui/blocktypelistmodel.h"
+#include "blocktypelistmodel.h"
 
 #include <QAbstractListModel>
 #include <QObject>
@@ -6,7 +6,7 @@
 #include <QModelIndex>
 #include <QVariant>
 #include <QModelIndexList>
-#include "flowchart/blocktype.h"
+#include "blocktype.h"
 #include <QMimeData>
 
 BlockTypeListModel::BlockTypeListModel(QObject *parent) : QAbstractListModel(parent) { }

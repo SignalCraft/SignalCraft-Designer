@@ -1,8 +1,8 @@
-#include "gui/mainwindow.h"
+#include "mainwindow.h"
 #include <QApplication>
 #include <QFile>
-#include "gui/applicationdata.h"
-#include "flowchart/blocktype.h"
+#include "applicationdata.h"
+#include "blocktype.h"
 #include <QJsonDocument>
 #include <QJsonArray>
 

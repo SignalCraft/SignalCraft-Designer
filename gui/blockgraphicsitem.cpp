@@ -1,13 +1,13 @@
-#include "gui/blockgraphicsitem.h"
+#include "blockgraphicsitem.h"
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QRectF>
 #include <QSize>
 #include <QTextOption>
-#include "flowchart/blocktype.h"
-#include "flowchart/pintype.h"
-#include "gui/pingraphicsitem.h"
+#include "blocktype.h"
+#include "pintype.h"
+#include "pingraphicsitem.h"
 
 BlockGraphicsItem::BlockGraphicsItem(BlockType blockType, int index)
 {

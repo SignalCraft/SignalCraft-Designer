@@ -1,13 +1,13 @@
-#include "gui/pingraphicsitem.h"
+#include "pingraphicsitem.h"
 
 #include <QGraphicsItem>
 #include <QString>
-#include "flowchart/pintype.h"
+#include "pintype.h"
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QWidget>
 #include <QTextOption>
-#include "gui/blockgraphicsitem.h"
+#include "blockgraphicsitem.h"
 
 PinGraphicsItem::PinGraphicsItem(BlockGraphicsItem *parent, QString pinName, PinType pinType, bool isOutput) : QGraphicsItem(parent) {
     m_pinName = pinName;

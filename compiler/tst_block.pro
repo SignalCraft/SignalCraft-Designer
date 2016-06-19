@@ -13,6 +13,6 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += tst_block.cpp block.cpp blockpin.cpp jsonforqt.cpp
+SOURCES += tst_block.cpp
 
-HEADERS += tst_block.h block.h blockpin.h jsonforqt.h
+HEADERS += tst_block.h
