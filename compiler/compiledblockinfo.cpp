@@ -62,7 +62,7 @@ CompiledBlockInfo CompiledBlockInfo::compileBlock(int blockIndex, Block block, Q
     for (QString optionName : bt.options().keys()) {
         QString optionLispSymbolName = "options." + optionName;
         QString optionWireName = "block_options_" + QString::number(blockIndex) + "_" + optionName;
-        BlockOptionType optionType = bt.options().value(optionName)->type();
+        BlockOptionType optionType = bt.options().value(optionName).type();
         DataType optionDataType;
         QString optionValueStr = bt.resultingOptionValues(block.optionValues()).value(optionName);
         if (optionType == BLOCK_OPTION_TYPE_COMBOBOX) {
