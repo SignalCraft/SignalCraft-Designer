@@ -8,7 +8,6 @@
 #include <QPointF>
 #include <QtGlobal>
 #include "flowchart/blockoption.h"
-#include <QSharedPointer>
 #include <QJsonValue>
 #include "flowchart/overloadtype.h"
 #include "compiler/lisp_exp.h"
@@ -30,11 +29,11 @@ public:
      * @param overload the type of overloading this block uses
      * @param inputs the mapping of input pin names to pin types
      * @param outputs the mapping of output pin names to pin types
-     * @param options the mapping of option names to shared BlockOption objects
+     * @param options the mapping of option names to BlockOption objects
      * @param storage the mapping of storage "pin" names to pin types
      * @param parseTree the block type's parse tree as a lisp expression
      */
-    BlockType(QString name, QString displayName, OverloadType overload, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options, QMap<QString, PinType> storage, lisp_exp parseTree);
+    BlockType(QString name, QString displayName, OverloadType overload, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, BlockOption> options, QMap<QString, PinType> storage, lisp_exp parseTree);
 
     /**
      * Determine whether or not this BlockType is valid.
@@ -116,9 +115,9 @@ public:
     QMap<QString, PinType> outputs() const;
 
     /**
-     * @return the mapping of option names to shared BlockOption objects
+     * @return the mapping of option names to BlockOption objects
      */
-    QMap<QString, QSharedPointer<const BlockOption> > options() const;
+    QMap<QString, BlockOption> options() const;
 
     /**
      * @return the mapping of storage "pin" names to pin types
@@ -177,7 +176,7 @@ private:
     OverloadType m_overloadType;
     QMap<QString, PinType> m_inputs;
     QMap<QString, PinType> m_outputs;
-    QMap<QString, QSharedPointer<const BlockOption> > m_options;
+    QMap<QString, BlockOption> m_options;
     QMap<QString, PinType> m_storage;
     lisp_exp m_parseTree;
 };

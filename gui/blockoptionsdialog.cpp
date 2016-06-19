@@ -1,19 +1,30 @@
 #include "blockoptionsdialog.h"
 #include "ui_blockoptionsdialog.h"
 #include "flowchart/blocktype.h"
+#include "flowchart/blockoption.h"
 #include "gui/blockoptioncontrol.h"
+#include "gui/blockoptioncontrolcombobox.h"
+#include "gui/blockoptioncontrolinteger.h"
 #include <QWidget>
 #include <QString>
 #include <QVBoxLayout>
-#include <QSharedPointer>
 #include <QHash>
 
 BlockOptionsDialog::BlockOptionsDialog(BlockType bt, QHash<QString, QString> optionValues, QWidget *parent) : QDialog(parent), ui(new Ui::BlockOptionsDialog) {
     ui->setupUi(this);
     m_optionValues = bt.resultingOptionValues(optionValues);
     for (QString blockOptionName : bt.options().keys()) {
-        QSharedPointer<const BlockOption> blockOption = bt.options()[blockOptionName];
-        BlockOptionControl *control = blockOption->makeControl(optionValues[blockOptionName]);
+        BlockOption blockOption = bt.options()[blockOptionName];
+        BlockOptionControl *control;
+        switch (blockOption.type()) {
+        case BLOCK_OPTION_TYPE_COMBOBOX:
+            control = new BlockOptionControlComboBox(blockOption.displayName(), blockOption.choices());
+            break;
+        case BLOCK_OPTION_TYPE_INTEGER:
+            control = new BlockOptionControlInteger(blockOption.displayName(), blockOption.minimum(), blockOption.maximum());
+            break;
+        }
+        control->setCurrentValue(optionValues[blockOptionName]);
         ui->optionControlLayout->addWidget(control);
         m_optionControls[blockOptionName] = control;
     }

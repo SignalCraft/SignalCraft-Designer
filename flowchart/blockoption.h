@@ -2,9 +2,9 @@
 #define BLOCKOPTION_H
 
 #include <QString>
-#include "gui/blockoptioncontrol.h"
 #include <QJsonValue>
-#include <QSharedPointer>
+#include <QMap>
+#include <QHash>
 
 /**
  * The BlockOptionType enum stores what subtype a BlcokOption is at runtime.
@@ -29,12 +29,28 @@ enum BlockOptionType { BLOCK_OPTION_TYPE_COMBOBOX = 1, BLOCK_OPTION_TYPE_INTEGER
 class BlockOption {
 public:
     /**
-     * Construct a BlockOption.
+     * Construct an invalid BlockOption.
+     */
+    BlockOption();
+
+    /**
+     * This factory function constructs a Combobox BlockOption.
      * @param displayName the BlockOption's display name
      * @param defaultValue the BlockOption's default value
-     * @param type the BlockOption's subtype
+     * @param choices an ordered mapping from the BlockOption's option names to option values
+     * @return the constructed BlockOption
      */
-    explicit BlockOption(QString displayName, QString defaultValue, BlockOptionType type);
+    static BlockOption makeComboBox(QString displayName, QString defaultValue, QMap<QString, QString> choices);
+
+    /**
+     * This factory function constructs an Integer BlockOption
+     * @param displayName the BlockOption's display name
+     * @param defaultValue the BlockOption's default value
+     * @param minimum the BlockOption's minimum value
+     * @param maximum the BlockOption's maximum value
+     * @return the constructed BlockOption
+     */
+    static BlockOption makeInteger(QString displayName, QString defaultValue, int minimum, int maximum);
 
     /**
      * @return the display name
@@ -51,38 +67,59 @@ public:
      */
     BlockOptionType type() const;
 
-    /**
-     * Create the BlockOptionControl for controlling this option.
-     * This is a pure virtual function: subclasses must implement it.
-     * @return A pointer to the heap-allocated control object.
-     */
-    virtual BlockOptionControl *makeControl() const = 0;
+    // Combobox:
 
     /**
-     * Create the BlockOptionControl for controlling this option, with the given current value.
-     * This function calls makeControl internally.
-     * @return A pointer to the heap-allocated control object.
+     * @return an ordered mapping from the BlockOption's option names to option values
      */
-    BlockOptionControl *makeControl(QString currentValue) const;
+    QMap<QString, QString> choices() const;
 
-    virtual QJsonValue toJson() const;
+    // Integer:
+
+    /**
+     * @return the BlockOption's minimum value
+     */
+    int minimum() const;
+
+    /**
+     * @return the BlockOption's maximum value
+     */
+    int maximum() const;
 
 private:
+
+    /**
+     * Partially construct a BlockOption, by initializing the members that are common to every type.
+     * This pivate constructor is meant to be called by factory functions for each type.
+     * @param displayName the BlockOption's display name
+     * @param defaultValue the BlockOption's default value
+     * @param type the BlockOption's subtype
+     */
+    explicit BlockOption(QString displayName, QString defaultValue, BlockOptionType type);
+
     QString m_displayName;
     QString m_defaultValue;
     BlockOptionType m_type;
+
+    // ComboBox:
+    QMap<QString, QString> m_choices;
+
+    // Integer:
+    int m_minimum;
+    int m_maximum;
+
 };
 
 QJsonValue BlockOptionType_toJson(BlockOptionType obj);
 BlockOptionType BlockOptionType_fromJson(QJsonValue node);
 
-QJsonValue BlockOption_toJson(QSharedPointer<const BlockOption> obj);
-QSharedPointer<const BlockOption> BlockOption_fromJson(QJsonValue node);
+QJsonValue BlockOption_toJson(BlockOption obj);
+BlockOption BlockOption_fromJson(QJsonValue node);
 
-QJsonValue QHash_QString_BlockOption_toJson(QHash<QString, QSharedPointer<const BlockOption>> obj);
-QHash<QString, QSharedPointer<const BlockOption>> QHash_QString_BlockOption_fromJson(QJsonValue node);
+QJsonValue QHash_QString_BlockOption_toJson(QHash<QString, BlockOption> obj);
+QHash<QString, BlockOption> QHash_QString_BlockOption_fromJson(QJsonValue node);
 
-QJsonValue QMap_QString_BlockOption_toJson(QMap<QString, QSharedPointer<const BlockOption>> obj);
-QMap<QString, QSharedPointer<const BlockOption>> QMap_QString_BlockOption_fromJson(QJsonValue node);
+QJsonValue QMap_QString_BlockOption_toJson(QMap<QString, BlockOption> obj);
+QMap<QString, BlockOption> QMap_QString_BlockOption_fromJson(QJsonValue node);
 
 #endif // BLOCKOPTION_H

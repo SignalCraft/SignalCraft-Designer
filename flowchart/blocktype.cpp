@@ -3,7 +3,6 @@
 #include <QtGlobal>
 #include <QPointF>
 #include <QString>
-#include <QSharedPointer>
 #include "flowchart/blockoption.h"
 #include "flowchart/jsonforqt.h"
 #include "flowchart/pintype.h"
@@ -19,7 +18,7 @@ BlockType::BlockType() {
     m_name = "";
 }
 
-BlockType::BlockType(QString name, QString displayName, OverloadType overloadType, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, QSharedPointer<const BlockOption> > options, QMap<QString, PinType> storage, lisp_exp parseTree) {
+BlockType::BlockType(QString name, QString displayName, OverloadType overloadType, QMap<QString, PinType> inputs, QMap<QString, PinType> outputs, QMap<QString, BlockOption> options, QMap<QString, PinType> storage, lisp_exp parseTree) {
     m_name = name;
     m_displayName = displayName;
     m_overloadType = overloadType;
@@ -97,7 +96,7 @@ QMap<QString, PinType> BlockType::outputs() const {
     return m_outputs;
 }
 
-QMap<QString, QSharedPointer<const BlockOption> > BlockType::options() const {
+QMap<QString, BlockOption> BlockType::options() const {
     return m_options;
 }
 
@@ -112,8 +111,8 @@ lisp_exp BlockType::parseTree() const {
 QHash<QString, QString> BlockType::defaultOptionValues() const {
     QHash<QString, QString> defaults;
     for (QString optionName : options().keys()) {
-        QSharedPointer<const BlockOption> option = options()[optionName];
-        defaults[optionName] = option->defaultValue();
+        BlockOption option = options()[optionName];
+        defaults[optionName] = option.defaultValue();
     }
     return defaults;
 }
@@ -121,7 +120,7 @@ QHash<QString, QString> BlockType::defaultOptionValues() const {
 QHash<QString, QString> BlockType::resultingOptionValues(QHash<QString, QString> optionValues) const {
     for (QString optionName : options().keys()) {
         if (!optionValues.contains(optionName)) {
-            optionValues.insert(optionName, options().value(optionName)->defaultValue());
+            optionValues.insert(optionName, options().value(optionName).defaultValue());
         }
     }
     return optionValues;
@@ -163,7 +162,7 @@ BlockType BlockType_fromJson(QJsonValue node) {
     OverloadType overloadType = OverloadType_fromJson(nodeObj["overloadType"]);
     QMap<QString, PinType> inputs = QMap_QString_PinType_fromJson(nodeObj["inputs"]);
     QMap<QString, PinType> outputs = QMap_QString_PinType_fromJson(nodeObj["outputs"]);
-    QMap<QString, QSharedPointer<const BlockOption>> options = QMap_QString_BlockOption_fromJson(nodeObj["options"]);
+    QMap<QString, BlockOption> options = QMap_QString_BlockOption_fromJson(nodeObj["options"]);
     QMap<QString, PinType> storage = QMap_QString_PinType_fromJson(nodeObj["storage"]);
     lisp_exp parseTree = lisp_exp::parseString(nodeObj["parseTree"].toString());
     return BlockType(name, displayName, overloadType, inputs, outputs, options, storage, parseTree);
