@@ -71,16 +71,16 @@ public:
     void setBlockOptionValues(int blockIndex, QHash<QString, QString> optionValues);
 
     /**
+     * @return the list of valid indeces that map to blocks in this Flowchart
+     */
+    QList<int> blockIndeces() const;
+
+    /**
      * Get a block's position.
      * @param blockIndex the index of the block
      * @return the block's position
      */
     QPointF blockPos(int blockIndex) const;
-
-    /**
-     * @return a mapping of block indexes to Block objects
-     */
-    QHash<int, Block> blocks() const; // TODO: remove
 
     /**
      * @return a pointer to the mapping of block time names to BlockTypes

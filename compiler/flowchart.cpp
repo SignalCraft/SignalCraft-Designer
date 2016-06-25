@@ -87,12 +87,12 @@ void FlowChart::setBlockOptionValues(int blockIndex, QHash<QString, QString> opt
     }
 }
 
-QPointF FlowChart::blockPos(int blockIndex) const {
-    return block(blockIndex).pos();
+QList<int> FlowChart::blockIndeces() const {
+    return m_blocks.keys();
 }
 
-QHash<int, Block> FlowChart::blocks() const {
-    return m_blocks;
+QPointF FlowChart::blockPos(int blockIndex) const {
+    return block(blockIndex).pos();
 }
 
 const QHash<QString, BlockType> *FlowChart::blockTypes() const {
@@ -100,5 +100,5 @@ const QHash<QString, BlockType> *FlowChart::blockTypes() const {
 }
 
 Block FlowChart::block(int blockIndex) const {
-    return blocks()[blockIndex];
+    return m_blocks[blockIndex];
 }

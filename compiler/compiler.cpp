@@ -102,7 +102,8 @@ QString generatePicCode(const FlowChart flow) {
 
 QSet<QString> extractUniqueBlockNames(FlowChart flow) {
     QSet<QString> blockNames;
-    for(Block block : flow.blocks().values()) {
+    for(int blockIndex : flow.blockIndeces()) {
+        Block block = flow.block(blockIndex);
         // make sure this block's name is in the blockNames set
         blockNames.insert(block.blockTypeName());
     }
@@ -111,7 +112,7 @@ QSet<QString> extractUniqueBlockNames(FlowChart flow) {
 
 QList<int> extractInputBlocks(FlowChart flow) {
     QList<int> inputBlocks;
-    for(int blockIndex : flow.blocks().keys()) {
+    for(int blockIndex : flow.blockIndeces()) {
         Block block = flow.block(blockIndex);
         // If this is an input block, make sure it's expanded first
         if(!block.hasInputConnections()) {
