@@ -12,23 +12,20 @@
 
 FlowChart::FlowChart() { }
 
-FlowChart::FlowChart(QHash<int, Block> blocks) {
+FlowChart::FlowChart(QHash<int, Block> blocks, QHash<QString, BlockType> *blockTypes) {
     m_blocks = blocks;
     for (int blockIndex : blocks.keys()) {
         if (blockIndex >= m_currentIndex) {
             m_currentIndex = blockIndex + 1;
         }
     }
+    m_blockTypes = blockTypes;
 }
 
 int FlowChart::addBlock(QString blockTypeName, QPointF pos) {
     Block b(blockTypeName, pos);
     m_blocks[m_currentIndex] = b;
     return m_currentIndex++;
-}
-
-void FlowChart::setBlockTypes(QHash<QString, BlockType> *blockTypes) {
-    m_blockTypes = blockTypes;
 }
 
 void FlowChart::removeBlock(int blockIndex) {
@@ -104,16 +101,4 @@ const QHash<QString, BlockType> *FlowChart::blockTypes() const {
 
 Block FlowChart::block(int blockIndex) const {
     return blocks()[blockIndex];
-}
-
-QJsonValue FlowChart_toJson(FlowChart obj) {
-    QJsonObject nodeObj;
-    nodeObj["blocks"] = QHash_int_Block_toJson(obj.blocks());
-    return nodeObj;
-}
-
-FlowChart FlowChart_fromJson(QJsonValue node) {
-    QJsonObject nodeObj = node.toObject();
-    QHash<int, Block> blocks = QHash_int_Block_fromJson(nodeObj["blocks"]);
-    return FlowChart(blocks);
 }

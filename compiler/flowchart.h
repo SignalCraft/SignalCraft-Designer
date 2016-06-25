@@ -10,11 +10,14 @@
 
 /**
  * The FlowChart class represents a user-written program as a set of
- * interconnected blocks.
+ * interconnected blocks, in the context of block type information
  *
  * A FlowChart contains a number of blocks, each identified by a non-negative
  * index. Though connection information is stored by the block, the handling
  * of requests to connect arbritrary pins is handeled by FlowChart.
+ *
+ * A FlowChart also stores a pointer to a mapping of block type names to
+ * BlockTypes, to provide context for its operations.
  */
 class FlowChart {
 public:
@@ -24,16 +27,11 @@ public:
     FlowChart();
 
     /**
-     * Construct a FlowChart with the given mapping from indexes to blocks.
+     * Construct a FlowChart with the given block mapping and block types.
      * @param blocks a mapping from indexes to blocks
+     * @param a pointer to a mapping from block type names to block types.
      */
-    FlowChart(QHash<int, Block> blocks);
-
-    /**
-     * Set the mapping from block type names to BlockTypes used in this FlowChart.
-     * @param blockTypes a pointer to a mapping from block type names to BlockTypes
-     */
-    void setBlockTypes(QHash<QString, BlockType> *blockTypes);
+    FlowChart(QHash<int, Block> blocks, QHash<QString, BlockType> *blockTypes);
 
     /**
      * Add a new block to this FlowChart.
@@ -101,8 +99,5 @@ private:
     const QHash<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };
-
-QJsonValue FlowChart_toJson(FlowChart obj);
-FlowChart FlowChart_fromJson(QJsonValue node);
 
 #endif // FLOWCHART_H

@@ -12,6 +12,7 @@
 #include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QProcess>
 #include <QString>
 #include <QList>
@@ -21,7 +22,7 @@ MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(
 
     ui->listView_io->setAcceptDrops(false);
 
-    flow.setBlockTypes(&_appData.blockTypes);
+    flow = FlowChart(QHash<int, Block>(), &_appData.blockTypes);
 
     ui->graphicsView->setFlowChart(&flow);
     scene = new QGraphicsScene();
@@ -69,7 +70,7 @@ void MainWindow::handleSaveAs() {
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
-    QJsonDocument doc(FlowChart_toJson(flow).toObject());
+    QJsonDocument doc(QHash_int_Block_toJson(flow.blocks()).toArray());
     QByteArray bytes = doc.toJson();
     file.write(bytes);
 }
@@ -81,8 +82,8 @@ void MainWindow::handleLoad() {
         return;
     QByteArray bytes = file.readAll();
     auto doc = QJsonDocument::fromJson(bytes);
-    flow = FlowChart_fromJson(doc.object());
-    flow.setBlockTypes(&appData.blockTypes);
+    QHash<int, Block> blocks = QHash_int_Block_fromJson(doc.array());
+    flow = FlowChart(blocks, &appData.blockTypes);
     ui->graphicsView->setFlowChart(&flow);
     ui->graphicsView->syncGraphicsItems();
 }
