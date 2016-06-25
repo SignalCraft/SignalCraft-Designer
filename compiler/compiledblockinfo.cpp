@@ -52,7 +52,7 @@ CompiledBlockInfo CompiledBlockInfo::compileBlock(int blockIndex, Block block, Q
     QHash<QString, QString> compiledOptionValues;
     // add input data types and wire names to the environment
     for (QString inputPinName : bt.inputs().keys()) {
-        BlockPin source = block.inputConnections().value(inputPinName);
+        BlockPin source = block.inputConnection(inputPinName);
         DataType sourceDataType = compiledBlocks[source.blockNum()].pinDataType(source.pinName());
         QString wireName = "wire_" + QString::number(source.blockNum()) + "_" + source.pinName();
         dataTypes[inputPinName] = sourceDataType;

@@ -2,8 +2,7 @@
 #include <QString>
 #include "block.h"
 
-class TestBlock : public QObject
-{
+class TestBlock : public QObject {
     Q_OBJECT
 
 public:

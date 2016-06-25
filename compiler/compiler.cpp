@@ -40,13 +40,14 @@ QString generatePicCode(const FlowChart flow) {
             Block block = flow.block(blockIndex);
             BlockType blockType = blockTypes->value(block.blockTypeName());
             // check if all this block's inputs have been expanded
-            bool found_all = isExpandable(block, expanded);
+            bool found_all = isExpandable(flow, blockIndex, expanded);
             if(found_all) {
                 // mark this node as expanded
                 expanded.insert(blockIndex);
                 // add all of this node's outputs to the front of the queue
-                for(auto output : block.outputConnections().values()) {
-                    for(BlockPin element : output){
+                for (QString outputPinName : blockType.outputs().keys()) {
+                    QSet<BlockPin> outputBlockPins = block.outputConnection(outputPinName);
+                    for(BlockPin element : outputBlockPins){
                       int outIndex = element.blockNum();
                       if (!expanded.contains(outIndex)) {
                         toBeExpanded.push_front(outIndex);
@@ -113,16 +114,19 @@ QList<int> extractInputBlocks(FlowChart flow) {
     for(int blockIndex : flow.blocks().keys()) {
         Block block = flow.block(blockIndex);
         // If this is an input block, make sure it's expanded first
-        if(block.inputConnections().empty()) {
+        if(!block.hasInputConnections()) {
             inputBlocks.push_back(blockIndex);
         }
     }
     return inputBlocks;
 }
 
-bool isExpandable(Block block, QSet<int> expanded) {
+bool isExpandable(FlowChart flow, int blockIndex, QSet<int> expanded) {
+    Block block = flow.block(blockIndex);
+    BlockType bt = flow.blockTypes()->value(block.blockTypeName());
     bool found_all = true;
-    for(BlockPin bp : block.inputConnections().values()) {
+    for(QString inputPinName : bt.inputs().keys()) {
+        BlockPin bp = block.inputConnection(inputPinName);
         int blockNum = bp.blockNum();
         if(expanded.find(blockNum) == expanded.end()) {
             found_all = false;

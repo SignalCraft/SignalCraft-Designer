@@ -11,6 +11,8 @@ class BlockPin {
 public:
     /**
      * Construct an invalid BlockPin.
+     *
+     * A BlockPin is invalid if its index is negative.
      */
     BlockPin();
 

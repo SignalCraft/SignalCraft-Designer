@@ -46,12 +46,12 @@ void Block::setPos(QPointF pos) {
     m_pos = pos;
 }
 
-void Block::setOptionValues(QHash<QString, QString> optionValues) {
-    m_optionValues = optionValues;
+void Block::setOptionValue(QString optionName, QString value) {
+    m_optionValues.insert(optionName, value);
 }
 
-bool Block::inputIsConnected(QString inputPinName) const {
-    return (bool)m_inputConnections.count(inputPinName);
+void Block::resetOptionValues() {
+    m_optionValues = QHash<QString, QString>();
 }
 
 QPointF Block::pos() const {
@@ -62,25 +62,37 @@ QString Block::blockTypeName() const {
     return m_blockTypeName;
 }
 
-QHash<QString, BlockPin> Block::inputConnections() const {
-    return m_inputConnections;
+bool Block::hasInputConnections() const {
+    return !m_inputConnections.isEmpty();
 }
 
-QHash< QString, QSet< BlockPin > > Block::outputConnections() const {
-    return m_outputConnections;
+BlockPin Block::inputConnection(QString inputPinName) const {
+    return m_inputConnections.value(inputPinName);
+}
+
+QSet<BlockPin> Block::outputConnection(QString outputPinName) const {
+    return m_outputConnections.value(outputPinName);
+}
+
+QString Block::optionValue(QString optionName) const {
+    return m_optionValues.value(optionName);
 }
 
 QHash<QString, QString> Block::optionValues() const {
     return m_optionValues;
 }
 
-QJsonValue Block_toJson(Block obj) {
+QJsonValue Block::toJson() const {
     QJsonObject nodeObj;
-    nodeObj["blockTypeName"] = obj.blockTypeName();
-    nodeObj["pos"] = QPointF_toJson(obj.pos());
-    nodeObj["inputConnections"] = QHash_QString_BlockPin_toJson(obj.inputConnections());
-    nodeObj["outputConnections"] = QHash_QString_QSet_BlockPin_toJson(obj.outputConnections());
+    nodeObj["blockTypeName"] = m_blockTypeName;
+    nodeObj["pos"] = QPointF_toJson(m_pos);
+    nodeObj["inputConnections"] = QHash_QString_BlockPin_toJson(m_inputConnections);
+    nodeObj["outputConnections"] = QHash_QString_QSet_BlockPin_toJson(m_outputConnections);
     return nodeObj;
+}
+
+QJsonValue Block_toJson(Block obj) {
+    return obj.toJson();
 }
 
 Block Block_fromJson(QJsonValue node) {

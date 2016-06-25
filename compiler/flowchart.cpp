@@ -33,12 +33,13 @@ void FlowChart::setBlockTypes(QHash<QString, BlockType> *blockTypes) {
 
 void FlowChart::removeBlock(int blockIndex) {
     Block b = m_blocks[blockIndex];
-    for (QString inputPinName : b.inputConnections().keys()) {
-        BlockPin preBlockPin = b.inputConnections().value(inputPinName);
+    BlockType bt = m_blockTypes->value(b.blockTypeName());
+    for (QString inputPinName : bt.inputs().keys()) {
+        BlockPin preBlockPin = b.inputConnection(inputPinName);
         m_blocks[preBlockPin.blockNum()].disconnectOutput(preBlockPin.pinName(), BlockPin(blockIndex, inputPinName));
     }
-    for (QString outputPinName : b.outputConnections().keys()) {
-        QSet<BlockPin> postBlockPins = b.outputConnections().value(outputPinName);
+    for (QString outputPinName : bt.outputs().keys()) {
+        QSet<BlockPin> postBlockPins = b.outputConnection(outputPinName);
         for (BlockPin postBlockPin : postBlockPins) {
             m_blocks[postBlockPin.blockNum()].disconnectInput(postBlockPin.pinName());
         }
@@ -56,7 +57,7 @@ void FlowChart::connect(BlockPin first, BlockPin second) {
             // both outputs, error condition
         } else {
             // output to input
-            if (sink->inputIsConnected(second.pinName())) {
+            if (sink->inputConnection(second.pinName()).isValid()) {
                 // error condition
             } else {
                 source->connectOutput(first.pinName(), second);
@@ -66,7 +67,7 @@ void FlowChart::connect(BlockPin first, BlockPin second) {
     } else {
         if (sinkBlockType.isPinOutput(second.pinName())) {
             // input to output
-            if (source->inputIsConnected(first.pinName())) {
+            if (source->inputConnection(first.pinName()).isValid()) {
                 // error condition
             } else {
                 sink->connectOutput(second.pinName(), first);
@@ -83,7 +84,10 @@ void FlowChart::moveBlock(int blockIndex, QPointF pos) {
 }
 
 void FlowChart::setBlockOptionValues(int blockIndex, QHash<QString, QString> optionValues) {
-    m_blocks[blockIndex].setOptionValues(optionValues);
+    for (QString optionName : optionValues.keys()) {
+        QString optionValue = optionValues.value(optionName);
+        m_blocks[blockIndex].setOptionValue(optionName, optionValue);
+    }
 }
 
 QPointF FlowChart::blockPos(int blockIndex) const {
