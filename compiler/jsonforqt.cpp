@@ -17,11 +17,16 @@ QJsonValue QPointF_toJson(QPointF point) {
     return nodeObj;
 }
 
-QPointF QPointF_fromJson(QJsonValue node) {
+QPointF QPointF_fromJson(QJsonValue node, bool *ok = NULL) {
+    bool success;
     QJsonObject nodeObj = node.toObject();
-    qreal x = nodeObj["x"].toDouble();
-    qreal y = nodeObj["y"].toDouble();
-    return QPointF(x, y);
+    QJsonValue xVal = nodeObj["x"];
+    QJsonValue yVal = nodeObj["y"];
+    success = xVal.isDouble() && yVal.isDouble();
+    if (ok) {
+        *ok = success;
+    }
+    return QPointF(xVal.toDouble(), yVal.toDouble());
 }
 
 QJsonValue QPoint_toJson(QPoint point) {
@@ -31,11 +36,16 @@ QJsonValue QPoint_toJson(QPoint point) {
     return nodeObj;
 }
 
-QPoint QPoint_fromJson(QJsonValue node) {
+QPoint QPoint_fromJson(QJsonValue node, bool *ok = NULL) {
+    bool success;
     QJsonObject nodeObj = node.toObject();
-    int x = nodeObj["x"].toInt();
-    int y = nodeObj["y"].toInt();
-    return QPoint(x, y);
+    QJsonValue xVal = nodeObj["x"];
+    QJsonValue yVal = nodeObj["y"];
+    success = xVal.isDouble() && xVal.toDouble() == xVal.toInt() && yVal.isDouble() && yVal.toDouble() == yVal.toInt();
+    if (ok) {
+        *ok = success;
+    }
+    return QPoint(xVal.toInt(), yVal.toInt());
 }
 
 QJsonValue QHash_QString_QString_toJson(QHash<QString, QString> obj) {
@@ -49,14 +59,25 @@ QJsonValue QHash_QString_QString_toJson(QHash<QString, QString> obj) {
     return nodeArr;
 }
 
-QHash<QString, QString> QHash_QString_QString_fromJson(QJsonValue node) {
+QHash<QString, QString> QHash_QString_QString_fromJson(QJsonValue node, bool *ok = NULL) {
+    bool success = true;
     QHash<QString, QString> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        QString value = item["value"].toString();
-        obj.insert(key, value);
+        QJsonValue keyVal = item["key"];
+        QJsonValue valueVal = item["value"];
+        if (!keyVal.isString() || !valueVal.isString()) {
+            success = false;
+        } else {
+            obj.insert(keyVal.toString(), valueVal.toString());
+        }
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -72,14 +93,25 @@ QJsonValue QMap_QString_QString_toJson(QMap<QString, QString> obj) {
     return nodeArr;
 }
 
-QMap<QString, QString> QMap_QString_QString_fromJson(QJsonValue node) {
+QMap<QString, QString> QMap_QString_QString_fromJson(QJsonValue node, bool *ok = NULL) {
+    bool success = true;
     QMap<QString, QString> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        QString value = item["value"].toString();
-        obj.insert(key, value);
+        QJsonValue keyVal = item["key"];
+        QJsonValue valueVal = item["value"];
+        if (!keyVal.isString() || !valueVal.isString()) {
+            success = false;
+        } else {
+            obj.insert(keyVal.toString(), valueVal.toString());
+        }
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
