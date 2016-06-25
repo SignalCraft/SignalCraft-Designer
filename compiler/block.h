@@ -133,9 +133,13 @@ public:
     QString optionValue(QString optionName) const;
 
     /**
-     * @return a mapping from each of this block's option names to its value
+     * Query the set value of one of this block's options, returning a givne default value if it has not been set.
+     *
+     * @param optionName the name of the option to query.
+     * @param defaultValue the option's default value
+     * @return the set value of this option, or the default value if no value has been set.
      */
-    QHash<QString, QString> optionValues() const; // TODO: Remove this leaky interface. Should be handled by CompiledBlockInfo.
+    QString optionValue(QString optionName, QString defaultValue) const;
 
     /**
      * @return the JSON representation of this block

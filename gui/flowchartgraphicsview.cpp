@@ -154,7 +154,7 @@ void FlowChartGraphicsView::contextMenuEvent(QContextMenuEvent * event) {
 void FlowChartGraphicsView::handleBlockOptions(int blockIndex) {
     Block block = flow->block(blockIndex);
     BlockType bt = m_blockTypes->value(block.blockTypeName());
-    BlockOptionsDialog bod(bt, block.optionValues(), this);
+    BlockOptionsDialog bod(bt, block, this);
     bod.exec();
     flow->setBlockOptionValues(blockIndex, bod.optionValues());
 }

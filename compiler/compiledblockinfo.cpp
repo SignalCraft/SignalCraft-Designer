@@ -64,7 +64,7 @@ CompiledBlockInfo CompiledBlockInfo::compileBlock(int blockIndex, Block block, Q
         QString optionWireName = "block_options_" + QString::number(blockIndex) + "_" + optionName;
         BlockOptionType optionType = bt.options().value(optionName).type();
         DataType optionDataType;
-        QString optionValueStr = bt.resultingOptionValues(block.optionValues()).value(optionName);
+        QString optionValueStr = block.optionValue(optionName, bt.defaultOptionValues().value(optionName));
         if (optionType == BLOCK_OPTION_TYPE_COMBOBOX) {
             optionDataType = DATATYPE_INT;
         } else {

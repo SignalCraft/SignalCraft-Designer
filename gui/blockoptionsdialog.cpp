@@ -1,5 +1,6 @@
 #include "blockoptionsdialog.h"
 #include "ui_blockoptionsdialog.h"
+#include "block.h"
 #include "blocktype.h"
 #include "blockoption.h"
 #include "blockoptioncontrol.h"
@@ -10,10 +11,11 @@
 #include <QVBoxLayout>
 #include <QHash>
 
-BlockOptionsDialog::BlockOptionsDialog(BlockType bt, QHash<QString, QString> optionValues, QWidget *parent) : QDialog(parent), ui(new Ui::BlockOptionsDialog) {
+BlockOptionsDialog::BlockOptionsDialog(BlockType bt, Block block, QWidget *parent) : QDialog(parent), ui(new Ui::BlockOptionsDialog) {
     ui->setupUi(this);
-    m_optionValues = bt.resultingOptionValues(optionValues);
     for (QString blockOptionName : bt.options().keys()) {
+        QString optionValue = block.optionValue(blockOptionName, bt.defaultOptionValues().value(blockOptionName));
+        m_optionValues.insert(blockOptionName, optionValue);
         BlockOption blockOption = bt.options()[blockOptionName];
         BlockOptionControl *control;
         switch (blockOption.type()) {
@@ -24,7 +26,7 @@ BlockOptionsDialog::BlockOptionsDialog(BlockType bt, QHash<QString, QString> opt
             control = new BlockOptionControlInteger(blockOption.displayName(), blockOption.minimum(), blockOption.maximum());
             break;
         }
-        control->setCurrentValue(optionValues[blockOptionName]);
+        control->setCurrentValue(optionValue);
         ui->optionControlLayout->addWidget(control);
         m_optionControls[blockOptionName] = control;
     }

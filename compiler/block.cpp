@@ -78,8 +78,8 @@ QString Block::optionValue(QString optionName) const {
     return m_optionValues.value(optionName);
 }
 
-QHash<QString, QString> Block::optionValues() const {
-    return m_optionValues;
+QString Block::optionValue(QString optionName, QString defaultValue) const {
+    return m_optionValues.value(optionName, defaultValue);
 }
 
 QJsonValue Block::toJson() const {

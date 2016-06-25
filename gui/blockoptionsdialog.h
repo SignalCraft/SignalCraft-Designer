@@ -6,6 +6,7 @@
 #include <QHash>
 #include <QString>
 #include "blockoptioncontrol.h"
+#include "block.h"
 
 namespace Ui {
     class BlockOptionsDialog;
@@ -20,10 +21,10 @@ public:
     /**
      * Construct a BlockOptionsDialog.
      * @param bt the type of block to get options for
-     * @param optionValues the mapping of option names to their current values
+     * @param block the block storing the set values for each option
      * @param parent the optional parent widget
      */
-    explicit BlockOptionsDialog(BlockType bt, QHash<QString, QString> optionValues, QWidget *parent = 0);
+    explicit BlockOptionsDialog(BlockType bt, Block block, QWidget *parent = 0);
 
     ~BlockOptionsDialog();
 
