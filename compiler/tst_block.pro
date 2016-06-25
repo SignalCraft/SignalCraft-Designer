@@ -13,6 +13,13 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += tst_block.cpp
+CONFIG(debug, debug|release) {
+    DESTDIR = debug
+} else {
+    DESTDIR = release
+}
 
-HEADERS += tst_block.h
+INCLUDEPATH += ../compiler
+LIBS += -static -L$$shell_quote($$shell_path($$OUT_PWD/../compiler/$$DESTDIR)) -lcompiler
+
+SOURCES += tst_block.cpp

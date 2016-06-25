@@ -1,15 +1,24 @@
-#include "tst_block.h"
-
 #include <QTest>
 #include <QString>
+#include "block.h"
 
-TestBlock::TestBlock()
+class TestBlock : public QObject
 {
-}
+    Q_OBJECT
 
-void TestBlock::testCase1()
-{
-    QVERIFY2(true, "Failure");
-}
+public:
+    TestBlock() { }
+
+private Q_SLOTS:
+    void testCase1(){
+		Block b("myType", QPointF());
+		QVERIFY2(b.blockTypeName() == "myType", "Failure");
+	}
+};
 
 QTEST_APPLESS_MAIN(TestBlock)
+
+#include "tst_block.moc"
+
+
+
