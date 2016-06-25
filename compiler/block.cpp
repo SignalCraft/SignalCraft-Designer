@@ -27,62 +27,87 @@ bool Block::isValid() const {
 }
 
 void Block::connectOutput(QString outputPinName, BlockPin inputPin) {
+    Q_ASSERT(isValid());
+    Q_ASSERT(!outputPinName.isEmpty());
+    Q_ASSERT(inputPin.isValid());
     m_outputConnections[outputPinName].insert(inputPin);
 }
 
 void Block::disconnectOutput(QString outputPinName, BlockPin inputPin) {
+    Q_ASSERT(isValid());
+    Q_ASSERT(inputPin.isValid());
+    Q_ASSERT(m_outputConnections.contains(outputPinName));
+    Q_ASSERT(m_outputConnections.value(outputPinName).contains(inputPin));
     m_outputConnections[outputPinName].remove(inputPin);
 }
 
 void Block::connectInput(QString inputPinName, BlockPin outputPin) {
-    m_inputConnections[inputPinName] = outputPin;
+    Q_ASSERT(isValid());
+    Q_ASSERT(!inputPinName.isEmpty());
+    Q_ASSERT(outputPin.isValid());
+    m_inputConnections.insert(inputPinName,outputPin);
 }
 
 void Block::disconnectInput(QString inputPinName) {
+    Q_ASSERT(isValid());
+    Q_ASSERT(m_inputConnections.contains(inputPinName));
     m_inputConnections.remove(inputPinName);
 }
 
 void Block::setPos(QPointF pos) {
+    Q_ASSERT(isValid());
     m_pos = pos;
 }
 
 void Block::setOptionValue(QString optionName, QString value) {
+    Q_ASSERT(isValid());
+    Q_ASSERT(!optionName.isEmpty());
+    Q_ASSERT(!value.isEmpty());
     m_optionValues.insert(optionName, value);
 }
 
 void Block::resetOptionValues() {
+    Q_ASSERT(isValid());
     m_optionValues = QHash<QString, QString>();
 }
 
 QPointF Block::pos() const {
+    Q_ASSERT(isValid());
     return m_pos;
 }
 
 QString Block::blockTypeName() const {
+    Q_ASSERT(isValid());
     return m_blockTypeName;
 }
 
 bool Block::hasInputConnections() const {
+    Q_ASSERT(isValid());
     return !m_inputConnections.isEmpty();
 }
 
 BlockPin Block::inputConnection(QString inputPinName) const {
+    Q_ASSERT(isValid());
     return m_inputConnections.value(inputPinName);
 }
 
 QSet<BlockPin> Block::outputConnection(QString outputPinName) const {
+    Q_ASSERT(isValid());
     return m_outputConnections.value(outputPinName);
 }
 
 QString Block::optionValue(QString optionName) const {
+    Q_ASSERT(isValid());
     return m_optionValues.value(optionName);
 }
 
 QString Block::optionValue(QString optionName, QString defaultValue) const {
+    Q_ASSERT(isValid());
     return m_optionValues.value(optionName, defaultValue);
 }
 
 QJsonValue Block::toJson() const {
+    Q_ASSERT(isValid());
     QJsonObject nodeObj;
     nodeObj["blockTypeName"] = m_blockTypeName;
     nodeObj["pos"] = QPointF_toJson(m_pos);
