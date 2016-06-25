@@ -97,10 +97,16 @@ QJsonValue Block_toJson(Block obj) {
 
 Block Block_fromJson(QJsonValue node) {
     QJsonObject nodeObj = node.toObject();
+    if (nodeObj.isEmpty()) {
+        return Block();
+    }
     QString blockTypeName = nodeObj["blockTypeName"].toString();
-    QPointF pos = QPointF_fromJson(nodeObj["pos"]);
-    QHash<QString, BlockPin> inputConnections = QHash_QString_BlockPin_fromJson(nodeObj["inputConnections"]);
-    QHash<QString, QSet<BlockPin>> outputConnections = QHash_QString_QSet_BlockPin_fromJson(nodeObj["outputConnections"]);
+    if (blockTypeName.isEmpty()) {
+        return Block();
+    }
+    QPointF pos = QPointF_fromJson(nodeObj["pos"]); // TODO: can't check failure
+    QHash<QString, BlockPin> inputConnections = QHash_QString_BlockPin_fromJson(nodeObj["inputConnections"]); // TODO: can't check failure
+    QHash<QString, QSet<BlockPin>> outputConnections = QHash_QString_QSet_BlockPin_fromJson(nodeObj["outputConnections"]); // TODO: can't check failure
     return Block(blockTypeName, pos, inputConnections, outputConnections);
 }
 
