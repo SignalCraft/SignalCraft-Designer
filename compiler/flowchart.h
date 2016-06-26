@@ -83,7 +83,7 @@ public:
     QPointF blockPos(int blockIndex) const;
 
     /**
-     * @return a pointer to the mapping of block time names to BlockTypes
+     * @return a pointer to the mapping of block type names to BlockTypes
      */
     const QHash<QString, BlockType> *blockTypes() const; // TODO: remove
 
