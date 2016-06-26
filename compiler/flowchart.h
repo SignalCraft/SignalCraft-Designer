@@ -7,6 +7,8 @@
 #include <QPointF>
 #include "block.h"
 #include "blocktype.h"
+#include <QList>
+#include <QSet>
 
 /**
  * The FlowChart class represents a user-written program as a set of
@@ -87,8 +89,6 @@ public:
      */
     const QHash<QString, BlockType> *blockTypes() const; // TODO: remove
 
-    QString blockTypeName(int blockIndex) const;
-
     /**
      * Get a block's type name.
      * @param blockIndex the block's index
@@ -154,9 +154,51 @@ public:
      */
     QJsonValue toJson() const;
 
-public: // for CompiledBlockInfo
-    QHash<int, Block> m_blocks;
+    /**
+     * The Compiler class represents an object that compiles a single flowchart into C code.
+     */
+    class Compiler {
+    public:
+
+        /**
+         * Construct a compiler for the referenced flowchart.
+         * @param flow the flowchart to compile from
+         */
+        Compiler(const FlowChart& flow);
+
+        /**
+         * Compile the flowchart into c code for the device.
+         * @return the c code for the device
+         */
+        QString generatePicCode();
+
+        /**
+         * Determine whether or not the given block is expandable.
+         * A block is expandable if all of its inputs have already been expanded.
+         * @param blockIndex the index of the block in question
+         * @param expanded the set of block indexes that have already been expanded
+         * @return true if the block is expandable, or false if not
+         */
+        bool isExpandable(const int BlockIndex, const QSet<int> expanded);
+
+        /**
+         * Determine the set of unique block type names from the flowchart.
+         * @return the set of block type names
+         */
+        QSet<QString> extractUniqueBlockNames();
+
+        /**
+         * Determine the list of input block indexes from the flowchart.
+         * @return the list of input block indexes
+         */
+        QList<int> extractInputBlocks();
+
+    private:
+        const FlowChart& m_flow;
+    };
+
 private:
+    QHash<int, Block> m_blocks;
     const QHash<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };

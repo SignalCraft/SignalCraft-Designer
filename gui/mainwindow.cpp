@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "compiler.h"
 
 #include <QStandardItem>
 #include "blocktypelistmodel.h"
@@ -114,7 +113,8 @@ void MainWindow::handleLoad() {
 }
 
 void MainWindow::handleCompile(){
-    QString picCode = generatePicCode(flow);
+    FlowChart::Compiler compiler(flow);
+    QString picCode = compiler.generatePicCode();
     //QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", "*.c");
     QString filePath = "GccApplication1.c";
     QFile file(filePath);

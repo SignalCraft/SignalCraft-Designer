@@ -23,7 +23,6 @@ SOURCES += block.cpp \
     pintype.cpp \
     datatype.cpp \
     automatictypecast.cpp \
-    compiler.cpp \
     c_exp.cpp \
     lisp_exp.cpp \
     c_stmt.cpp
@@ -40,7 +39,6 @@ HEADERS  += block.h \
     datatype.h \
     automatictypecast.h \
     overloadresult.h \
-    compiler.h \
     c_exp.h \
     lisp_exp.h \
     c_stmt.h
