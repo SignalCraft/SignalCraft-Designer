@@ -152,9 +152,8 @@ void FlowChartGraphicsView::contextMenuEvent(QContextMenuEvent * event) {
 }
 
 void FlowChartGraphicsView::handleBlockOptions(int blockIndex) {
-    Block block = flow->block(blockIndex);
-    BlockType bt = m_blockTypes->value(block.blockTypeName());
-    BlockOptionsDialog bod(bt, block, this);
+    BlockType bt = flow->blockType(blockIndex);
+    BlockOptionsDialog bod(*flow, blockIndex, this);
     bod.exec();
     flow->setBlockOptionValues(blockIndex, bod.optionValues());
 }
@@ -207,9 +206,8 @@ void FlowChartGraphicsView::syncGraphicsItems() {
         this->scene()->removeItem(item);
     }
     for (int blockIndex : flow->blockIndeces()) {
-        Block block = flow->block(blockIndex);
-        BlockType blockType = m_blockTypes->value(block.blockTypeName());
-        addGraphicsItems(blockType, blockIndex, block.pos());
+        BlockType blockType = flow->blockType(blockIndex);
+        addGraphicsItems(blockType, blockIndex, flow->blockPos(blockIndex));
     }
 }
 

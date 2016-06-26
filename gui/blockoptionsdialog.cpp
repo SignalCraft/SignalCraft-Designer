@@ -1,6 +1,6 @@
 #include "blockoptionsdialog.h"
 #include "ui_blockoptionsdialog.h"
-#include "block.h"
+#include "flowchart.h"
 #include "blocktype.h"
 #include "blockoption.h"
 #include "blockoptioncontrol.h"
@@ -11,10 +11,11 @@
 #include <QVBoxLayout>
 #include <QHash>
 
-BlockOptionsDialog::BlockOptionsDialog(BlockType bt, Block block, QWidget *parent) : QDialog(parent), ui(new Ui::BlockOptionsDialog) {
+BlockOptionsDialog::BlockOptionsDialog(const FlowChart& flow, int blockIndex, QWidget *parent) : QDialog(parent), ui(new Ui::BlockOptionsDialog) {
     ui->setupUi(this);
+    BlockType bt = flow.blockType(blockIndex);
     for (QString blockOptionName : bt.options().keys()) {
-        QString optionValue = block.optionValue(blockOptionName, bt.defaultOptionValues().value(blockOptionName));
+        QString optionValue = flow.blockOptionValue(blockIndex, blockOptionName, bt.defaultOptionValues().value(blockOptionName));
         m_optionValues.insert(blockOptionName, optionValue);
         BlockOption blockOption = bt.options()[blockOptionName];
         BlockOptionControl *control;

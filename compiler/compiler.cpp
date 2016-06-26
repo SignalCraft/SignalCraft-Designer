@@ -37,8 +37,7 @@ QString generatePicCode(const FlowChart flow) {
         toBeExpanded.pop_front();
         // if this block has not been expanded yet
         if (expanded.find(blockIndex) == expanded.end()) {
-            Block block = flow.block(blockIndex);
-            BlockType blockType = blockTypes->value(block.blockTypeName());
+            BlockType blockType = flow.blockType(blockIndex);
             // check if all this block's inputs have been expanded
             bool found_all = isExpandable(flow, blockIndex, expanded);
             if(found_all) {
@@ -46,7 +45,7 @@ QString generatePicCode(const FlowChart flow) {
                 expanded.insert(blockIndex);
                 // add all of this node's outputs to the front of the queue
                 for (QString outputPinName : blockType.outputs().keys()) {
-                    QSet<BlockPin> outputBlockPins = block.outputConnection(outputPinName);
+                    QSet<BlockPin> outputBlockPins = flow.blockOutputConnection(blockIndex, outputPinName);
                     for(BlockPin element : outputBlockPins){
                       int outIndex = element.blockNum();
                       if (!expanded.contains(outIndex)) {
@@ -55,7 +54,7 @@ QString generatePicCode(const FlowChart flow) {
                     }
                 }
                 // write this node's function call
-                CompiledBlockInfo compiledBlock = CompiledBlockInfo::compileBlock(blockIndex, block, compiledBlocks, blockTypes);
+                CompiledBlockInfo compiledBlock = CompiledBlockInfo::compileBlock(blockIndex, flow.m_blocks[blockIndex], compiledBlocks, blockTypes);
                 compiledBlocks[blockIndex] = compiledBlock;
                 mainFile += compiledBlock.code();
                 // write this node's struct initializer
@@ -103,9 +102,8 @@ QString generatePicCode(const FlowChart flow) {
 QSet<QString> extractUniqueBlockNames(FlowChart flow) {
     QSet<QString> blockNames;
     for(int blockIndex : flow.blockIndeces()) {
-        Block block = flow.block(blockIndex);
         // make sure this block's name is in the blockNames set
-        blockNames.insert(block.blockTypeName());
+        blockNames.insert(flow.blockTypeName(blockIndex));
     }
     return blockNames;
 }
@@ -113,9 +111,8 @@ QSet<QString> extractUniqueBlockNames(FlowChart flow) {
 QList<int> extractInputBlocks(FlowChart flow) {
     QList<int> inputBlocks;
     for(int blockIndex : flow.blockIndeces()) {
-        Block block = flow.block(blockIndex);
         // If this is an input block, make sure it's expanded first
-        if(!block.hasInputConnections()) {
+        if(!flow.blockHasInputConnections(blockIndex)) {
             inputBlocks.push_back(blockIndex);
         }
     }
@@ -123,11 +120,10 @@ QList<int> extractInputBlocks(FlowChart flow) {
 }
 
 bool isExpandable(FlowChart flow, int blockIndex, QSet<int> expanded) {
-    Block block = flow.block(blockIndex);
-    BlockType bt = flow.blockTypes()->value(block.blockTypeName());
+    BlockType bt = flow.blockType(blockIndex);
     bool found_all = true;
     for(QString inputPinName : bt.inputs().keys()) {
-        BlockPin bp = block.inputConnection(inputPinName);
+        BlockPin bp = flow.blockInputConnection(blockIndex, inputPinName);
         int blockNum = bp.blockNum();
         if(expanded.find(blockNum) == expanded.end()) {
             found_all = false;

@@ -87,20 +87,33 @@ public:
      */
     const QHash<QString, BlockType> *blockTypes() const; // TODO: remove
 
+    QString blockTypeName(int blockIndex) const;
+
     /**
-     * Get the block with the given index
+     * Get the type of the block with the given index
      * @param blockIndex the block's index
-     * @return the block
+     * @return the block's type
      */
-    Block block(int blockIndex) const;
+    BlockType blockType(int blockIndex) const;
+
+    BlockPin blockInputConnection(int blockIndex, QString inputPinName) const;
+    BlockPin blockInputConnection(BlockPin input) const;
+
+    QSet<BlockPin> blockOutputConnection(int blockIndex, QString outputPinName) const;
+    QSet<BlockPin> blockOutputConnection(BlockPin output) const;
+
+    QString blockOptionValue(int blockIndex, QString optionName, QString defaultValue = "") const;
+
+    bool blockHasInputConnections(int blockIndex) const;
 
     /**
      * @return the flowchart's JSON representation
      */
     QJsonValue toJson() const;
 
-private:
+public: // for CompiledBlockInfo
     QHash<int, Block> m_blocks;
+private:
     const QHash<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };

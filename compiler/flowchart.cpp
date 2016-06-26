@@ -92,15 +92,43 @@ QList<int> FlowChart::blockIndeces() const {
 }
 
 QPointF FlowChart::blockPos(int blockIndex) const {
-    return block(blockIndex).pos();
+    return m_blocks.value(blockIndex).pos();
 }
 
 const QHash<QString, BlockType> *FlowChart::blockTypes() const {
     return m_blockTypes;
 }
 
-Block FlowChart::block(int blockIndex) const {
-    return m_blocks[blockIndex];
+QString FlowChart::blockTypeName(int blockIndex) const {
+    return m_blocks.value(blockIndex).blockTypeName();
+}
+
+BlockType FlowChart::blockType(int blockIndex) const {
+    return m_blockTypes->value(blockTypeName(blockIndex));
+}
+
+BlockPin FlowChart::blockInputConnection(int blockIndex, QString inputPinName) const {
+    return m_blocks.value(blockIndex).inputConnection(inputPinName);
+}
+
+BlockPin FlowChart::blockInputConnection(BlockPin input) const {
+    return blockInputConnection(input.blockNum(), input.pinName());
+}
+
+QSet<BlockPin> FlowChart::blockOutputConnection(int blockIndex, QString outputPinName) const {
+    return m_blocks.value(blockIndex).outputConnection(outputPinName);
+}
+
+QSet<BlockPin> FlowChart::blockOutputConnection(BlockPin output) const {
+    return blockOutputConnection(output.blockNum(), output.pinName());
+}
+
+QString FlowChart::blockOptionValue(int blockIndex, QString optionName, QString defaultValue) const {
+    return m_blocks.value(blockIndex).optionValue(optionName, defaultValue);
+}
+
+bool FlowChart::blockHasInputConnections(int blockIndex) const {
+    return m_blocks.value(blockIndex).hasInputConnections();
 }
 
 QJsonValue FlowChart::toJson() const {
