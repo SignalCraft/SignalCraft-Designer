@@ -23,13 +23,13 @@
 enum PinType { PINTYPE_BOOL, PINTYPE_INT, PINTYPE_AFP, PINTYPE_FLOAT, PINTYPE_OVERLOAD };
 
 QJsonValue PinType_toJson(PinType obj);
-PinType PinType_fromJson(QJsonValue node);
+PinType PinType_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QHash_QString_PinType_toJson(QHash<QString, PinType> obj);
-QHash<QString, PinType> QHash_QString_PinType_fromJson(QJsonValue node);
+QHash<QString, PinType> QHash_QString_PinType_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QMap_QString_PinType_toJson(QMap<QString, PinType> obj);
-QMap<QString, PinType> QMap_QString_PinType_fromJson(QJsonValue node);
+QMap<QString, PinType> QMap_QString_PinType_fromJson(QJsonValue node, bool *ok = NULL);
 
 #endif // DATATYPE
 

@@ -155,12 +155,12 @@ private:
 };
 
 QJsonValue Block_toJson(Block obj);
-Block Block_fromJson(QJsonValue node);
+Block Block_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QHash_int_Block_toJson(QHash<int, Block> obj);
-QHash<int, Block> QHash_int_Block_fromJson(QJsonValue node);
+QHash<int, Block> QHash_int_Block_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QMap_int_Block_toJson(QMap<int, Block> obj);
-QMap<int, Block> QMap_int_Block_fromJson(QJsonValue node);
+QMap<int, Block> QMap_int_Block_fromJson(QJsonValue node, bool *ok = NULL);
 
 #endif // BLOCK_H

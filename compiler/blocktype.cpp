@@ -155,16 +155,48 @@ QJsonValue BlockType_toJson(BlockType obj) {
     return nodeObj;
 }
 
-BlockType BlockType_fromJson(QJsonValue node) {
+BlockType BlockType_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QJsonObject nodeObj = node.toObject();
-    QString name = nodeObj["name"].toString();
-    QString displayName = nodeObj["displayName"].toString();
-    OverloadType overloadType = OverloadType_fromJson(nodeObj["overloadType"]);
-    QMap<QString, PinType> inputs = QMap_QString_PinType_fromJson(nodeObj["inputs"]);
-    QMap<QString, PinType> outputs = QMap_QString_PinType_fromJson(nodeObj["outputs"]);
-    QMap<QString, BlockOption> options = QMap_QString_BlockOption_fromJson(nodeObj["options"]);
-    QMap<QString, PinType> storage = QMap_QString_PinType_fromJson(nodeObj["storage"]);
-    lisp_exp parseTree = lisp_exp::parseString(nodeObj["parseTree"].toString());
+    QJsonValue nameVal = nodeObj["name"];
+    if (!nameVal.isString()) {
+        success = false;
+    }
+    QString name = nameVal.toString();
+    QJsonValue displayNameVal = nodeObj["displayName"];
+    if (!displayNameVal.isString()) {
+        success = false;
+    }
+    QString displayName = displayNameVal.toString();
+    OverloadType overloadType = OverloadType_fromJson(nodeObj["overloadType"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    QMap<QString, PinType> inputs = QMap_QString_PinType_fromJson(nodeObj["inputs"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    QMap<QString, PinType> outputs = QMap_QString_PinType_fromJson(nodeObj["outputs"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    QMap<QString, BlockOption> options = QMap_QString_BlockOption_fromJson(nodeObj["options"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    QMap<QString, PinType> storage = QMap_QString_PinType_fromJson(nodeObj["storage"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    QJsonValue parseTreeStrVal = nodeObj["parseTree"];
+    if (!parseTreeStrVal.isString()) {
+        success = false;
+    }
+    lisp_exp parseTree = lisp_exp::parseString(parseTreeStrVal.toString()); // TODO: detect errors here
+    if (ok) {
+        *ok = success;
+    }
     return BlockType(name, displayName, overloadType, inputs, outputs, options, storage, parseTree);
 }
 
@@ -176,14 +208,24 @@ QJsonValue BlockTypes_toJson(QHash<QString, BlockType> obj) {
     return nodeArray;
 }
 
-QHash<QString, BlockType> BlockTypes_fromJson(QJsonValue node) {
+QHash<QString, BlockType> BlockTypes_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArray = node.toArray();
     QHash<QString, BlockType> blockTypes;
     for (int i = 0; i < nodeArray.size(); i++) {
         QJsonValue element = nodeArray[i];
-        BlockType bt = BlockType_fromJson(element);
+        BlockType bt = BlockType_fromJson(element, &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         blockTypes[bt.name()] = bt;
-
+    }
+    if (ok) {
+        *ok = success;
     }
     return blockTypes;
 }

@@ -95,19 +95,33 @@ QJsonValue Block_toJson(Block obj) {
     return obj.toJson();
 }
 
-Block Block_fromJson(QJsonValue node) {
+Block Block_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QJsonObject nodeObj = node.toObject();
     if (nodeObj.isEmpty()) {
-        return Block();
+        success = false;
     }
-    QString blockTypeName = nodeObj["blockTypeName"].toString();
-    if (blockTypeName.isEmpty()) {
-        return Block();
+    QJsonValue blockTypeNameVal = nodeObj["blockTypeName"];
+    if (!blockTypeNameVal.isString()) {
+        success = false;
     }
-    QPointF pos = QPointF_fromJson(nodeObj["pos"]); // TODO: can't check failure
-    QHash<QString, BlockPin> inputConnections = QHash_QString_BlockPin_fromJson(nodeObj["inputConnections"]); // TODO: can't check failure
-    QHash<QString, QSet<BlockPin>> outputConnections = QHash_QString_QSet_BlockPin_fromJson(nodeObj["outputConnections"]); // TODO: can't check failure
-    return Block(blockTypeName, pos, inputConnections, outputConnections);
+    QPointF pos = QPointF_fromJson(nodeObj["pos"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    QHash<QString, BlockPin> inputConnections = QHash_QString_BlockPin_fromJson(nodeObj["inputConnections"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    QHash<QString, QSet<BlockPin>> outputConnections = QHash_QString_QSet_BlockPin_fromJson(nodeObj["outputConnections"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    if (ok) {
+        *ok = success;
+    }
+    return Block(blockTypeNameVal.toString(), pos, inputConnections, outputConnections);
 }
 
 QJsonValue QHash_int_Block_toJson(QHash<int, Block> obj) {
@@ -121,14 +135,29 @@ QJsonValue QHash_int_Block_toJson(QHash<int, Block> obj) {
     return nodeArr;
 }
 
-QHash<int, Block> QHash_int_Block_fromJson(QJsonValue node) {
+QHash<int, Block> QHash_int_Block_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QHash<int, Block> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        int key = item["key"].toInt();
-        Block value = Block_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isDouble() || (keyVal.toInt() != keyVal.toDouble())) {
+            success = false;
+        }
+        int key = keyVal.toInt();
+        Block value = Block_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -144,14 +173,29 @@ QJsonValue QMap_int_Block_toJson(QMap<int, Block> obj) {
     return nodeArr;
 }
 
-QMap<int, Block> QMap_int_Block_fromJson(QJsonValue node) {
+QMap<int, Block> QMap_int_Block_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QMap<int, Block> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        int key = item["key"].toInt();
-        Block value = Block_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isDouble() || (keyVal.toInt() != keyVal.toDouble())) {
+            success = false;
+        }
+        int key = keyVal.toInt();
+        Block value = Block_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }

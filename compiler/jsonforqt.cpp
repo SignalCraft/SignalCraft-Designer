@@ -17,7 +17,7 @@ QJsonValue QPointF_toJson(QPointF point) {
     return nodeObj;
 }
 
-QPointF QPointF_fromJson(QJsonValue node, bool *ok = NULL) {
+QPointF QPointF_fromJson(QJsonValue node, bool *ok) {
     bool success;
     QJsonObject nodeObj = node.toObject();
     QJsonValue xVal = nodeObj["x"];
@@ -36,7 +36,7 @@ QJsonValue QPoint_toJson(QPoint point) {
     return nodeObj;
 }
 
-QPoint QPoint_fromJson(QJsonValue node, bool *ok = NULL) {
+QPoint QPoint_fromJson(QJsonValue node, bool *ok) {
     bool success;
     QJsonObject nodeObj = node.toObject();
     QJsonValue xVal = nodeObj["x"];
@@ -59,7 +59,7 @@ QJsonValue QHash_QString_QString_toJson(QHash<QString, QString> obj) {
     return nodeArr;
 }
 
-QHash<QString, QString> QHash_QString_QString_fromJson(QJsonValue node, bool *ok = NULL) {
+QHash<QString, QString> QHash_QString_QString_fromJson(QJsonValue node, bool *ok) {
     bool success = true;
     QHash<QString, QString> obj;
     if (!node.isArray()) {
@@ -93,7 +93,7 @@ QJsonValue QMap_QString_QString_toJson(QMap<QString, QString> obj) {
     return nodeArr;
 }
 
-QMap<QString, QString> QMap_QString_QString_fromJson(QJsonValue node, bool *ok = NULL) {
+QMap<QString, QString> QMap_QString_QString_fromJson(QJsonValue node, bool *ok) {
     bool success = true;
     QMap<QString, QString> obj;
     if (!node.isArray()) {

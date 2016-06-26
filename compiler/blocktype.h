@@ -182,9 +182,9 @@ private:
 };
 
 QJsonValue BlockType_toJson(BlockType obj);
-BlockType BlockType_fromJson(QJsonValue node);
+BlockType BlockType_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue BlockTypes_toJson(QHash<QString, BlockType> obj);
-QHash<QString, BlockType> BlockTypes_fromJson(QJsonValue node);
+QHash<QString, BlockType> BlockTypes_fromJson(QJsonValue node, bool *ok = NULL);
 
 #endif // BLOCKTYPE_H

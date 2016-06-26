@@ -55,21 +55,21 @@ private:
 uint qHash(const BlockPin b);
 
 QJsonValue BlockPin_toJson(BlockPin obj);
-BlockPin BlockPin_fromJson(QJsonValue node);
+BlockPin BlockPin_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QHash_QString_BlockPin_toJson(QHash<QString, BlockPin> obj);
-QHash<QString, BlockPin> QHash_QString_BlockPin_fromJson(QJsonValue node);
+QHash<QString, BlockPin> QHash_QString_BlockPin_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QMap_QString_BlockPin_toJson(QMap<QString, BlockPin> obj);
-QMap<QString, BlockPin> QMap_QString_BlockPin_fromJson(QJsonValue node);
+QMap<QString, BlockPin> QMap_QString_BlockPin_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QHash_QString_QSet_BlockPin_toJson(QHash<QString, QSet<BlockPin>> obj);
-QHash<QString, QSet<BlockPin>> QHash_QString_QSet_BlockPin_fromJson(QJsonValue node);
+QHash<QString, QSet<BlockPin>> QHash_QString_QSet_BlockPin_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QMap_QString_QSet_BlockPin_toJson(QMap<QString, QSet<BlockPin>> obj);
-QMap<QString, QSet<BlockPin>> QMap_QString_QSet_BlockPin_fromJson(QJsonValue node);
+QMap<QString, QSet<BlockPin>> QMap_QString_QSet_BlockPin_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QSet_BlockPin_toJson(QSet<BlockPin> obj);
-QSet<BlockPin> QSet_BlockPin_fromJson(QJsonValue node);
+QSet<BlockPin> QSet_BlockPin_fromJson(QJsonValue node, bool *ok = NULL);
 
 #endif // BLOCKPIN_H

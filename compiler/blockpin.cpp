@@ -45,10 +45,22 @@ QJsonValue BlockPin_toJson(BlockPin obj) {
     return nodeObj;
 }
 
-BlockPin BlockPin_fromJson(QJsonValue node) {
+BlockPin BlockPin_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
     QJsonObject nodeObj = node.toObject();
-    int blockNum = nodeObj["blockNum"].toInt();
-    QString pinName = nodeObj["pinName"].toString();
+    QJsonValue blockNumVal = nodeObj["blockNum"];
+    if (!blockNumVal.isDouble() || (blockNumVal.toInt() != blockNumVal.toDouble())) {
+        success = false;
+    }
+    int blockNum = blockNumVal.toInt();
+    QJsonValue pinNameVal = nodeObj["pinName"];
+    if (!pinNameVal.isString()) {
+        success = false;
+    }
+    QString pinName = pinNameVal.toString();
+    if (ok) {
+        *ok = success;
+    }
     return BlockPin(blockNum, pinName);
 }
 
@@ -63,14 +75,29 @@ QJsonValue QHash_QString_BlockPin_toJson(QHash<QString, BlockPin> obj) {
     return nodeArr;
 }
 
-QHash<QString, BlockPin> QHash_QString_BlockPin_fromJson(QJsonValue node) {
+QHash<QString, BlockPin> QHash_QString_BlockPin_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QHash<QString, BlockPin> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        BlockPin value = BlockPin_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        BlockPin value = BlockPin_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -86,14 +113,29 @@ QJsonValue QMap_QString_BlockPin_toJson(QMap<QString, BlockPin> obj) {
     return nodeArr;
 }
 
-QMap<QString, BlockPin> QMap_QString_BlockPin_fromJson(QJsonValue node) {
+QMap<QString, BlockPin> QMap_QString_BlockPin_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QMap<QString, BlockPin> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        BlockPin value = BlockPin_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        BlockPin value = BlockPin_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -109,14 +151,29 @@ QJsonValue QHash_QString_QSet_BlockPin_toJson(QHash<QString, QSet<BlockPin>> obj
     return nodeArr;
 }
 
-QHash<QString, QSet<BlockPin>> QHash_QString_QSet_BlockPin_fromJson(QJsonValue node) {
+QHash<QString, QSet<BlockPin>> QHash_QString_QSet_BlockPin_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QHash<QString, QSet<BlockPin>> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        QSet<BlockPin> value = QSet_BlockPin_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        QSet<BlockPin> value = QSet_BlockPin_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -132,14 +189,29 @@ QJsonValue QMap_QString_QSet_BlockPin_toJson(QMap<QString, QSet<BlockPin>> obj) 
     return nodeArr;
 }
 
-QMap<QString, QSet<BlockPin>> QMap_QString_QSet_BlockPin_fromJson(QJsonValue node) {
+QMap<QString, QSet<BlockPin>> QMap_QString_QSet_BlockPin_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QMap<QString, QSet<BlockPin>> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        QSet<BlockPin> value = QSet_BlockPin_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        QSet<BlockPin> value = QSet_BlockPin_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -152,11 +224,22 @@ QJsonValue QSet_BlockPin_toJson(QSet<BlockPin> obj) {
     return nodeArr;
 }
 
-QSet<BlockPin> QSet_BlockPin_fromJson(QJsonValue node) {
+QSet<BlockPin> QSet_BlockPin_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QSet<BlockPin> obj;
+    if (node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
-        obj.insert(BlockPin_fromJson(*i));
+        obj.insert(BlockPin_fromJson(*i, &callSuccess));
+        if (!callSuccess) {
+            success = false;
+        }
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }

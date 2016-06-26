@@ -58,7 +58,8 @@ QJsonValue BlockOptionType_toJson(BlockOptionType obj) {
     return QJsonValue((int)obj);
 }
 
-BlockOptionType BlockOptionType_fromJson(QJsonValue node) {
+BlockOptionType BlockOptionType_fromJson(QJsonValue node, bool *ok) {
+    *ok = node.isDouble() && (node.toDouble() == node.toInt());
     return (BlockOptionType)(node.toInt());
 }
 
@@ -79,25 +80,54 @@ QJsonValue BlockOption_toJson(BlockOption obj) {
     return nodeObj;
 }
 
-BlockOption BlockOption_fromJson(QJsonValue node) {
+BlockOption BlockOption_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QJsonObject nodeObj = node.toObject();
-    QString displayName = nodeObj["displayName"].toString();
-    QString defaultValue = nodeObj["defaultValue"].toString();
-    BlockOptionType type = BlockOptionType_fromJson(nodeObj["type"]);
+    QJsonValue displayNameVal = nodeObj["displayName"];
+    if (!displayNameVal.isString()) {
+        success = false;
+    }
+    QString displayName = displayNameVal.toString();
+    QJsonValue defaultValueVal = nodeObj["defaultValue"];
+    if (!defaultValueVal.isString()) {
+        success = false;
+    }
+    QString defaultValue = defaultValueVal.toString();
+    BlockOptionType type = BlockOptionType_fromJson(nodeObj["type"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
     BlockOption result;
     QMap<QString, QString> choices;
+    QJsonValue minimumVal;
     int minimum;
+    QJsonValue maximumVal;
     int maximum;
     switch (type) {
     case BLOCK_OPTION_TYPE_COMBOBOX:
-        choices = QMap_QString_QString_fromJson(nodeObj["choices"]);
+        choices = QMap_QString_QString_fromJson(nodeObj["choices"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         result = BlockOption::makeComboBox(displayName, defaultValue, choices);
         break;
     case BLOCK_OPTION_TYPE_INTEGER:
-        minimum = nodeObj["minimum"].toInt();
-        maximum = nodeObj["maximum"].toInt();
+        minimumVal = nodeObj["minimum"];
+        if (!minimumVal.isDouble() || (minimumVal.toInt() != minimumVal.toDouble())) {
+            success = false;
+        }
+        minimum = minimumVal.toInt();
+        maximumVal = nodeObj["maximum"];
+        if (!maximumVal.isDouble() || (maximumVal.toInt() != maximumVal.toDouble())) {
+            success = false;
+        }
+        maximum = maximumVal.toInt();
         result = BlockOption::makeInteger(displayName, defaultValue, minimum, maximum);
         break;
+    }
+    if (ok) {
+        *ok = success;
     }
     return result;
 }
@@ -113,14 +143,29 @@ QJsonValue QHash_QString_BlockOption_toJson(QHash<QString, BlockOption> obj) {
     return nodeArr;
 }
 
-QHash<QString, BlockOption> QHash_QString_BlockOption_fromJson(QJsonValue node) {
+QHash<QString, BlockOption> QHash_QString_BlockOption_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QHash<QString, BlockOption> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        BlockOption value = BlockOption_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        BlockOption value = BlockOption_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -136,14 +181,29 @@ QJsonValue QMap_QString_BlockOption_toJson(QMap<QString, BlockOption> obj) {
     return nodeArr;
 }
 
-QMap<QString, BlockOption> QMap_QString_BlockOption_fromJson(QJsonValue node) {
+QMap<QString, BlockOption> QMap_QString_BlockOption_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QMap<QString, BlockOption> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        BlockOption value = BlockOption_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        BlockOption value = BlockOption_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }

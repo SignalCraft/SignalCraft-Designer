@@ -111,15 +111,15 @@ private:
 };
 
 QJsonValue BlockOptionType_toJson(BlockOptionType obj);
-BlockOptionType BlockOptionType_fromJson(QJsonValue node);
+BlockOptionType BlockOptionType_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue BlockOption_toJson(BlockOption obj);
-BlockOption BlockOption_fromJson(QJsonValue node);
+BlockOption BlockOption_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QHash_QString_BlockOption_toJson(QHash<QString, BlockOption> obj);
-QHash<QString, BlockOption> QHash_QString_BlockOption_fromJson(QJsonValue node);
+QHash<QString, BlockOption> QHash_QString_BlockOption_fromJson(QJsonValue node, bool *ok = NULL);
 
 QJsonValue QMap_QString_BlockOption_toJson(QMap<QString, BlockOption> obj);
-QMap<QString, BlockOption> QMap_QString_BlockOption_fromJson(QJsonValue node);
+QMap<QString, BlockOption> QMap_QString_BlockOption_fromJson(QJsonValue node, bool *ok = NULL);
 
 #endif // BLOCKOPTION_H

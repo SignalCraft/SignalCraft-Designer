@@ -12,7 +12,11 @@ QJsonValue PinType_toJson(PinType obj) {
     return QJsonValue((int)obj);
 }
 
-PinType PinType_fromJson(QJsonValue node) {
+PinType PinType_fromJson(QJsonValue node, bool *ok) {
+    bool success = node.isDouble() && (node.toInt() == node.toDouble());
+    if (ok) {
+        *ok = success;
+    }
     return (PinType)(node.toInt());
 }
 
@@ -27,14 +31,29 @@ QJsonValue QHash_QString_PinType_toJson(QHash<QString, PinType> obj) {
     return nodeArr;
 }
 
-QHash<QString, PinType> QHash_QString_PinType_fromJson(QJsonValue node) {
+QHash<QString, PinType> QHash_QString_PinType_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QHash<QString, PinType> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        PinType value = PinType_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        PinType value = PinType_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
@@ -50,14 +69,29 @@ QJsonValue QMap_QString_PinType_toJson(QMap<QString, PinType> obj) {
     return nodeArr;
 }
 
-QMap<QString, PinType> QMap_QString_PinType_fromJson(QJsonValue node) {
+QMap<QString, PinType> QMap_QString_PinType_fromJson(QJsonValue node, bool *ok) {
+    bool success = true;
+    bool callSuccess;
     QMap<QString, PinType> obj;
+    if (!node.isArray()) {
+        success = false;
+    }
     QJsonArray nodeArr = node.toArray();
     for (auto i = nodeArr.constBegin(); i != nodeArr.constEnd(); i++) {
         QJsonObject item = (*i).toObject();
-        QString key = item["key"].toString();
-        PinType value = PinType_fromJson(item["value"]);
+        QJsonValue keyVal = item["key"];
+        if (!keyVal.isString()) {
+            success = false;
+        }
+        QString key = keyVal.toString();
+        PinType value = PinType_fromJson(item["value"], &callSuccess);
+        if (!callSuccess) {
+            success = false;
+        }
         obj.insert(key, value);
+    }
+    if (ok) {
+        *ok = success;
     }
     return obj;
 }
