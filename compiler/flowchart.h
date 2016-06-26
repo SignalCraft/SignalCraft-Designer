@@ -94,10 +94,18 @@ public:
      */
     Block block(int blockIndex) const;
 
+    /**
+     * @return the flowchart's JSON representation
+     */
+    QJsonValue toJson() const;
+
 private:
     QHash<int, Block> m_blocks;
     const QHash<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };
+
+QJsonValue FlowChart_toJson(FlowChart obj);
+FlowChart FlowChart_fromJsonWithBlockTypes(QJsonValue node, QHash<QString, BlockType> *blockTypes, bool *ok = NULL);
 
 #endif // FLOWCHART_H

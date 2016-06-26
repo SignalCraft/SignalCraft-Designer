@@ -102,3 +102,27 @@ const QHash<QString, BlockType> *FlowChart::blockTypes() const {
 Block FlowChart::block(int blockIndex) const {
     return m_blocks[blockIndex];
 }
+
+QJsonValue FlowChart::toJson() const {
+    QJsonObject nodeObj;
+    nodeObj["blocks"] = QHash_int_Block_toJson(m_blocks);
+    return nodeObj;
+}
+
+QJsonValue FlowChart_toJson(FlowChart obj) {
+    return obj.toJson();
+}
+
+FlowChart FlowChart_fromJsonWithBlockTypes(QJsonValue node, QHash<QString, BlockType> *blockTypes, bool *ok) {
+    bool success = true;
+    bool callSuccess;
+    QJsonObject nodeObj = node.toObject();
+    QHash<int, Block> blocks = QHash_int_Block_fromJson(nodeObj["blocks"], &callSuccess);
+    if (!callSuccess) {
+        success = false;
+    }
+    if (ok) {
+        *ok = success;
+    }
+    return FlowChart(blocks, blockTypes);
+}

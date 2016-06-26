@@ -206,8 +206,8 @@ void FlowChartGraphicsView::syncGraphicsItems() {
     for (QGraphicsItem* item : this->scene()->items()) {
         this->scene()->removeItem(item);
     }
-    for (int blockIndex : flow->blocks().keys()) {
-        Block block = flow->blocks().value(blockIndex);
+    for (int blockIndex : flow->blockIndeces()) {
+        Block block = flow->block(blockIndex);
         BlockType blockType = m_blockTypes->value(block.blockTypeName());
         addGraphicsItems(blockType, blockIndex, block.pos());
     }

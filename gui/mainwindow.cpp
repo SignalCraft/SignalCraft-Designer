@@ -70,7 +70,7 @@ void MainWindow::handleSaveAs() {
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
-    QJsonDocument doc(QHash_int_Block_toJson(flow.blocks()).toArray());
+    QJsonDocument doc(FlowChart_toJson(flow).toObject());
     QByteArray bytes = doc.toJson();
     file.write(bytes);
 }
@@ -82,8 +82,7 @@ void MainWindow::handleLoad() {
         return;
     QByteArray bytes = file.readAll();
     auto doc = QJsonDocument::fromJson(bytes);
-    QHash<int, Block> blocks = QHash_int_Block_fromJson(doc.array());
-    flow = FlowChart(blocks, &appData.blockTypes);
+    flow = FlowChart_fromJsonWithBlockTypes(doc.array(), &appData.blockTypes);
     ui->graphicsView->setFlowChart(&flow);
     ui->graphicsView->syncGraphicsItems();
 }
