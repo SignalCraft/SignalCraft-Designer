@@ -87,6 +87,8 @@ public:
      */
     const QHash<QString, BlockType> *blockTypes() const; // TODO: remove
 
+    QString blockTypeName(int blockIndex) const;
+
     /**
      * Get a block's type name.
      * @param blockIndex the block's index
