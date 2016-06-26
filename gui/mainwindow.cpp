@@ -69,6 +69,9 @@ void MainWindow::handleZoomOut() {
 
 void MainWindow::handleSaveAs() {
     QString filePath = QFileDialog::getSaveFileName(this, "Save Flowchart As", "", "Flowchart files (*.flow)");
+    if (filePath.isEmpty()) {
+        return;
+    }
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
@@ -79,6 +82,9 @@ void MainWindow::handleSaveAs() {
 
 void MainWindow::handleLoad() {
     QString filePath = QFileDialog::getOpenFileName(this, "Open Flowchart", "", "Flowchart files (*.flow)");
+    if (filePath.isEmpty()) {
+        return;
+    }
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::warning(this, "SignalCraft failed to open the flowchart",
