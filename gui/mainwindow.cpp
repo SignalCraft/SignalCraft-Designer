@@ -16,6 +16,8 @@
 #include <QProcess>
 #include <QString>
 #include <QList>
+#include <QMessageBox>
+#include <QJsonParseError>
 
 MainWindow::MainWindow(ApplicationData _appData, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -66,7 +68,7 @@ void MainWindow::handleZoomOut() {
 }
 
 void MainWindow::handleSaveAs() {
-    QString filePath = QFileDialog::getSaveFileName(this, "Save As", "", ".flow");
+    QString filePath = QFileDialog::getSaveFileName(this, "Save Flowchart As", "", "Flowchart files (*.flow)");
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
@@ -76,20 +78,38 @@ void MainWindow::handleSaveAs() {
 }
 
 void MainWindow::handleLoad() {
-    QString filePath = QFileDialog::getOpenFileName(this, "Save As", "", ".flow");
+    QString filePath = QFileDialog::getOpenFileName(this, "Open Flowchart", "", "Flowchart files (*.flow)");
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "SignalCraft failed to open the flowchart",
+                             "The flowchart file could not be opened. Ensure that it exists.");
         return;
+    }
     QByteArray bytes = file.readAll();
-    auto doc = QJsonDocument::fromJson(bytes);
-    flow = FlowChart_fromJsonWithBlockTypes(doc.array(), &appData.blockTypes);
+    QJsonParseError parseErr;
+    auto doc = QJsonDocument::fromJson(bytes, &parseErr);
+    if (parseErr.error != QJsonParseError::NoError) {
+        QMessageBox::warning(this, "SignalCraft failed to parse the flowchart",
+                             "The flowchart file could not be parsed as valid JSON. The parser reported: \"" +
+                             parseErr.errorString() +
+                             "\" at offset " +
+                             QString::number(parseErr.offset) +
+                             ".");
+        return;
+    }
+    bool success;
+    flow = FlowChart_fromJsonWithBlockTypes(doc.array(), &appData.blockTypes, &success);
+    if (!success) {
+        QMessageBox::warning(this, "SignalCraft failed to interpret the flowchart",
+                             "The flowchart file did not fit the required structure.");
+    }
     ui->graphicsView->setFlowChart(&flow);
     ui->graphicsView->syncGraphicsItems();
 }
 
 void MainWindow::handleCompile(){
     QString picCode = generatePicCode(flow);
-    //QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", ".c");
+    //QString filePath = QFileDialog::getSaveFileName(this, "Save PicCode", "", "*.c");
     QString filePath = "GccApplication1.c";
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))

@@ -6,6 +6,7 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QMessageBox>
+#include <QJsonParseError>
 
 int main(int argc, char *argv[])
 {
