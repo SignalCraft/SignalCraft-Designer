@@ -6,7 +6,7 @@
 #include <QHash>
 #include <QString>
 #include "blockoptioncontrol.h"
-#include "block.h"
+#include "flowchart.h"
 
 namespace Ui {
     class BlockOptionsDialog;
@@ -20,11 +20,11 @@ class BlockOptionsDialog : public QDialog {
 public:
     /**
      * Construct a BlockOptionsDialog.
-     * @param bt the type of block to get options for
-     * @param block the block storing the set values for each option
+     * @param flow the flowchart containing the block in question
+     * @param blockIndex the block's index in the flowchart
      * @param parent the optional parent widget
      */
-    explicit BlockOptionsDialog(BlockType bt, Block block, QWidget *parent = 0);
+    explicit BlockOptionsDialog(const FlowChart& flow, int blockIndex, QWidget *parent = 0);
 
     ~BlockOptionsDialog();
 

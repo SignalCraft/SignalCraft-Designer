@@ -88,19 +88,73 @@ public:
     const QHash<QString, BlockType> *blockTypes() const; // TODO: remove
 
     /**
-     * Get the block with the given index
+     * Get a block's type name.
      * @param blockIndex the block's index
-     * @return the block
+     * @return the block's type name
      */
-    Block block(int blockIndex) const;
+    QString blockTypeName(int blockIndex) const;
+
+    /**
+     * Get the type of the block with the given index
+     * @param blockIndex the block's index
+     * @return the block's type
+     */
+    BlockType blockType(int blockIndex) const;
+
+    /**
+     * Get the BlockPin that the given block's named input pin is connected to, or an invalid BlockPin if it's not connected.
+     * @param blockIndex the block's index
+     * @param inputPinName the block's input pin name
+     * @return the output BlockPin that the input pin is connected to
+     */
+    BlockPin blockInputConnection(int blockIndex, QString inputPinName) const;
+
+    /**
+     * Get the BlockPin that the given input BlockPin is connected to, or an invalid BlockPin if it's not connected.
+     * @param input the input BlockPin
+     * @return the output BlockPin that the input pin is connected to
+     */
+    BlockPin blockInputConnection(BlockPin input) const;
+
+    /**
+     * Get the set of BlockPins that the given block's named output pin is connected to.
+     * @param blockIndex the block's index
+     * @param inputPinName the block's output pin name
+     * @return the set of input BlockPin that the output pin is connected to
+     */
+    QSet<BlockPin> blockOutputConnection(int blockIndex, QString outputPinName) const;
+
+    /**
+     * Get the set of BlockPins that the given output BlockPin is connected to.
+     * @param input the output BlockPin
+     * @return the set of input BlockPins that the output pin is connected to
+     */
+    QSet<BlockPin> blockOutputConnection(BlockPin output) const;
+
+    /**
+     * Get the value of one of the given block's options.
+     * @param blockIndex the block's index
+     * @param optionName the name of the option
+     * @param defaultValue the option's default value
+     * @return the set value for that block's option, or the default value if no value was set
+     */
+    QString blockOptionValue(int blockIndex, QString optionName, QString defaultValue = "") const;
+
+    /**
+     * Determine whether or not the given block has any input connections
+     * @param blockIndex the block's index
+     * @return true if the block has at least one input connection, or false otherwise
+     */
+    bool blockHasInputConnections(int blockIndex) const;
 
     /**
      * @return the flowchart's JSON representation
      */
     QJsonValue toJson() const;
 
-private:
+public: // for CompiledBlockInfo
     QHash<int, Block> m_blocks;
+private:
     const QHash<QString, BlockType> *m_blockTypes;
     int m_currentIndex = 0;
 };

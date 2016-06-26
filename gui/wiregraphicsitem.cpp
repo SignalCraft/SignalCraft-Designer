@@ -12,18 +12,16 @@
 #include "blockpin.h"
 
 QPointF WireGraphicsItem::blockInputPinPos(const BlockPin bp) const {
-    Block block = m_flow->block(bp.blockNum());
-    QPointF blockPos = block.pos();
-    BlockType blockType = m_flow->blockTypes()->value(block.blockTypeName());
+    QPointF blockPos = m_flow->blockPos(bp.blockNum());
+    BlockType blockType = m_flow->blockType(bp.blockNum());
     QPointF relativePinPos = blockType.inputPinCenterPos(bp.pinName());
     QPointF pinPos = blockPos + relativePinPos;
     return pinPos;
 }
 
 QPointF WireGraphicsItem::blockOutputPinPos(const BlockPin bp) const {
-    Block block = m_flow->block(bp.blockNum());
-    QPointF blockPos = block.pos();
-    BlockType blockType = m_flow->blockTypes()->value(block.blockTypeName());
+    QPointF blockPos = m_flow->blockPos(bp.blockNum());
+    BlockType blockType = m_flow->blockType(bp.blockNum());
     QPointF relativePinPos = blockType.outputPinCenterPos(bp.pinName());
     QPointF pinPos = blockPos + relativePinPos;
     return pinPos;
@@ -41,7 +39,7 @@ BlockPin WireGraphicsItem::blockPin() const {
 QRectF WireGraphicsItem::boundingRect() const {
     QPointF myPinPos = blockOutputPinPos(m_blockPin);
     QRectF bounds(myPinPos, QSizeF(0,0));
-    auto otherBlockPins = m_flow->block(m_blockPin.blockNum()).outputConnection(m_blockPin.pinName());
+    auto otherBlockPins = m_flow->blockOutputConnection(m_blockPin);
     for (BlockPin otherBlockPin : otherBlockPins) {
         QPointF otherPinPos = blockInputPinPos(otherBlockPin);
         if (otherPinPos.x() < bounds.left()) {
@@ -65,7 +63,7 @@ QPainterPath WireGraphicsItem::shape() const {
 void WireGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem *, QWidget *) {
     painter->setPen(QPen(QColor(0,0,0), 15));
     QPointF myPinPos = blockOutputPinPos(m_blockPin);
-    auto otherBlockPins = m_flow->block(m_blockPin.blockNum()).outputConnection(m_blockPin.pinName());
+    auto otherBlockPins = m_flow->blockOutputConnection(m_blockPin);
     for (BlockPin otherBlockPin : otherBlockPins) {
         QPointF otherPinPos = blockInputPinPos(otherBlockPin);
         painter->drawLine(myPinPos, otherPinPos);
