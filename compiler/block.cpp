@@ -74,10 +74,6 @@ QSet<BlockPin> Block::outputConnection(QString outputPinName) const {
     return m_outputConnections.value(outputPinName);
 }
 
-QString Block::optionValue(QString optionName) const {
-    return m_optionValues.value(optionName);
-}
-
 QString Block::optionValue(QString optionName, QString defaultValue) const {
     return m_optionValues.value(optionName, defaultValue);
 }

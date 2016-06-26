@@ -133,13 +133,13 @@ public:
     QString optionValue(QString optionName) const;
 
     /**
-     * Query the set value of one of this block's options, returning a givne default value if it has not been set.
+     * Query the set value of one of this block's options.
      *
      * @param optionName the name of the option to query.
      * @param defaultValue the option's default value
      * @return the set value of this option, or the default value if no value has been set.
      */
-    QString optionValue(QString optionName, QString defaultValue) const;
+    QString optionValue(QString optionName, QString defaultValue = "") const;
 
     /**
      * @return the JSON representation of this block
