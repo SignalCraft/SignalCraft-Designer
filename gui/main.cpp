@@ -5,6 +5,7 @@
 #include "blocktype.h"
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {
@@ -15,14 +16,31 @@ int main(int argc, char *argv[])
     QString xmlPath = appDir + "/blocks.json";
     QFile xmlFile(xmlPath);
     if (!xmlFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        // error message
+        QMessageBox::critical(0, "SignalCraft failed to open blocks.json",
+                              "The block.json file could not be opened. Ensure that it exists.");
         return 1;
     }
     QByteArray bytes = xmlFile.readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(bytes);
+    QJsonParseError parseErr;
+    QJsonDocument doc = QJsonDocument::fromJson(bytes, &parseErr);
+    if (parseErr.error != QJsonParseError::NoError) {
+        QMessageBox::critical(0, "SignalCraft failed to parse blocks.json",
+                              "The block.json file could not be parsed as valid JSON. The parser reported: \"" +
+                              parseErr.errorString() +
+                              "\" at offset " +
+                              QString::number(parseErr.offset) +
+                              ".");
+        return 1;
+    }
     QJsonArray nodeArray = doc.array();
     ApplicationData appData;
-    appData.blockTypes = BlockTypes_fromJson(nodeArray);
+    bool success;
+    appData.blockTypes = BlockTypes_fromJson(nodeArray, &success);
+    if (!success) {
+        QMessageBox::critical(0, "SignalCraft failed to interpret blocks.json",
+                              "The block.json file did not fit the required structure.");
+        return 1;
+    }
 
     MainWindow w(appData);
     w.show();
