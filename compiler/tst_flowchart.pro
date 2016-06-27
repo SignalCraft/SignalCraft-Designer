@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-06-18T09:32:36
-#
-#-------------------------------------------------
-
 QT       += testlib
 QT       -= gui
 
@@ -22,5 +16,4 @@ CONFIG(debug, debug|release) {
 INCLUDEPATH += ../compiler
 LIBS += -static -L$$shell_quote($$shell_path($$OUT_PWD/../compiler/$$DESTDIR)) -lcompiler
 
-SOURCES += tst_flowchart.cpp \
-    tst_flowchart.cpp
+SOURCES += tst_flowchart.cpp
