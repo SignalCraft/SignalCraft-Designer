@@ -14,7 +14,7 @@
  * about a specific block that is determined at compile-time.
  *
  * Specifically, this class stores the overloading result,  the exact DataType
- * of each output pin, and the AutomaticTypeCast for any input pin
+ * of each output pin.
  */
 class CompiledBlockInfo {
 public:
