@@ -52,11 +52,12 @@ public:
 
     /**
      * Connect two BlockPins to each other.
-     * This method only suceedes if one of the pins is an input and the other is an output.
+     * This method only succeedes if one of the pins is an input and the other is an output.
      * @param first the first BlockPin
      * @param second the second BlockPin
+     * @return true if the connection succeeded, false otherwise
      */
-    void connect(BlockPin first, BlockPin second);
+    bool connect(BlockPin first, BlockPin second);
 
     /**
      * Move a block to the given position.

@@ -49,7 +49,7 @@ void FlowChart::removeBlock(int blockIndex) {
     m_blocks.remove(blockIndex);
 }
 
-void FlowChart::connect(BlockPin first, BlockPin second) {
+bool FlowChart::connect(BlockPin first, BlockPin second) {
     Block* source = &m_blocks[first.blockNum()];
     BlockType sourceBlockType = m_blockTypes->value(source->blockTypeName());
     Block* sink = &m_blocks[second.blockNum()];
@@ -57,10 +57,12 @@ void FlowChart::connect(BlockPin first, BlockPin second) {
     if (sourceBlockType.isPinOutput(first.pinName())) {
         if (sinkBlockType.isPinOutput(second.pinName())) {
             // both outputs, error condition
+            return false;
         } else {
             // output to input
             if (sink->inputConnection(second.pinName()).isValid()) {
                 // error condition
+                return false;
             } else {
                 source->connectOutput(first.pinName(), second);
                 sink->connectInput(second.pinName(), first);
@@ -71,14 +73,18 @@ void FlowChart::connect(BlockPin first, BlockPin second) {
             // input to output
             if (source->inputConnection(first.pinName()).isValid()) {
                 // error condition
+                return false;
             } else {
                 sink->connectOutput(second.pinName(), first);
                 source->connectInput(first.pinName(), second);
             }
         } else {
             // both inputs, must search
+            // TODO: implement connection search
+            return false;
         }
     }
+    return true;
 }
 
 void FlowChart::moveBlock(int blockIndex, QPointF pos) {
