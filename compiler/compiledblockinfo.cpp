@@ -110,11 +110,6 @@ CompiledBlockInfo CompiledBlockInfo::compileBlock(int blockIndex, Block block, Q
                             optionValueStr = QString::number(rawValue);
                             optionDataType = DATATYPE_AFP(30 - exponent);
                         }
-                        int numBits = 0;
-                        while (optionValueInt > 0 || optionValueInt < -1) {
-                            optionValueInt >>= 1;
-                            numBits++;
-                        }
                     }
                 } else {
                     optionDataType = DataType();// error conditionanalog_output
