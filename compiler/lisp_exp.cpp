@@ -35,9 +35,15 @@ lisp_exp parse(QList<QString> & tokens) {
     }
     QString token = tokens.takeFirst();
     if (token == "(") {
+        if (tokens.isEmpty()) {
+            return lisp_exp(); // invalid
+        }
         QList<lisp_exp> cells;
         while (tokens.front() != ")") {
             lisp_exp cell = parse(tokens);
+            if (tokens.isEmpty()) {
+                return lisp_exp(); // invalid
+            }
             cells.push_back(cell);
         }
         tokens.pop_front();
