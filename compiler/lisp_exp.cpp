@@ -58,6 +58,9 @@ lisp_exp parse(QList<QString> & tokens) {
 lisp_exp lisp_exp::parseString(QString str) {
     QList<QString> tokens = tokenize(str);
     lisp_exp exp = parse(tokens);
+    if (!tokens.isEmpty()) {
+        return lisp_exp();
+    }
     return exp;
 }
 
