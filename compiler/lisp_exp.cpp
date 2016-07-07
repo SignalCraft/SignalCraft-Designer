@@ -48,6 +48,8 @@ lisp_exp parse(QList<QString> & tokens) {
         }
         tokens.pop_front();
         return lisp_exp(cells);
+    } else if (token == ")") {
+        return lisp_exp(); // invalid
     } else {
         return lisp_exp(token);
     }
