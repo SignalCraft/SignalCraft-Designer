@@ -30,8 +30,10 @@ QList<QString> tokenize(const QString & str) {
 }
 
 lisp_exp parse(QList<QString> & tokens) {
-    QString token = tokens.front();
-    tokens.pop_front();
+    if (tokens.isEmpty()) {
+        return lisp_exp(); // invalid
+    }
+    QString token = tokens.takeFirst();
     if (token == "(") {
         QList<lisp_exp> cells;
         while (tokens.front() != ")") {
