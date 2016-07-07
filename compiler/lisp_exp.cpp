@@ -10,14 +10,14 @@ QList<QString> tokenize(const QString & str) {
     QList<QString> tokens;
     int i = 0;
     while (i < str.size()) {
-        if (str.at(i) == ' ') {
+        if (str.at(i).isSpace()) {
             ++i;
         } else if (str.at(i) == '(' || str.at(i) == ')') {
             tokens.push_back(str.at(i) == '(' ? "(" : ")");
             i++;
         } else {
             int j = i;
-            while (j < str.size() && str.at(j) != ' ' && str.at(j) != '(' && str.at(j) != ')') {
+            while (j < str.size() && !str.at(j).isSpace() && str.at(j) != '(' && str.at(j) != ')') {
                 j++;
             }
             if (j < str.size()) {
