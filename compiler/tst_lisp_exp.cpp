@@ -134,6 +134,12 @@ private Q_SLOTS:
         QCOMPARE(result, expected);
     }
 
+    void testParseInvalidToken() {
+        lisp_exp result = lisp_exp::parseString("abc");
+        lisp_exp expected; // invalid
+        QCOMPARE(result, expected);
+    }
+
     void testParseInvalidSingleOpen() {
         lisp_exp result = lisp_exp::parseString("(");
         lisp_exp expected; // invalid

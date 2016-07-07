@@ -20,9 +20,7 @@ QList<QString> tokenize(const QString & str) {
             while (j < str.size() && !str.at(j).isSpace() && str.at(j) != '(' && str.at(j) != ')') {
                 j++;
             }
-            if (j < str.size()) {
-                tokens.push_back(str.mid(i, j-i));
-            }
+            tokens.push_back(str.mid(i, j-i));
             i = j;
         }
     }
@@ -59,6 +57,9 @@ lisp_exp lisp_exp::parseString(QString str) {
     QList<QString> tokens = tokenize(str);
     lisp_exp exp = parse(tokens);
     if (!tokens.isEmpty()) {
+        return lisp_exp();
+    }
+    if (exp.isLeaf()) {
         return lisp_exp();
     }
     return exp;
