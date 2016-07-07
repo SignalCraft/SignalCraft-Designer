@@ -10,10 +10,9 @@ QList<QString> tokenize(const QString & str) {
     QList<QString> tokens;
     int i = 0;
     while (i < str.size()) {
-        while (str.at(i) == ' ') {
+        if (str.at(i) == ' ') {
             ++i;
-        }
-        if (str.at(i) == '(' || str.at(i) == ')') {
+        } else if (str.at(i) == '(' || str.at(i) == ')') {
             tokens.push_back(str.at(i) == '(' ? "(" : ")");
             i++;
         } else {
@@ -21,7 +20,9 @@ QList<QString> tokenize(const QString & str) {
             while (j < str.size() && str.at(j) != ' ' && str.at(j) != '(' && str.at(j) != ')') {
                 j++;
             }
-            tokens.push_back(str.mid(i, j-i));
+            if (j < str.size()) {
+                tokens.push_back(str.mid(i, j-i));
+            }
             i = j;
         }
     }

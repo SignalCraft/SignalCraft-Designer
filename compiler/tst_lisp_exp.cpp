@@ -18,7 +18,28 @@ private Q_SLOTS:
         QCOMPARE(result, expected);
     }
 
-    void testParseEmptyListSpaces() {
+    void testParseEmptyListPrependedSpaces() {
+        lisp_exp result = lisp_exp::parseString("  ()");
+        QList<lisp_exp> elements;
+        lisp_exp expected(elements);
+        QCOMPARE(result, expected);
+    }
+
+    void testParseEmptyListInnerSpaces() {
+        lisp_exp result = lisp_exp::parseString("(  )");
+        QList<lisp_exp> elements;
+        lisp_exp expected(elements);
+        QCOMPARE(result, expected);
+    }
+
+    void testParseEmptyListAppendedSpaces() {
+        lisp_exp result = lisp_exp::parseString("()  ");
+        QList<lisp_exp> elements;
+        lisp_exp expected(elements);
+        QCOMPARE(result, expected);
+    }
+
+    void testParseEmptyListAllSpaces() {
         lisp_exp result = lisp_exp::parseString("  (  )  ");
         QList<lisp_exp> elements;
         lisp_exp expected(elements);
