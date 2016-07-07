@@ -68,6 +68,10 @@ lisp_exp::lisp_exp(QString token) {
     m_elements = QList<lisp_exp>();
 }
 
+bool lisp_exp::isValid() const {
+    return m_valid;
+}
+
 bool lisp_exp::isLeaf() const {
     return !m_value.isEmpty();
 }
@@ -82,4 +86,17 @@ int lisp_exp::size() const {
 
 lisp_exp lisp_exp::element(int i) const {
     return m_elements[i];
+}
+
+bool lisp_exp::operator==(const lisp_exp& other) const {
+    if (!m_valid && !other.m_valid) {
+        return true;
+    }
+    if (isLeaf() && other.isLeaf()) {
+        return (m_value == other.m_value);
+    }
+    if (!isLeaf() && !other.isLeaf()) {
+        return (m_elements == other.m_elements);
+    }
+    return false;
 }

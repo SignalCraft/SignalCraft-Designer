@@ -12,7 +12,16 @@
 class lisp_exp {
 public:
     /**
-     * Parse the given string into a lisp expression object
+     * Parse the given string into a lisp expression object.
+     *
+     * In order to be successfully parsed, the string must be a valid
+     * representation of a single lisp expression. This means the first
+     * non-whitespace character must be an open paren, the last non-whitespace
+     * character must be a close paren, the depth of the parenthetical must
+     * always be greater than 0 inside those outer parentheses, and the
+     * parentheses must be balanced. Any continuous run of non-whitespace and
+     * non-parenthese characters is interpreted as a single leaf token.
+     *
      * @param str the string to parse
      * @return the resulting lisp expression
      */
@@ -36,6 +45,11 @@ public:
     lisp_exp(QString token);
 
     /**
+     * @return true if this lisp expression is valid, false otherwise
+     */
+    bool isValid() const;
+
+    /**
      * @return true if this lisp expression is a value, false otherwise
      */
     bool isLeaf() const;
@@ -55,6 +69,8 @@ public:
      * @return the element at the given index of this lisp expression, assuming that it is a list
      */
     lisp_exp element(int i) const;
+
+    bool operator==(const lisp_exp& other) const;
 private:
     bool m_valid;
     QList<lisp_exp> m_elements;
