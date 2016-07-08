@@ -7,6 +7,8 @@
 QT       += core
 QT       -= gui
 QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -O0
+QMAKE_LFLAGS += -O0
 
 TARGET = compiler
 TEMPLATE = lib

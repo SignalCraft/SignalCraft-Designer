@@ -1,5 +1,5 @@
-#ifndef CELL_H
-#define CELL_H
+#ifndef LISP_EXP_H
+#define LISP_EXP_H
 
 #include <QString>
 #include <QList>
@@ -7,20 +7,29 @@
 /**
  * The lisp_exp class represents a lisp expression.
  *
- * Each valid lisp expression is either a list of lisp expressions, or a value.
+ * Each valid lisp expression contains either a list of lisp expressions, or a
+ * string value. If a lisp expression is a leaf, its value is a non-empty
+ * string. If a lisp expression is not a leaf, it contains 0 or more elements,
+ * each of which is a lisp expression.
+ *
+ * The identify of a lisp expression is determined by its validity, status as a
+ * leaf, and contents. So two expressions are equal if they are both invalid,
+ * or if they are both valid leafs with the same value, or if they are both
+ * valid non-leafs with equal elements.
  */
 class lisp_exp {
 public:
     /**
-     * Parse the given string into a lisp expression object.
+     * Parse the given string into a non-leaf lisp expression object.
      *
      * In order to be successfully parsed, the string must be a valid
-     * representation of a single lisp expression. This means the first
-     * non-whitespace character must be an open paren, the last non-whitespace
-     * character must be a close paren, the depth of the parenthetical must
-     * always be greater than 0 inside those outer parentheses, and the
-     * parentheses must be balanced. Any continuous run of non-whitespace and
-     * non-parenthese characters is interpreted as a single leaf token.
+     * representation of a single non-leaf lisp expression. This means the
+     * first non-whitespace character must be an open paren, the last
+     * non-whitespace character must be a close paren, the depth of the
+     * parenthetical must always be greater than 0 inside those outer
+     * parentheses, and the parentheses must be balanced. Any continuous run
+     * of non-whitespace and non-parenthese characters is interpreted as a
+     * single leaf token.
      *
      * @param str the string to parse
      * @return the resulting lisp expression
@@ -70,7 +79,14 @@ public:
      */
     lisp_exp element(int i) const;
 
+    /**
+     * For the definition of lisp_exp identity, see the class definition.
+     *
+     * @param other the lisp expression to compare to this one
+     * @return true if the two lisp expressions are equal, false otherwise
+     */
     bool operator==(const lisp_exp& other) const;
+
 private:
     bool m_valid;
     QList<lisp_exp> m_elements;
@@ -81,4 +97,4 @@ QList<QString> tokenize(const QString & str);
 
 lisp_exp parse(QList<QString> & tokens);
 
-#endif // CELL_H
+#endif // LISP_EXP_H

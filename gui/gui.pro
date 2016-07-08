@@ -8,6 +8,8 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS += -O0
+QMAKE_LFLAGS += -O0
 
 TARGET = SignalCraft
 TEMPLATE = app
