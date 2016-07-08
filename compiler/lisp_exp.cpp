@@ -103,6 +103,21 @@ lisp_exp lisp_exp::element(int i) const {
     return m_elements[i];
 }
 
+QString lisp_exp::toString() const {
+    if (!m_valid) {
+        return QString();
+    }
+    if (isLeaf()) {
+        return m_value;
+    } else {
+        QStringList tokens;
+        for (lisp_exp child : m_elements) {
+            tokens.append(child.toString());
+        }
+        return "(" + tokens.join(" ") + ")";
+    }
+}
+
 bool lisp_exp::operator==(const lisp_exp& other) const {
     if (!m_valid && !other.m_valid) {
         return true;

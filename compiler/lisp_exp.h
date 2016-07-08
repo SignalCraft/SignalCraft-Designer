@@ -80,6 +80,11 @@ public:
     lisp_exp element(int i) const;
 
     /**
+     * @return the string representation of this lisp expression, with minimal whitespace
+     */
+    QString toString() const;
+
+    /**
      * For the definition of lisp_exp identity, see the class definition.
      *
      * @param other the lisp expression to compare to this one

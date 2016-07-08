@@ -200,6 +200,33 @@ private Q_SLOTS:
         QCOMPARE(result, expected);
     }
 
+    void testToStringBigTree() {
+        QList<lisp_exp> emptyList;
+        QList<lisp_exp> list1;
+        QList<lisp_exp> list2;
+        QList<lisp_exp> list3;
+        QList<lisp_exp> list4;
+        QList<lisp_exp> innerList;
+        QList<lisp_exp> baseList;
+        list1.push_back(lisp_exp("abc"));
+        list2.push_back(lisp_exp("def"));
+        list2.push_back(lisp_exp("ghi"));
+        list3.push_back(lisp_exp("jkl"));
+        list3.push_back(lisp_exp("mno"));
+        list4.push_back(lisp_exp("pqr"));
+        innerList.push_back(lisp_exp(list2));
+        innerList.push_back(lisp_exp(emptyList));
+        innerList.push_back(lisp_exp(list3));
+        baseList.push_back(lisp_exp(emptyList));
+        baseList.push_back(lisp_exp(list1));
+        baseList.push_back(lisp_exp(innerList));
+        baseList.push_back(lisp_exp(list4));
+        baseList.push_back(lisp_exp(emptyList));
+        lisp_exp expected(baseList);
+        QString s = expected.toString();
+        lisp_exp result = lisp_exp::parseString(s);
+        QCOMPARE(result, expected);
+    }
 
 };
 
